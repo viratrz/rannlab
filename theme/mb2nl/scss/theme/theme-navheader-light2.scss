@@ -1,0 +1,57 @@
+
+
+.tnavheader_light2 {
+
+	.header-inner2 {
+		border-top: solid 3px $accent1;
+		@include mb2_box_shadow(0 3px 5px, rgba(0,0,0,.15));
+	}
+
+	.top-bar {
+		background-color: $accent1;
+		color: #fff;
+
+		a {
+			color: inherit;
+		}
+
+		.social-list {
+			a {
+				background-color: rgba(0,0,0,.2);
+			}
+		}
+	}
+
+
+	@media only screen and (min-width: $wmediumdevice){
+
+		#master-header {
+
+	        &.sticky-el {
+
+				.master-header-inner {
+					border-top: solid 3px $accent1;
+				}
+
+	        }
+
+	    }
+
+	}
+
+
+	#main-navigation {
+
+		.main-menu {
+
+			> li {
+
+				> a,
+				> button {
+					color: $headingscolor;
+				}
+	        }
+	    }
+	}
+	
+}

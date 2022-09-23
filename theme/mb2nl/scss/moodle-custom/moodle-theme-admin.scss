@@ -1,0 +1,137 @@
+/* Spectrum input field */
+
+.sp-input {
+	background-color: #fff!important;
+}
+
+
+/* Fieldset */
+
+#adminsettings fieldset {
+	padding: 0;
+}
+
+
+#adminsettings {
+
+	.form-shortname,
+	.form-defaultinfo,
+	.form-description {
+		font-size: $fsxsmall;
+		color: $textcolor_lighten !important;
+	}
+
+	.form-description {
+		font-style: italic;
+	}
+
+	.form-item {
+		margin-bottom: 28px;
+	}
+}
+
+
+/* Form spacer */
+
+.mb2-pb-spacer,
+.mb2config-spacer {
+	margin: 2.2rem 0;
+}
+
+.mb2-pb-spacer,
+.mb2config-spacer-hr,
+.mb2form-separator {
+	border-top: solid 1px $color_border;
+	@include mb2_box_shadow(0 0 0 5px, rgba(0,0,0,.035));
+}
+
+
+
+
+/* Label element */
+
+.label {
+	display: inline-block;
+}
+
+
+/* Theme admin panel accordions */
+
+.mb2tmpl-accc {
+	margin: 0 0 .8rem 0;
+}
+
+.mb2tmpl-acc-title {
+	margin: 0;
+	padding: .78rem;
+	font-size: $fsgeneral;
+	//color: $textcolor;
+	cursor: pointer;
+	background-color: $color_gray3;
+	position: relative;
+}
+
+.mb2tmpl-acc-title:after {
+	@include mb2_font_fa();
+	content: '\f107';
+	position: absolute;
+	display: block;
+	width: 40px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	right: 0;
+	top: 50%;
+	margin-top: -15px;
+	font-size: 16px;
+}
+
+.mb2tmpl-acc-title.active:after {
+	content: '\f106';
+}
+
+.mb2tmpl-acccontent {
+
+	.path-admin-setting & {
+		display: none;
+	}
+
+	> div {
+		padding: 1rem;
+		background-color: lighten($color_gray2,3.5%);
+		border: solid 1px lighten($color_gray3,3%);
+		border-top: 0;
+		border-bottom-width: .3rem;
+	 }
+}
+
+.filter-message {
+    width: 100%;
+	padding: 2rem 2rem 1rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #e0f2e9;
+	margin-bottom: 30px;
+
+	&.urltolink {
+		background-color: #f1e3df;
+	}
+
+}
+
+
+
+.theme-checkplugins {
+    background-color: #FAFDD6;
+    padding: 1.3rem;
+    padding-bottom: .01rem;
+    width: 960px;
+    max-width: 100%;
+    margin: 2rem auto;
+
+	ol {
+		li {
+			margin: 1.3rem 0;
+		}
+	}
+}

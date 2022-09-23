@@ -1,0 +1,184 @@
+
+
+.tnavheader {
+
+	&.navalignright {
+		#main-navigation {
+			margin-right: 30px;
+
+			@media only screen and (max-width: $wdlargedevice){
+				margin-right: 16px; // 9px of header tools + 16px = 25px (the same like logo margin right)
+			}
+		}
+
+
+	}
+
+	#main-navigation {
+
+		.main-menu {
+
+			> li {
+
+				> a,
+				> button {
+					padding: .6rem .55rem;
+				}
+
+				@media only screen and (max-width: $wdlargedevice){
+					> a,
+					> button {
+						padding-right: .8rem;
+					}
+
+					&.dropdown {
+						> a,
+						> button {
+							&:after {
+								display: none;
+							}
+						}
+					}
+				}
+
+				> ul {
+					left: -1rem;
+				}
+
+				/* Next levels */
+
+				ul {
+					@include mb2_border_radius(.22rem);
+
+					> li:first-child {
+						> a,
+						> button {
+							@include mb2_border_radius(.22rem .22rem 0 0);
+						}
+					}
+
+					> li:last-child {
+						> a,
+						> button {
+							@include mb2_border_radius(0 0 .22rem .22rem);
+						}
+					}
+				}
+			}
+
+			/* Home icon */
+
+			.home-item {
+				> a {
+
+					i {
+						top: 0;
+					}
+				}
+			}
+
+		}
+
+
+		/* Navigation in sticky header */
+
+		.sticky-el & {
+
+			.main-menu {
+
+				> li {
+
+					> a,
+					> button {
+						color: $headingscolor;
+					}
+				}
+
+			}
+
+		}
+
+	}
+
+
+
+	&.navanim1 {
+
+		#main-navigation {
+
+			.main-menu {
+
+				> li {
+
+					> ul {
+
+						&:before,
+						&:after {
+							content: '';
+							display: block;
+							position: absolute;
+							border: solid 10px transparent;
+						}
+
+						&:after {
+							border-bottom-color: lighten( $color_gray2, 2.5% );
+							top: -20px;
+							left: 20px;
+						}
+
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+
+	/* Page header */
+
+	#page-header {
+		.flexcols {
+			min-height: 50px;
+		}
+	}
+
+
+
+	/* Header tools */
+
+	@media only screen and (min-width: $wmediumdevice+1){
+
+		.header-tools {
+
+			&.tools-pos2 {
+				.header-tools-link,
+				.popover-region-toggle {
+					i {
+						color: $textcolor;
+					}
+				}
+
+				&.type-icon {
+					.header-tools-link,
+					.popover-region-toggle {
+						i {
+							color: rgba(0,0,0,.3);
+						}
+					}
+
+					.tool-login {
+						i {
+							position: relative;
+							top: 1px;
+						}
+					}
+				}
+			}
+
+		}
+
+	}
+
+}

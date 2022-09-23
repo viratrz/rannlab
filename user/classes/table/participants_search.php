@@ -114,8 +114,27 @@ class participants_search {
                  {$outerwhere}
                        {$sort}";
 
-        return $DB->get_recordset_sql($sql, $params, $limitfrom, $limitnum);
-    }
+                       if($schoolid=$_SESSION['university_id']){
+                        $outerwhere="Where sc.id>0";
+                         $sql = "{$outerselect}
+                                          FROM ({$innerselect}
+                                                          FROM {$innerjoins}
+                                                 {$innerwhere}
+                                               ) {$subqueryalias}
+                                 {$outerjoins} left join  {universityadmin} sc  on sc.userid = u.id and sc.universityid=$schoolid 
+                                 {$outerwhere} 
+                                       {$sort}";  
+                                    //   $DB->set_debug(true);
+                           $users =  $DB->get_recordset_sql($sql, $params, $limitfrom, $limitnum);
+                        
+                
+                        }else{
+                                $users =  $DB->get_recordset_sql($sql, $params, $limitfrom, $limitnum);
+                        }
+                        
+                        return $users;
+                       
+                    }
 
     /**
      * Returns the total number of participants for a given course.
@@ -145,8 +164,20 @@ class participants_search {
          {$outerjoins}
          {$outerwhere}";
 
-        return $DB->count_records_sql($sql, $params);
-    }
+if($schoolid=$_SESSION['university_id']){
+    $outerwhere="Where sc.id>0";
+    $sql = "SELECT COUNT(u.id)
+        FROM ({$innerselect}
+                        FROM {$innerjoins}
+               {$innerwhere}
+             ) {$subqueryalias}
+{$outerjoins} left join  {universityadmin} sc  on sc.userid =u.id and sc.universityid=$schoolid 
+
+{$outerwhere}";
+ return $DB->count_records_sql($sql, $params);
+}
+return $DB->count_records_sql($sql, $params);
+}
 
     /**
      * Generate the SQL used to fetch filtered data for the participants table.

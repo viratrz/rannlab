@@ -1,0 +1,95 @@
+
+
+.site-menu {
+	//#page-b & {
+		padding-top: 1.5rem;
+	//}
+}
+
+
+.site-menu-list {
+
+	@include clearfix();
+	margin: 0 -.13rem;
+	padding: 0;
+
+	.path-mod-page.builderheading1 .content-col & {
+		max-width: $pagewidth;
+		margin: 1rem auto;
+		padding: 0 15px;
+	}
+
+	#page-content & {
+		margin-bottom: 2rem;
+	}
+
+	li {
+		display: inline-block;
+		//font-size: $fssmall;
+		line-height: $fssmall_lh;
+		background-color: $color_gray2;
+		@include mb2_border_radius(.15rem);
+		@include mb2_transition1(all, .15s);
+		margin: .26rem;
+		text-align: center;
+		border-top: solid 3px $accent1;
+		@include mb2_box_shadow( 0 2px 2px, rgba(0,0,0,.1) );
+
+		a {
+			display: block;
+			color: $headingscolor;
+			padding: .15rem .75rem .35rem .75rem;
+
+			.text {
+				display: block;
+				line-height: 1;
+				color: $textcolor;
+			}
+		}
+
+		&:hover,
+		&:focus {
+			@include mb2_box_shadow( 0 0 0, rgba(0,0,0,0) );
+		}
+
+		&.item-enroleasy {
+			border-top-color: #2ea3f2;
+		}
+
+		&.item-contentbank	 {
+			border-top-color: $color_h5p;
+		}
+
+		&.item-courses,
+		&.item-editcourse,
+		&.item-editcategory	 {
+			border-top-color: $color_info;
+		}
+
+		&.item-calendar,
+		&.item-addcourse,
+		&.item-addcategory,
+		&.item-turneditingcourse,
+		&.item-editfrontpage,
+		&.item-mycourses {
+			border-top-color: $color_success;
+		}
+
+		&.item-badges,
+		&.item-buildfrontpage {
+			border-top-color: $color_warning;
+		}
+
+	}
+
+	.grading &,
+	.editing & {
+		li {
+			&.item-editfrontpage,
+			&.item-turneditingcourse {
+				border-top-color: $color_danger;
+			}
+		}
+	}
+
+}

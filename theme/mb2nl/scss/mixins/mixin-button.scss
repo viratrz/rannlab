@@ -1,0 +1,144 @@
+
+
+@mixin mb2_nobtn()
+{
+    padding: 0;
+    border: 0;
+    background-color: transparent !important;
+    font-weight: inherit;
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+
+@mixin mb2_btn_link()
+{
+    background-color: transparent !important;
+    color: inherit !important;
+    padding: 0 .3rem;
+    border: 0 !important;
+    @include mb2_box_shadow_none();
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $linkcolor !important;
+    }
+
+}
+
+
+@mixin mb2_button_border($color: $btncolor) {
+
+    border-color: $color;
+    color: $headingscolor !important;
+    background-color: transparent !important;
+
+    .dark & {
+        color: #fff !important;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: #fff !important;
+        background-color: darken( $color, 5% ) !important;
+        border-color: darken( $color, 5% );
+    }
+
+}
+
+
+@mixin mb2_button($color: $btncolor) {
+	display: inline-block;
+  	//font-weight: inherit;
+  	cursor: pointer;
+	@include mb2_transition1(all, .15s);
+	@include button-variant($color, darken($color,5%));
+    @include button-size(.3rem, 1rem, $fsgeneral, ($fsgeneral*1.65), .15rem);
+	@include mb2_border_radius(.15rem);
+	text-decoration: none !important;
+    border-style: solid;
+    border-width: 2px;
+    //font-weight: $fwmedium;
+
+
+	/* Make small buttons in blocks */
+
+    .style-minimal .block &,
+	.style-default .block &,
+    #block-region-content .block & {
+	  	@include button-size(.28rem, .78rem, $fssmall, $fssmall_lh, .15rem);
+	}
+
+    @media only screen and (max-width: $wmediumdevice){
+        @include button-size(.32rem, .8rem, $fsgeneral, ($fsgeneral*1.65), .15rem);
+    }
+
+
+	/* Bordered buttons */
+
+	&.btnborder1 {
+		@include mb2_button_border( $btncolor );
+        @include mb2_border_radius( .24rem );
+        border-width: 2px;
+	}
+
+
+	/* Bordered rounded */
+
+	&.rounded1 {
+		@include mb2_border_radius(999px);
+	}
+
+    .btn-incon {
+        display: none;
+        margin-right: .6em;
+        @include mb2_transform_scale(1.35);
+	}
+
+    &.isicon1 {
+        .btn-incon {
+            display: inline-block;
+        }
+    }
+
+    &:focus {
+        outline: .2rem solid transparent;
+    }
+
+
+}
+
+
+
+@mixin mb2_btn_moodle_icon()
+{
+
+    @include mb2_box_shadow_none();
+    @include mb2_transition_none();
+    @include mb2_border_radius(0);
+    border: 0 !important;
+    color: $headingscolor !important;
+    background-color: transparent !important;
+    width: 17px;
+
+    span {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        &.collapsed-icon {
+            margin-top: 2px;
+        }
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $headingscolor !important;
+    }
+
+
+}

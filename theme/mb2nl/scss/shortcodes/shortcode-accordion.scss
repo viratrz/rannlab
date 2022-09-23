@@ -1,0 +1,150 @@
+
+
+/* Remove bootstrap card style */
+
+.accordion > .card {
+	overflow: visible;
+}
+
+.mb2-accordion {
+
+	.card-header {
+		background-color: transparent;
+		border: 0;
+		padding: 0;
+	}
+
+	.card {
+		margin-bottom: .5rem;
+		background-color: transparent;
+	}
+
+	.card-body {
+		border: 0;
+		padding: 1.3rem 0;
+		background-color: transparent;
+	}
+
+	margin-bottom: 1.3rem;
+
+	.panel-title {
+		margin: 0;
+	}
+
+	.accorion-item {
+		margin-bottom: .8rem;
+	}
+
+	&.style-default {
+		@include mb2_collabsible_item();
+	}
+
+	&.style-minimal,
+	&.style-minimal_big {
+		[data-toggle="collapse"] {
+			border: 0;
+			font-weight: $fwheadings2;
+			background-color: transparent !important;
+			color: $headingscolor;
+			position: relative;
+			display: block;
+			font-size: 1rem;
+			padding: 1.3rem 0;
+
+			@include mb2_collabsible_item_icon();
+
+
+			&[aria-expanded="false"] {
+
+				@include mb2_collabsible_item_icon_collapsed();
+			}
+
+			&:hover,
+			&:focus {
+				&:before {
+					color: $headingscolor;
+				}
+			}
+
+		}
+
+		.card {
+			border-bottom: solid 1px rgba(0,0,0,.1) !important;
+			margin-bottom: 0;
+			@include mb2_border_radius(0);
+
+			.card-body {
+				padding: 0 0 1.3rem 0;
+			}
+		}
+	}
+
+	&.style-minimal_big {
+
+		[data-toggle="collapse"] {
+			padding: 2.2rem 0;
+		}
+
+		.card {
+
+			.card-body {
+				padding: 0 0 2.2rem 0;
+			}
+		}
+	}
+
+
+	&.theme-enrol {
+
+		[data-toggle="collapse"] {
+			border: 0;
+			padding: .85rem 1rem !important;
+			font-weight: $fwheadings2;
+			background-color: darken( $color_gray2, 3% );
+			color: $textcolor;
+			width: 100%;
+			text-align: inherit;
+			font-size: 1rem;
+
+			&:hover,
+			&:focus {
+				background-color: darken( $color_gray2, 3% );
+			}
+
+			&:before {
+				@include mb2_font_fa();
+				position: relative;
+				display: inline-block !important;
+				background-color: transparent;
+				content: '\f106';
+				width: auto;
+				height: auto;
+				line-height: inherit !important;
+				right: 0;
+				top: 0;
+				margin-right: .65rem;
+				font-size: 1.2rem;
+				color: inherit;
+			}
+
+
+			&[aria-expanded="false"] {
+				background-color: $color_gray2;
+
+				&:before {
+					content: '\f107';
+					color: inherit;
+				}
+			}
+		}
+	}
+}
+
+
+.card-header {
+	.mb2-accordion.isicon0 & {
+		i {
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,89 @@
+
+
+
+// ==================== BLOG INDEX PAGE
+
+.blog_index {
+    div[role="main"] > h2 {
+        @include sr-only();
+
+        + {
+            .pagination {
+                @include sr-only();
+            }
+        }
+    }
+}
+
+.blog-post {
+
+    margin-bottom: 3rem;
+
+    /* Post header */
+
+    .post-header {
+        margin-bottom: 1.3rem;
+
+        .subject {
+            margin: 0;
+        }
+
+        .author {
+            margin-top: .3rem;
+            color: $textcolor_lighten;
+
+            a {
+                color: inherit;
+
+                &:hover,
+                &:focus {
+                    color: $textcolor;
+                }
+            }
+        }
+    }
+
+    .blogpost-media,
+    .post-featured-media {
+        img,
+        video,
+        .embed-responsive,
+        > a  {
+            margin-bottom: 1.3rem;
+        }
+
+        > a {
+            display: inline-block;
+            border: solid 2px rgba(0,0,0,.1);
+            padding: .5rem 1rem;
+            @include mb2_border_radius(.15rem);
+            margin: 1.3rem 1.3rem 1.3rem 0;
+            color: $textcolor;
+
+            &:hover,
+            &:focus {
+                color: $textcolor;
+                border-color: $accent1;
+            }
+        }
+    }
+
+    .commands {
+        margin-top: 1rem;
+    }
+
+}
+
+
+
+
+// ==================== BLOG SINGLE PAGE
+
+.blog_single {
+
+    div[role="main"] > h2,
+    .page-heading {
+        @include sr-only();
+    }
+
+}

@@ -1,0 +1,428 @@
+
+$fsmode_headerh:  $logohsm + 14px;
+
+/* ======================= BASIC LAYOUT */
+
+.fsmod-wrap {
+    display: flex;
+    flex-flow: wrap;
+    position: fixed;
+    left: 0;
+    top: $fsmode_headerh;
+    right: 0;
+    bottom: 0;
+
+    @media only screen and (min-width: $wmediumdevice) {
+        &.issidebar {
+            left: 320px;
+        }
+    }
+
+ }
+
+.fsmod-course-content {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: 100%;
+
+    .mod_introbox {
+        padding: 0;
+    }
+}
+
+.fsmod-course-sections {
+    width: 320px;
+    max-width: 100%;
+    border-right: solid 1px rgba(0,0,0,.1);
+    z-index: 4;
+    position: fixed;
+    left: -320px;
+    top: $fsmode_headerh;
+    bottom: 0;
+    background-color: lighten($color_gray2, 3%);
+
+    @media only screen and (min-width: $wmediumdevice) {
+        .issidebar & {
+            left: 0;
+        }
+    }
+
+    @media only screen and (max-width: $wmediumdevice) {
+        .ismsidebar & {
+            left: 0;
+        }
+    }
+}
+
+
+.fsmod1 #main-content,
+.fsmod-sections-wrap {
+    height: 100%;
+    overflow-y: auto;
+
+    // &::-webkit-scrollbar {
+    //   width: 18px;
+    // }
+    //
+    // &::-webkit-scrollbar-track {
+    //   background-color: transparent;
+    // }
+    //
+    // &::-webkit-scrollbar-thumb {
+    //   background-color: rgba(0,0,0,.1);
+    //   border: 6px solid transparent;
+    //   background-clip: content-box;
+    // }
+}
+
+.fsmod-wrap .content-col#region-main {
+    padding: 0 3rem;
+
+    @media only screen and (max-width: $wmediumdevice) {
+        padding: 0 2rem;
+    }
+
+    @media only screen and (max-width: $wsmalldevice) {
+        padding: 0 1rem;
+    }
+
+}
+
+
+
+
+
+/* ======================= HEADER STYLE */
+
+#fsmod-header {
+    background-color: #fff;
+    height: $fsmode_headerh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    @include mb2_box_shadow(0 2px 4px, rgba(0,0,0,.15));
+    border-bottom: solid 1px rgba(0,0,0,.155);
+
+    .logo-dark,
+    .logo-light {
+        display: none;
+    }
+
+    .logo-small {
+        display: block;
+    }
+
+    .logo-wrap {
+        margin-right: 1.6rem;
+    }
+
+    .fsmod-header-inner {
+        height: 100%;
+        padding: 0 3rem;
+        position: relative;
+
+        @media only screen and (max-width: $wmediumdevice) {
+            padding: 0 2rem;
+        }
+
+        @media only screen and (max-width: $wsmalldevice) {
+            padding: 0 1rem;
+        }
+    }
+
+    .fsmod-course-progress {
+        margin-right: auto;
+    }
+
+
+}
+
+.fsmod-course-tools {
+    margin-left: auto;
+    margin-right: -3rem;
+    position: relative;
+    right: calc(48px + 1.6rem);
+
+    @media only screen and (max-width: $wmediumdevice) {
+        margin-right: -2rem;
+    }
+
+    @media only screen and (max-width: $wsmalldevice) {
+        margin-right: -1rem;
+    }
+
+    i {
+      font-size: 17px;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .fsmod-showhide-sidebar {
+      margin-left: 1rem;
+    }
+}
+
+
+.fsmod-backlink {
+    position: absolute;
+    width: 48px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    line-height: 62px;
+    text-align: center;
+    background-color: $color_gray2;
+    font-size: 36px;
+    color: $textcolor;
+
+    &:hover,
+    &:focus {
+        color: $textcolor;
+    }
+}
+
+
+/* ======================= MY COURSES */
+
+#fsmod-header {
+    .mycourses {
+        ul {
+            display: none;
+        }
+    }
+}
+
+
+
+/* ======================= TOGGLE TABLE OF CONTENT AND BLOCKS */
+
+.fsmod-section-tools {
+    background-color: $color_gray2;
+    padding: .8rem 1.85rem;
+    min-height: 3rem;
+    position: relative;
+
+    h3 {
+        font-size: 1.16rem;
+        margin: 0;
+    }
+
+    .isblock & {
+        h3 {
+            display: none;
+        }
+    }
+
+    button {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        margin-top: -18px;
+        height: 36px;
+        width: 36px;
+        color: $textcolor;
+    }
+}
+
+.fsmod-sections,
+.toggle-blocks {
+    .isblock & {
+        display: none;
+    }
+}
+
+.fsmod-blocks,
+.toggle-sections {
+    .issection & {
+        display: none;
+    }
+}
+
+
+/* ======================= SIDEBAR BLOCKS */
+.fsmod-sections,
+.fsmod-blocks {
+    padding: 2rem 1.85rem;
+}
+
+.fsmod-blocks {
+    .block {
+        margin-bottom: 2rem !important;
+    }
+}
+
+
+
+
+/* ======================= COURSE PROGRESS */
+
+.fsmod-course-progress {
+    width: 270px;
+    max-width: 100%;
+
+    .fsmod-progress-bar {
+        background-color: rgba(0,0,0,.12);
+        @include mb2_border_radius(999px);
+        margin-top: 3px;
+
+        > div {
+            background-color: $linkcolor;
+            height: 5px;
+            @include mb2_border_radius(999px);
+        }
+    }
+
+    .progress-value {
+        font-weight: $fwbold;
+        color: $headingscolor;
+    }
+
+    @media only screen and (max-width: $wmediumdevice) {
+        display: none;
+    }
+
+    #fsmod-sidebar & {
+        padding: .4rem 1.8rem 1rem 1.8rem;
+        display: none;
+
+        @media only screen and (max-width: $wmediumdevice) {
+            display: block;
+        }
+    }
+
+}
+
+
+
+
+/* ======================= HIDE REGULAR ELEMENTS */
+
+.fsmod1 {
+
+    .admin-region,
+    // Usertour
+    .usertour,
+    [data-flexitour="backdrop"],
+    [data-flexitour="step-background"],
+    [data-flexitour="container"] {
+        @include mb2_sronly();
+    }
+}
+
+
+
+
+
+/* ======================= COURSE NAVIGATION */
+
+
+.theme-coursenav.flexcols {
+    margin-top: 3rem;
+
+    .builderpage.builderheading0 & {
+        @include mb2_sronly();
+    }
+
+    .builderpage.builderheading1 & {
+		max-width: $pagewidth;
+		margin: 1rem auto;
+		padding: 0 15px;
+	}
+
+    > div {
+        flex: 0 0 190px;
+        max-width: 190px;
+    }
+
+    &.onlynext {
+        justify-content: flex-end;
+    }
+
+    @media only screen and (max-width: $wxsmalldevice) {
+        justify-content: center;
+        margin-top: 1rem;
+
+        > div {
+            flex: 0 0 100%;
+            max-width: 100%;
+            margin-top: 1rem;
+        }
+
+        .coursenav-prev,
+        .coursenav-next {
+            text-align: center;
+        }
+    }
+
+}
+
+.coursenav-link {
+    display: block;
+    border: solid 1px rgba(0,0,0,.1);
+    padding: .63rem 1.2rem;
+    min-height: 7rem;
+    @include mb2_border_radius(.18rem);
+    @include mb2_transition1(all, .15s);
+
+    &:hover,
+    &:focus {
+        border-color: rgba(0,0,0,.07);
+        @include mb2_box_shadow(0 8px 14px, rgba(0,0,0,.1));
+    }
+
+     span {
+         display: block;
+     }
+
+     .coursenav-text {
+       color: $headingscolor;
+       font-weight: $fwheadings2;
+       margin-bottom: .3rem;
+     }
+
+     .coursenav-modname {
+       color: $textcolor_lighten;
+       font-size: $fssmall;
+       line-height: 1.2;
+     }
+}
+
+.coursenav-prev {
+    text-align: right;
+
+    .coursenav-text {
+        &:before {
+            content: '\2190';
+            margin-right: .3rem;
+        }
+    }
+
+    .dir-rtl & {
+        .coursenav-text {
+            &:before {
+                content: '\2192';
+            }
+        }
+    }
+}
+
+.coursenav-next {
+    .coursenav-text {
+        &:after {
+            content: '\2192';
+            margin-left: .3rem;
+        }
+    }
+
+    .dir-rtl & {
+        .coursenav-text {
+            &:after {
+                content: '\2190';
+            }
+        }
+    }
+}

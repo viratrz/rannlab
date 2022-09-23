@@ -1,0 +1,230 @@
+
+
+/* Logo */
+.logo-wrap {
+	position: relative;
+	margin-right: 45px;
+	max-width: calc( 100% - 147px );
+
+	@media only screen and (max-width: $wdlargedevice){
+		margin-right: 25px;
+	}
+
+	@media only screen and (max-width: $wmediumdevice){
+		margin-right: 0;
+	}
+}
+
+
+
+.main-logo {
+
+	.logo-light,
+	.logo-dark {
+
+		&.is_svg {
+			height: $logoh !important;
+		}
+
+		&.no_svg {
+			max-height: $logoh;
+		}
+
+		width: auto;
+	}
+
+	.logo-small,
+	.logo-dark-small {
+
+		&.is_svg {
+			height: $logohsm !important;
+		}
+
+		&.no_svg {
+			max-height: $logohsm;
+		}
+
+		width: auto;
+	}
+
+
+	.logo-small,
+	.logo-dark-small,
+	.logo-dark {
+		display: none;
+	}
+
+	a {
+		display: block;
+	}
+
+
+	/* ====================== LOGO IN STICKY HEADER */
+
+	.sticky-el & {
+		.logo-light {
+			display: none;
+		}
+
+		.logo-small {
+			display: block;
+		}
+	}
+
+
+	/* ====================== HEADER STYLE: DARK */
+
+	.theader_dark & {
+		.logo-light {
+			display: none;
+		}
+
+		.logo-dark {
+			display: block;
+		}
+	}
+
+	.theader_dark .sticky-el & {
+
+		.logo-dark,
+		.logo-small {
+			display: none;
+		}
+
+		.logo-dark-small {
+			display: block;
+		}
+	}
+
+
+	/* ====================== HEADER STYLE: DARK */
+
+	.theader_transparent & {
+		.logo-light {
+			display: none;
+		}
+
+		.logo-dark {
+			display: block;
+		}
+	}
+
+	.theader_transparent .sticky-el & {
+		.logo-dark {
+			display: none;
+		}
+	}
+
+
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: $wxsmalldevice){
+
+	.theme-lfw  {
+		&.custom-login {
+			.main-logo {
+				margin: 0 auto !important;
+			}
+		}
+
+	}
+
+}
+
+
+.top-bar {
+	background-color: $color_gray2;
+	//font-size: $fssmall;
+	//font-weight: $fwmedium;
+	min-height: 30px;
+
+	.social-list {
+		a {
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			font-size: 12px;
+			margin: 3px 2px;
+		}
+	}
+
+	@media only screen and (max-width: $wmediumdevice){
+		display: none;
+	}
+}
+
+.header-innner {
+	position: relative;
+}
+
+#master-header {
+
+	.flexcols {
+		height: $logoh + 40px;
+	}
+}
+
+
+#main-header {
+
+	position: relative;
+	z-index: 4;
+
+	.pagelayout-maintenance & {
+		border-bottom: solid 3px transparent;
+
+		h1 {
+			margin: 20px 0;
+		}
+	}
+
+	.header-content {
+		margin-right: auto;
+	}
+
+
+	/* Static content */
+
+	.main-header-list {
+		padding: 0;
+		margin: 0;
+		display: inline-block;
+		vertical-align: middle;
+
+		.static-icon {
+			margin-right: .4rem;
+		}
+
+		li {
+			display: inline-block;
+			margin-right: 15px;
+
+			&:last-child {
+				margin-right: 0;
+			}
+
+			a:not(.btn) {
+				color: inherit;
+			}
+		}
+	}
+
+
+}
+
+
+@media only screen and (max-width: $wmediumdevice){
+
+	#main-header {
+		.main-header-list,
+		.social-list {
+			display: none;
+		}
+	}
+}

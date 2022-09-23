@@ -1,0 +1,168 @@
+
+.theme-header {
+    padding: 50px 20px;
+    position: relative;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+	@include mb2_box_shadow( 7px 7px 0 0, rgba(0,0,0,.15) );
+    text-align: left;
+
+    .no-overflow & {
+        margin-right: 7px;
+    }
+
+	.theme-header-content {
+		position: relative;
+		z-index: 1;
+		padding-left: 20px;
+
+		&:after {
+			content: '';
+			display: block;
+			width: 20px;
+			position: absolute;
+			left: 0;
+			top: -9px;
+			bottom: -9px;
+			border: solid 2px $accent1;
+			border-right: 0;
+		}
+	}
+
+    &.linkbtn1 {
+        .content-a,
+        .content-b {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .content-a {
+            width: 65%;
+        }
+
+        .content-b {
+            width: 35%;
+            text-align: right;
+        }
+    }
+
+    &.linkbtn0 {
+        .content-b {
+            display: none;
+        }
+    }
+
+
+	.theme-header-title {
+		font-size: 1.8em;
+	}
+
+	.theme-header-title,
+	.theme-header-subtitle {
+		color: #fff;
+		margin: 0;
+	}
+
+	.theme-header-subtitle {
+		opacity: .6;
+		margin-top: 7px;
+	}
+
+    &.issubtitle0 .theme-header-subtitle {
+        display: none;
+    }
+
+	.theme-header-bg {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,.5);
+	}
+
+	.dir-rtl & {
+
+		@include mb2_box_shadow(-7px 7px 0 0, rgba(0,0,0,.15));
+
+		.theme-header-content {
+			padding-left: 0;
+			padding-right: 20px;
+
+			&:after {
+				left: auto;
+				right: 0;
+				border-left: 0;
+				border-right: solid 2px $accent1;
+			}
+		}
+	}
+
+    .dir-rtl .no-overflow & {
+        margin-left: 7px;
+        margin-right: 0;
+    }
+
+
+
+
+	/* Dark striped */
+	&.type-dark-striped {
+		.theme-header-bg {
+			background-image: url([[pix:theme|svg/strip1_white10]]);
+		}
+	}
+
+
+
+	/* Light */
+	&.type-light,
+	&.type-light-striped {
+		.theme-header-title{
+			color: $headingscolor;
+		}
+
+		.theme-header-subtitle {
+			color: $textcolor;
+			opacity: 1;
+		}
+
+		.theme-header-bg {
+			background-color: rgba(255,255,255,.5);
+		}
+	}
+
+
+	&.type-light-striped {
+
+		.theme-header-bg {
+			background-image: url([[pix:theme|svg/strip1_black8]]);
+		}
+	}
+
+
+
+}
+
+@media only screen and (max-width: $wxsmalldevice){
+
+    .theme-header {
+
+        &.linkbtn1 {
+            .content-a,
+            .content-b {
+                width: 100%;
+            }
+
+            .content-b {
+                margin-top: 15px;
+                text-align: inherit;
+            }
+        }
+
+    }
+
+
+}

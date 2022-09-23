@@ -1,0 +1,972 @@
+
+
+/* ================= MOODLE CONTENT ON ENROLMENT PAGE */
+
+.enrollment-page {
+
+	.generalbox.info,
+	.fixed-bar {
+		display: none;
+	}
+
+	#block-region-side-pre {
+		@include mb2_sronly();
+	}
+
+	#main-content {
+		padding-bottom: 90px;
+		padding-top: 0;
+	}
+
+	#page-content {
+	    padding: 1.6rem 1.6rem 0 1.6rem;
+	    text-align: center;
+		background-color: lighten($color_gray2, 2.5%);
+		padding: 1.6rem;
+		padding-bottom: .4rem;
+		@include mb2_border_radius(.22rem);
+		border: solid 1px rgba(0,0,0,.05);
+
+		h2 {
+			font-size: $fsheading3;
+		}
+
+		.form-group {
+			margin-left: 0;
+		}
+
+		.form-inline {
+			flex: none;
+		    width: 100%;
+		    max-width: 100%;
+			justify-content: center;
+		}
+
+		.fitem > div,
+		.form-group > div {
+		    flex: none;
+		    width: 100%;
+		    max-width: 100%;
+
+			.form-control-static {
+			    display: block;
+			    margin: 0 auto;
+
+				.continuebutton {
+				    margin-top: 1.6rem;
+				}
+			}
+		}
+
+		.generalbox {
+			padding-top: 0 !important;
+			margin-bottom: 2rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+
+/* ================= COURSE HEADER AREA */
+
+.course-header {
+
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+	background-color: $headerbgcolor;
+	position: relative;
+
+	&.isimg {
+		.inner {
+			position: relative;
+
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0,0,0,.6);
+			}
+
+			.header-content {
+				position: relative;
+			}
+		}
+	}
+
+	.inner {
+		padding: 4rem 0;
+	}
+
+	.course-enrolbtn {
+		margin-top: .4rem;
+	}
+
+	.enrollment-layout-1 & {
+		.course-enrolbtn {
+			margin-top: 2rem;
+		}
+	}
+
+	.course-categories-tree {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		margin-bottom: 7px;
+		color: rgba(255,255,255,.55);
+
+		a {
+			color: inherit;
+		}
+
+		li {
+			display: inline-block;
+
+			&:after {
+				content: '\002f';
+				display: inline-block;
+				margin: 0 10px;
+			}
+
+			&:last-child:after {
+				display: none;
+			}
+		}
+	}
+
+	.course-heading {
+		font-size: 2.5rem;
+		line-height: 1.2;
+	}
+
+	.course-slogan {
+		font-size: 1.25rem;
+		margin-bottom: 2rem;
+		max-width: 1000px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+
+	&.noimg:before {
+		content: '';
+	    display: block;
+	    position: absolute;
+	    left: 0;
+	    bottom: 0;
+	    width: 100%;
+	    height: 100%;
+		background-image: url([[pix:theme|wave-bg-big]]);
+		background-repeat: no-repeat;
+		background-position: 50% 100%;
+		background-size: 100%;
+
+		@media only screen and (max-width: $wmediumdevice){
+			background-size: 580%;
+			background-position: 45% 100%;
+		}
+	}
+
+
+	.enrollment-layout-2 &.noimg:before {
+		@media only screen and (min-width: $wmediumdevice){
+			transform:scaleX(-1);
+		}
+	}
+
+
+}
+
+
+
+/* ================= COURSE META 1 (STUDENTS, RATING, UPDATE INFO) */
+
+.course-meta1 {
+	margin-bottom: .5rem;
+
+	a {
+		color: inherit;
+	}
+
+	> div,
+	> span {
+		display: inline-block;
+		line-height: 1;
+		vertical-align: middle;
+	}
+
+	.course-students,
+	.bestseller-flag {
+		   margin-right: 12px;
+	}
+
+	.course-rating {
+
+		display: inline-block;
+		margin-right: 12px;
+
+		> a,
+		> span,
+		> div {
+			display: inline-block;
+			vertical-align: middle;
+			line-height:1;
+		}
+
+		.course-rating-num {
+			font-weight: $fwbold;
+			color: $color_warning;
+		}
+
+		.mb2reviews-stars {
+			margin: 0 3px;
+
+			.stars-empty {
+				color: rgba(255,255,255,.3);
+			}
+		}
+	}
+
+
+
+	@media only screen and (max-width: $wmediumdevice){
+
+		.course-updated {
+			display: none;
+		}
+
+	}
+}
+
+
+/* ================= COURSE META 2 (TEACHERS INFO) */
+
+.course-meta2 {
+
+	> a {
+		display: inline-block;
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.teacher {
+		display: inline-block;
+		font-weight: $fwbold;
+
+		.userinitials,
+		img {
+			@include mb2_border_radius(999px);
+			width: 46px;
+			margin-right: .5rem;
+		}
+
+		.userinitials {
+			height: 46px;
+			font-size: 1rem;
+		}
+
+		.info {
+			opacity:.5;
+			font-weight: $fwnormal;
+			font-size: $fssmall;
+		}
+	}
+}
+
+
+/* ================= COURSE ENROLMENT LAYOUT 2 */
+
+.enrollment-layout-2 {
+
+	.course-header {
+
+		.course-heading {
+			text-indent: -2px;
+		}
+
+		.inner {
+			padding: 2.4rem 0;
+		}
+
+		.row {
+			align-items: flex-end;
+			//min-height: 450px;
+		}
+
+		.course-info2 {
+			display: flex;
+			flex-flow: wrap;
+			justify-content: end;
+
+			.course-info2-inner {
+				margin-left: auto;
+				background-color: rgba(255,255,255,.95);
+				@include mb2_border_radius(.15rem);
+				padding: 2rem;
+				max-width: 357px;
+				width: 100%;
+
+				@media only screen and (max-width: 380px){
+					min-width: 0;
+				}
+			}
+		}
+
+
+		@media only screen and (max-width: $wmediumdevice){
+			.course-info2 {
+				justify-content: center;
+
+				.course-info2-inner {
+					margin-right: auto;
+					margin-left: auto;
+				}
+			}
+		}
+
+		.block-custom-fields {
+			margin-bottom: 1.6rem;
+		}
+
+		@media only screen and (max-width: $wmediumdevice){
+
+			.course-info1 {
+				text-align: center;
+				margin-bottom: 50px;
+			}
+
+		}
+
+	}
+}
+
+
+
+
+
+/* ================= COURSE PAGE */
+
+.course-details {
+	padding-top: 90px;
+}
+
+.details-heading {
+	font-size: $fsheading3;
+}
+
+.course-video {
+	margin-bottom: 4rem;
+
+	@media only screen and (max-width: $wmediumdevice){
+		display: none;
+	}
+}
+
+.details-section {
+
+	margin-bottom: 4rem;
+
+	&.skills {
+		background-color: lighten($color_gray2, 2.5%);
+		padding: 1rem;
+		padding-bottom: 0;
+		@include mb2_border_radius(.22rem);
+		border: solid 1px rgba(0,0,0,.05);
+
+		.theme-static-content {
+			margin: 0 -1rem;
+			padding: 0;
+			list-style: none;
+
+			li {
+				padding: 0 1rem;
+				margin-bottom: 1rem;
+				display: inline-block;
+				vertical-align: top;
+				width: 50%;
+				position: relative;
+
+				&:before {
+					@include mb2_font_7stroke();
+					content: '\e66c';
+					font-size: 1.2rem;
+					position: absolute;
+					top: 3px;
+					left: 1rem;
+				}
+
+				.link-replace {
+					display: inline-block;
+					margin-left: 30px;
+				}
+			}
+		}
+	}
+}
+
+
+ul.section-modules {
+	margin: 0;
+	padding-left: 1rem;
+	list-style: none;
+
+	li {
+		margin-bottom: 1.2rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		img {
+			margin-right: .6rem;
+			width: 1.18rem;
+		}
+	}
+}
+
+
+
+
+	/* Instructors */
+
+	.instructors {
+		.course-instructors {
+	    	margin: 0;
+	    	padding: 0;
+	    	list-style: none;
+
+			li {
+				margin-bottom: 4rem;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		.userinitials,
+		.userpicture {
+		    display: inline-block;
+		   	@include mb2_border_radius(999px);
+		    border: solid 3px rgba(0,0,0,.1);
+		    width: 75px;
+		    display: block;
+			margin: 0 auto;
+		}
+
+		.userinitials {
+			line-height: 70px;
+			height: 75px;
+			font-size: 1.4rem;
+			text-align: center;
+		}
+
+		.instructor-image {
+		    display: inline-block;
+		    width: 200px;
+		    border: solid 1px rgba(0,0,0,.1);
+			background-color: lighten($color_gray2, 2.5%);
+		    @include mb2_border_radius(.15rem);
+		    padding: 10px;
+			padding-bottom: 11px;
+			padding-top: 17px;
+		}
+
+
+		.instructor-details {
+		    display: inline-block;
+		    width: calc( 100% - 200px );
+			vertical-align: top;
+			padding-left: 30px;
+		}
+
+		@media only screen and (max-width: $wsmalldevice){
+
+			.instructor-image,
+			.instructor-details {
+				width: 100%;
+			}
+
+			.instructor-details {
+				padding-left: 0;
+			}
+
+			.instructor-image {
+				margin-bottom: 30px;
+			}
+
+		}
+
+		.instructor-info {
+			padding-top: 6px;
+			line-height: 1;
+
+			> div {
+				margin: 9px 0;
+
+			    > i {
+					width: 17px;
+				    text-align: center;
+				    margin-right: 13px;
+				    color: $color_warning;
+					font-size: .9rem;
+				}
+			}
+
+		}
+	}
+
+
+	.link-target {
+		color: inherit;
+
+		&:hover,
+		&:focus {
+			color: inherit;
+		}
+	}
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: $wsmalldevice){
+
+	#page-enrol-index.format-mb2sections {
+
+		.details-section {
+
+			&.skills {
+
+				.theme-static-content {
+
+					li {
+
+					    width: 100%;
+
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+
+/* ================= TABS NAVIGATION IN COURSE PAGE 3 */
+
+.enrol-course-nav {
+	margin-bottom: -4rem;
+	margin-top: 4rem;
+
+	ul {
+		margin: 0;
+		padding: 0 .8rem;
+		list-style: none;
+		background-color: #fff;
+		border-bottom: solid 1px rgba(0,0,0,.1);
+		display: inline-block;
+		@include mb2_border_radius(.22rem .22rem 0 0);
+
+		@media only screen and (max-width: $wmediumdevice){
+			white-space: nowrap;
+			overflow-x: auto;
+			overflow-y: hidden;
+			width: 100%;
+			display: block;
+		}
+
+		li {
+			display: inline-block;
+			position: relative;
+			margin: 0 .8rem;
+
+			&.active {
+				&:after {
+					content: '';
+					display: block;
+					width: 100%;
+					height: 3px;
+					background-color: $accent1;
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+
+					@media only screen and (max-width: $wmediumdevice){
+						display: none;
+					}
+				}
+
+				button {
+					font-weight: $fwbold;
+				}
+			}
+		}
+	}
+
+	button {
+		padding: 1rem 0;
+		color: $textcolor;
+	}
+}
+
+
+/* ================= COURSE CONTENT IN LAYOUT 3 */
+
+.enrol-course-navcontent {
+	display: none;
+
+	&.active {
+		display: block;
+	}
+}
+
+/* ================= SIDEBAR IN LAYOUT 3 */
+
+.enrollment-layout-3 {
+
+	@media only screen and (min-width: $wmediumdevice){
+
+		.enrol-sidebar {
+			margin-top: -390px;
+			background-color: #fff;
+		}
+
+	}
+
+}
+
+
+
+
+/* ================= CUSTOM FIELDS */
+
+.block-custom-fields {
+
+	.course-custom-fileds {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: .8rem;
+			padding-bottom: .8rem;
+			border-bottom: solid 1px rgba(0,0,0,.1);
+
+			.name {
+				font-weight: $fwbold;
+			}
+
+			&:last-child {
+				margin-bottom: 0;
+				padding-bottom: 0;
+				border-bottom: 0;
+			}
+		}
+	}
+}
+
+
+.enrol-text {
+	font-weight: $fwbold;
+}
+
+.sidebar-btn {
+	margin-top: .4rem;
+}
+
+
+/* ================= COURSE SIDEBAR */
+
+.enrol-sidebar {
+
+	.fake-block {
+		margin-bottom: 4rem;
+
+		.block-headeing {
+		    margin-bottom: $fsheading4;
+		}
+
+		&.block-video {
+			margin-bottom: 1rem;
+		}
+
+		.course-enrolbtn {
+			width: 100%;
+		}
+	}
+
+	.block-activities {
+
+		.course-activities {
+		    margin: 0;
+		    padding: 0;
+		    list-style: none;
+
+			li {
+			    margin-bottom: 1rem;
+
+				img {
+				    width: 1.18rem;
+				    margin-right: .6rem;
+				}
+			}
+		}
+
+	}
+
+
+	.block-shares {
+
+		.course-shares {
+		    margin: 0;
+		    padding: 0;
+		    list-style: none;
+
+			li {
+			    display: inline-block;
+			    margin: 0 .3rem;
+
+				a {
+					display: inline-block;
+					width: 42px;
+				    height: 42px;
+				    line-height: 42px;
+				    text-align: center;
+				    font-size: 18px;
+				    border: solid 1px rgba(0,0,0,.1);
+				    border-radius: 999px;
+					@include mb2_transition1(all, .15s);
+				}
+
+				&.sharetwitter {
+					a {
+						color: $color_twitter;
+						border-color: $color_twitter;
+
+						&:hover,
+						&:focus {
+							color: #fff;
+							background-color: $color_twitter;
+						}
+					}
+				}
+
+				&.sharefacebook {
+					a {
+						color: $color_facebook;
+						border-color: $color_facebook;
+
+						&:hover,
+						&:focus {
+							color: #fff;
+							background-color: $color_facebook;
+						}
+					}
+				}
+
+				&.sharelinkedin {
+					a {
+						color: $color_linkedin;
+						border-color: $color_linkedin;
+
+						&:hover,
+						&:focus {
+							color: #fff;
+							background-color: $color_linkedin;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	.video-banner {
+	    height: 205px;
+	    background-repeat: no-repeat;
+	    background-position: 50% 50%;
+	    background-size: cover;
+	    position: relative;
+		margin: 1px -14px;
+
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			@include gradient-y(rgba(0,0,0,0), rgba(0,0,0,.85));
+		}
+
+		a {
+			display: block;
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    text-align: center;
+		    margin: 0;
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				color: #fff;
+			}
+
+			span {
+				position: absolute;
+				top: calc(50% + 47px);
+    			font-weight: $fwbold;
+				left: 0;
+				right: 0;
+				display: block;
+			}
+
+			&:after {
+				content: '\f04b';
+				display: block;
+				position: absolute;
+				width: 84px;
+				height: 84px;
+				@include mb2_font_fa();
+				color: #fff;
+				@include mb2_border_radius(50%);
+				border: solid 2px #fff;
+				top: 50%;
+			    left: 50%;
+			    margin-top: -42px;
+			    margin-left: -42px;
+			    line-height: 80px;
+			    font-size: 46px;
+			    text-indent: 8px;
+			}
+		}
+	}
+
+}
+
+/* ===================== SPECIAL STYLE FOR BOOTSTRAP CONTAINER ON LEYOUT 3 */
+
+@media only screen and (min-width: $wmediumdevice){
+	.enrollment-layout-3 {
+		.course-details {
+			.container-fluid {
+				padding-right: 30px;
+
+				.col-md-3 {
+					flex: 0 0 29%;
+					max-width: 29%;
+				}
+
+				.col-md-9 {
+					flex: 0 0 71%;
+					max-width: 71%;
+				}
+			}
+		}
+	}
+}
+
+
+
+
+/* ===================== ENROL INFO ELEMENT ON MOBILE */
+
+.course-mobile-info {
+	display: none;
+}
+
+@media only screen and (max-width: $wmediumdevice){
+
+
+	.block-video,
+	.block-enrol {
+		display: none;
+	}
+
+	.course-mobile-info {
+		display: block;
+		margin-top: 2rem;
+	}
+
+	.enrol-info {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		width: 100%;
+
+		.enrollment-layout-1 &,
+		.enrollment-layout-2 & {
+			justify-content: center;
+		}
+
+		> div {
+			flex: 0 0 auto;
+		}
+
+		.enrol-info-video {
+			margin-left: 2rem;
+		}
+
+		.theme-popup-link {
+			&:before {
+				@include mb2_font_fa();
+				content: '\f04b';
+				margin-right: .4rem;
+			}
+
+			border: solid 1px #fff;
+			font-weight: $fwbold;
+			padding: 0 .55rem;
+			color: #fff;
+			margin: 0;
+
+			&:hover,
+			&:focus {
+				color: #fff;
+			}
+
+		}
+
+	}
+
+
+
+
+
+}
+
+@media only screen and (max-width: $wsmalldevice){
+
+	.course-mobile-info {
+
+		.course-enrolbtn {
+			width: 100%;
+		}
+
+		.enrol-info.isvideo {
+			justify-content: space-between;
+		}
+	}
+
+}

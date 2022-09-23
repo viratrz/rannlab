@@ -1,0 +1,109 @@
+
+.tnavheader_transparent {
+
+	#main-navigation {
+
+		.main-menu {
+
+			> li {
+
+				> a,
+				> button {
+					color: #fff;
+				}
+	        }
+	    }
+	}
+
+
+	.sticky-el {
+		#main-navigation {
+
+			.main-menu {
+
+				> li {
+
+					> a,
+					> button {
+						color: $headingscolor;
+					}
+		        }
+		    }
+
+		}
+	}
+
+
+
+
+
+	/* Enrollement page */
+
+	// &.enrollment-page.enrollment-layout-2 {
+	// 	.course-header {
+	// 		.inner {
+	// 			padding-top: ( $logoh + 100 );
+	// 		}
+	// 	}
+	// }
+
+
+	.sticky-el {
+		.header-tools {
+			&.tools-pos2 {
+
+	            color: $headingscolor;
+
+	            .header-tools-link,
+	            .popover-region-toggle {
+	                i {
+	                    color: $headingscolor;
+	                }
+	            }
+
+				&.type-icon {
+					color: rgba(0,0,0,.3);
+
+		            .header-tools-link,
+		            .popover-region-toggle {
+		                i {
+		                    color: rgba(0,0,0,.3);
+		                }
+		            }
+				}
+
+	        }
+		}
+	}
+
+
+	/* Header tools */
+
+	@media only screen and (min-width: $wmediumdevice+1){
+
+		.header-tools {
+
+			&.tools-pos2 {
+				.header-tools-link,
+				.popover-region-toggle {
+					i {
+						color: #fff;
+					}
+				}
+
+				&.type-icon {
+					.header-tools-link,
+					.popover-region-toggle {
+						i {
+							color: #fff;
+						}
+					}
+				}
+			}
+
+		}
+
+	}
+
+
+}

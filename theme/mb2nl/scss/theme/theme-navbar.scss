@@ -1,0 +1,83 @@
+
+.tnavbar {
+
+	#main-navigation {
+
+		.main-navigation-inner {
+			background-color: $accent2;
+			@include mb2_transition1(background,.15s);
+		}
+
+
+		.main-menu {
+
+			> li {
+
+				> a,
+				> button {
+					color: #fff;
+					padding: 0 1rem;
+					height: $menuh;
+					line-height: $menuh;
+
+					&:hover,
+					&:focus {
+						background-color: lighten($accent2,5%);
+					}
+				}
+
+			}
+
+			/* Home icon */
+
+			.home-item {
+				> a {
+					background-color: $accent1 !important;
+					color: #fff !important;
+
+					&:hover,
+					&:focus {
+						background-color: darken($accent1,5%) !important;
+					}
+				}
+			}
+
+			/* My courses menu item */
+
+			.mycourses {
+			 	> button {
+					background-color: lighten( $accent2,6% );
+				}
+			}
+
+			/* Bookmarks menu item */
+
+			.bookmarks-item {
+				> button {
+					background-color: lighten($accent2,4%);
+				}
+
+			}
+
+			/* Language menu */
+
+			.lang-item {
+
+				float: right;
+
+				> a {
+					background-color: lighten( $accent2, 6% );
+				}
+
+				ul {
+					left: auto;
+					right: 0;
+				}
+			}
+
+		}
+
+	}
+
+
+}

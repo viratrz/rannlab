@@ -1,0 +1,22 @@
+
+.tnavheader_light {
+
+	.header-inner2 {
+		@include mb2_box_shadow(0 3px 5px, rgba(0,0,0,.15));
+	}
+
+	#main-navigation {
+
+		.main-menu {
+
+			> li {
+
+				> a,
+				> button {
+					color: $headingscolor;
+				}
+	        }
+	    }
+	}
+	
+}

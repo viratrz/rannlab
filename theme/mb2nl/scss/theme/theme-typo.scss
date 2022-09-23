@@ -1,0 +1,254 @@
+
+
+html {
+	font-size: $fsbase;
+	font-family: sans-serif;
+
+	/* Adjust font size */
+	-webkit-text-size-adjust: $fsbase;
+
+	&.theme-fs2 {
+		font-size: $fsbase2;
+	}
+
+	&.theme-fs3 {
+		font-size: $fsbase3;
+	}
+}
+
+
+body {
+	background-color: #fff;
+	font-family: $ffgeneral, sans-serif;
+	color: $textcolor;
+	font-weight: $fwgeneral2;
+	font-size: $fsgeneral;
+	line-height: $lhgeneral;
+
+	/* ====== FOR BETTER TEXT RENDERING */
+	/* Font varient */
+	font-variant-ligatures: none;
+	-webkit-font-variant-ligatures: none;
+	/* Smoothing */
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
+	text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+}
+
+
+h1,h2,h3,h4,h5,h6,
+.h1,.h2,.h3,.h4,.h5,.h6 {
+	@include mb2_font_family($ffheadings);
+	margin-bottom: 1.2rem;
+	font-weight: $fwheadings2;
+	line-height: $lhheadings;
+	color: $headingscolor;
+	text-transform: $ttheadings;
+	font-style: $fstheadings;
+	@include mb2_headings();
+
+	a {
+		color: inherit;
+
+		&:hover,
+		&:focus {
+			color: inherit;
+			outline: none;
+		}
+	}
+}
+
+h6,.h6 {
+	font-weight: $fwmedium;
+}
+
+legend {
+	font-weight: $fwheadings2;
+	color: $headingscolor;
+}
+
+
+h1,.h1 {font-size: $fsheading1;}
+h2,.h2 {font-size: $fsheading2;}
+h3,.h3 {font-size: $fsheading3;}
+h4,.h4 {font-size: $fsheading4;}
+h5,.h5 {font-size: $fsheading5;}
+h6,.h6 {font-size: $fsheading6;}
+
+@media only screen and (max-width: $wmediumdevice){
+
+	h1,.h1 {font-size: $fsheading1 * .85;}
+	h2,.h2 {font-size: $fsheading2 * .85;}
+
+}
+
+@media only screen and (max-width: $wsmalldevice){
+
+	h1,.h1 {font-size: $fsheading1 * .75;}
+	h2,.h2 {font-size: $fsheading2 * .75;}
+
+}
+
+
+a {
+	color: $linkcolor;
+	outline: none;
+
+	&:hover {
+		text-decoration: none;
+		color: $linkhcolor;
+	}
+
+	.footer-tools &,
+	.footer-text &,
+	.theme-list & {
+		@include mb2_transition1(color, .15s);
+	}
+}
+
+
+
+/* table */
+
+
+th,
+th > a,
+th > a:hover,
+th > a:focus {
+	color: $headingscolor;
+}
+
+.dark1 {
+	th {
+		color: #fff;
+	}
+}
+
+
+abbr[title],
+abbr[data-original-title] {
+	border: 0;
+	text-decoration: none;
+}
+
+
+/* Hr */
+
+hr {
+	border-color: $color_border;
+}
+
+b,
+.strong,
+strong {
+	font-weight: $fwbold;
+	color: $headingscolor;
+
+	.dark & {
+		color: #fff;
+	}
+}
+
+.small {
+	font-size: $fssmall;
+}
+
+pre {
+	font-family: 'Courier New', Courier, monospace;
+	font-style: normal;
+}
+
+
+.sr-only {
+    @include sr-only();
+
+	.editor_atto_toolbar &:not(legend) {
+	  position: absolute !important;
+	  height: 1px !important;
+	  overflow: hidden !important;
+	}
+}
+
+[aria-selected="false"] {
+    font-weight: inherit;
+}
+
+
+ul {
+    padding-left: 2rem;
+}
+
+
+
+/* =========================== ORDERED MULTILEVEL LIST ***/
+
+ol {
+    counter-reset: section;
+    list-style-type: none;
+    padding-left: 1.15rem;
+}
+
+ol ol {
+    margin-bottom: 0;
+}
+
+ol > li:before {
+    counter-increment: section;
+    content: counters(section, ".") ". ";
+    margin-right: .22rem;
+}
+
+
+@media only screen and ( max-width: $wmediumdevice ){
+
+	.mobcenter1 {
+
+		text-align: center !important;
+
+		.align-center,
+		.align-left,
+		.align-right {
+			text-align: center !important;
+		}
+
+	}
+
+}
+
+.upper1 {
+	text-transform: uppercase;
+}
+
+/* Font weight */
+
+.fwlight {
+	font-weight: $fwlight;
+}
+
+.fwnormal {
+	font-weight: $fwnormal;
+}
+
+.fwmedium {
+	font-weight: $fwmedium;
+}
+
+.fwbold {
+	font-weight: $fwbold;
+}
+
+/* Line height ============= it's only for headings */
+
+.lhnormal {
+	line-height: $lhtime;
+}
+
+.lhsmall {
+	line-height: 1;
+}
+
+.lhmedium {
+	line-height: $lhheadings;
+}

@@ -1,0 +1,211 @@
+
+
+.theader_transparent {
+
+
+	#main-header {
+		z-index: 11;
+
+		.main-header-list {
+
+			color: #fff;
+
+			li {
+
+				a:not(.btn) {
+					color: inherit;
+
+					&:hover,
+					&:focus,
+					&:visited {
+						color: #fff;
+					}
+				}
+			}
+		}
+	}
+
+	&.pagelayout-maintenance {
+
+		#main-header {
+			border-bottom-color: rgba(0,0,0,.3);
+		}
+
+	}
+
+	.header-inner2 {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background-color: rgba(255,255,255,.05);
+	}
+
+	@media only screen and (max-width: $wmediumdevice){
+
+		.menu-open {
+			.header-inner2 {
+				background-color: rgba(0,0,0,.7) !important;
+			}
+		}
+
+	}
+
+	&.builderpage.builderheading0,
+	&.enrollment-page {
+
+		.header-inner2 {
+			background-color: transparent;
+		}
+
+	}
+
+	// .main-logo {
+	//
+	// 	.logo-light {
+	// 		display: none;
+	// 	}
+	//
+	// 	.logo-dark {
+	// 		display: block;
+	// 	}
+	// }
+
+
+	#page-header {
+
+		.action-menu {
+			.dropdown-toggle {
+				border-color: rgba(255,255,255, .2);
+			}
+		}
+
+		.inner {
+			margin-top: $logoh + 40px;
+		}
+	}
+
+
+
+
+	/* Top bar */
+
+	#main-header {
+
+		$theaderoverlaylighten: lighten( $headerbgcolor, 20% );
+
+		.top-bar {
+			background-color: desaturate( $theaderoverlaylighten, 55% );
+		}
+	}
+
+
+	@media only screen and (max-width: $wmediumdevice){
+
+		.top-bar {
+			display: none;
+		}
+
+	}
+
+	/* Page builder links */
+
+	.builder-links {
+		top: 7rem;
+	}
+
+	&.builderpage {
+		#user-notifications {
+			position: absolute;
+			top: 200px;
+			left: 5%;
+			right: 5%;
+			z-index: 3;
+		}
+	}
+
+
+	.header-tools {
+		color: #fff;
+
+		.popover-region-toggle,
+		.header-tools-link {
+
+			> i {
+				color: #fff;
+			}
+		}
+	}
+
+
+	/* Mobile menu */
+
+	.mobile-menu {
+		@include mb2_box_shadow(0 3px 10px 0, rgba(0,0,0,.2));
+	}
+
+	.show-menu {
+	  color: #fff;
+	}
+
+
+	@media only screen and (min-width: $wmediumdevice+1){
+
+		.header-tools {
+
+			color: #fff;
+
+			&.tools-pos2 {
+				.header-tools-link,
+				.popover-region-toggle {
+					i {
+						color: #fff;
+					}
+				}
+
+				&.type-icon {
+					.header-tools-link,
+					.popover-region-toggle {
+						i {
+							color: #fff;
+						}
+					}
+				}
+			}
+
+		}
+
+	}
+
+
+	@media only screen and (max-width: $wmediumdevice){
+
+		&.pagelayout-frontpage, /* On the front page show always*/
+		&.path-mod-page.builderheading0 /* On other pages - only if page heading is disabled */
+		{
+			.mb2-pb-row {
+				&:first-child {
+					.row-topgap {
+						display: block;
+						width: 100%;
+						height: $logoh + 40px;
+					}
+				}
+			}
+		}
+
+	}
+
+
+
+	/* ================= ENROLMENT PAGE */
+	&.enrollment-page {
+		.row-topgap {
+			display: block;
+			width: 100%;
+			height: $logoh + 40px;			
+		}
+	}
+
+
+}
