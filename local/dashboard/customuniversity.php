@@ -99,26 +99,29 @@ if(isset($_GET['shortname']))
 }
 
 $package_id = $_GET['package'];
+if ($package_id ) 
+{
+    $data = new stdClass();
+    $data->name = $_GET['longname'];
+    $data->shortname = $_GET['shortname'];
+    $data->address = $_GET['address'];
+    $data->city = $_GET['city'];
+    $data->country = $_GET['country'];
+    $inserted = $DB->insert_record('school', $data, true);
+}
 
-$data = new stdClass();
-$data->name = $_GET['longname'];
-$data->shortname = $_GET['shortname'];
-$data->address = $_GET['address'];
-$data->city = $_GET['city'];
-$data->country = $_GET['country'];
-
-$inserted = $DB->insert_record('school', $data, true);
-
-if ($package_id) 
+if ($inserted) 
 {
     $date =date("d/m/Y");
     $package_sub = new stdClass();
 
     $package_sub->package_id=$package_id;	
     $package_sub->university_id= $inserted;
-    $DB->insert_record('admin_subscription', $package_sub);
+    $pack = $DB->insert_record('admin_subscription', $package_sub, true);
 }
-$userdata = new stdClass();
+if ($pack) 
+{
+    $userdata = new stdClass();
     $userdata->auth = 'manual';
     $userdata->confirmed = 1;
     $userdata->policyagreed = 0;
@@ -146,16 +149,21 @@ $userdata = new stdClass();
     $userdata->timecreated = time();
     $userdata->trustbitmask = 0;
 
-$user_id  = user_create_user($userdata, false, false);
+    $user_id  = user_create_user($userdata, false, false);
+    if ($user_id ) 
+    {
+        $roleid = 9;
+        $contextid = 1;
+        role_assign($roleid, $user_id ,$contextid);
+    }
+    
+}
 
-$roleid = 9;
-$contextid = 1;
-role_assign($roleid, $user_id ,$contextid);
-
-if($inserted){
+if($user_id)
+{
     $admininfo = new stdClass();
     $admininfo->userid = $user_id;
-    $admininfo->universityid = $inserted;
+    $admininfo->university_id = $inserted;
 
     $inserted1 = $DB->insert_record('universityadmin', $admininfo);
 

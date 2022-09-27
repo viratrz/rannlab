@@ -134,43 +134,34 @@ width: 158px !important;
 .test:focus-visible{
   outline:none;
 }
+#msg_info
+{
+   height: 35px;
+   *background: red;
+   padding: 5px 10px;
+   font-weight: bold;
+}
+#add
+{
+   color: green;
+}
+#msg
+{
+   color: red;
+}
+</style>
+</head>
 
+<body>
 
-      </style>
-   </head>
-   <body>
-      <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background:#1d1d1b; border:1px solid #ffe500;">
-        <h5 class="modal-title" id="exampleModalLabel" style="color:#fff;"><b>Country Filter</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:#fff;">&times;</span>
-        </button>
-      </div>
+<!-- Modal -->
 
-      <div class="modal-body">
-            <form id="country" method="post">
-                  <input type="hidden" name="schoolid" id="schoolid" value="<?php echo $id; ?>">
-                  <div class="form-group row">
-                     <label for="label" class="col-md-3">Country</label>
-                      <select class="form-control col-md-9" name="country1" id="country1" required>
-                     <option value="">Select a country...</option>
-                        <?php foreach($countries as $country){ ?>
-                          <option value="<?php echo $country->id; ?>"><?php echo $country->name; ?></option> 
-                        <?php } ?>
-                     </select>
-                  </div>
-                     <a href="#" class="button mb-1 text-center filter" onclick="countryfilter();">Filter</a>
-                     <a href="#" class="button mt-1 text-center" data-dismiss="modal">Cancel</a>
-               </form>
-      </div>
-    </div>
-  </div>
+<div id="msg_info">
+   <span id="add"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+   <span id="msg"></span>
 </div>
 
-      <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="langmodal" tabindex="-1" role="dialog" aria-labelledby="langModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -200,6 +191,7 @@ width: 158px !important;
     </div>
   </div>
 </div>
+
 <form id="addcourseform" method="post">
 
       <div class="container">
@@ -224,7 +216,6 @@ width: 158px !important;
                         </div>
                  </div>
                   <div class="col-md-12">
-                     <a href="#" class="button mb-1 text-center" data-toggle="modal" data-target="#exampleModal">Select Country</a>
                      <a href="#" class="button mb-1 text-center" data-toggle="modal" data-target="#langmodal">Select Language</a>
                      <a href="#" class="button mb-1 text-center" onclick="javascript:location.reload();" >Clear</a>
                   </div>
@@ -411,6 +402,18 @@ function add()
                   if (json.success) {
                         alert(json.msg);
                         window.location.reload();
+                  }
+                  else
+                  {
+                     if (json.add && json.msg) 
+                     {
+                        alert(json.add+" After "+json.msg);
+                     } 
+                     else 
+                     {
+                        alert("Courses Assign Limit Exeed");
+                     }
+                     window.location.reload();
                   } 
                }
             });

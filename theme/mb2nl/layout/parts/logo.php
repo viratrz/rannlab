@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// Import File And Variables********
+global $USER, $DB;
+
 $customlogin = theme_mb2nl_is_login( true );
 $logos = array('logo-light', 'logo-dark', 'logo-small', 'logo-dark-small');
 
@@ -33,11 +36,25 @@ $logos = array('logo-light', 'logo-dark', 'logo-small', 'logo-dark-small');
 	<div class="main-logo">
 		<a href="<?php echo new moodle_url('/'); ?>" title="<?php echo get_site()->fullname; ?>">
 			<?php
-				foreach ($logos as $l)
+				$university = $DB->get_record_sql("SELECT mu.university_id FROM mdl_universityadmin mu JOIN mdl_university_user muu  WHERE mu.userid = $USER->id");
+				if($university)
 				{
-					$src = $l === 'logo-light' ? theme_mb2nl_logo_url() : theme_mb2nl_logo_url( false, $l );
-					$svgcls = theme_mb2nl_is_svg($src) ? ' is_svg' : ' no_svg';
-					echo '<img class="' . $l . $svgcls . '" src="' . $src . '" alt="' . get_site()->fullname . '">';
+					$logo_path= $DB->get_record('school',array('id' => $university->university_id));
+					if($logo_path->logo_path)
+					{
+						echo "<img src='$logo_path->logo_path' style='min-width: 110px; max-height: 60px;'>";
+					}
+				   
+				}
+				else
+				{
+					foreach ($logos as $l)
+					{
+						$src = $l === 'logo-light' ? theme_mb2nl_logo_url() : theme_mb2nl_logo_url( false, $l );
+						$svgcls = theme_mb2nl_is_svg($src) ? ' is_svg' : ' no_svg';
+						echo '<img class="' . $l . $svgcls . '" src="' . $src . '" alt="' . get_site()->fullname . '">';
+						
+					}
 				}
 			?>
 		</a>

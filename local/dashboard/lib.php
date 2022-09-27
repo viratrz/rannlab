@@ -11,7 +11,7 @@ function local_dashboard_extend_navigation(global_navigation $nav){
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
     if($universityadmin)
     {
-        $_SESSION['university_id'] = $universityadmin->universityid;
+        $_SESSION['university_id'] = $universityadmin->university_id;
     }
     if($role)
     {

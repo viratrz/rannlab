@@ -27,15 +27,13 @@
 require_once('../../config.php');
 require_once('lib.php');
 global $USER, $DB;
-$school = $DB->get_records_sql("SELECT * FROM {school} WHERE visible=1");
 $countries = get_string_manager()->get_list_of_countries(true);
 
 
 $sid = $_GET['edit'];
-$adminid = $DB->get_record_sql("SELECT ua.userid FROM {universityadmin} AS ua WHERE ua.universityid = '$sid' ");
-$admindata = $DB->get_record_sql("SELECT u.* FROM {user} AS u WHERE u.id =  '$adminid->userid' ");
-// var_dump($adminid->userid);
-// die;
+$adminid = $DB->get_record_sql("SELECT userid FROM {universityadmin} WHERE university_id =$sid LIMIT 1 ");
+$admindata = $DB->get_record_sql("SELECT * FROM {user} WHERE id = $adminid->userid ");
+
 if ($sid) {
    $Scooldata = $DB->get_record_sql("SELECT * FROM {school} WHERE id=$sid");
    $startdate = date("m/d/Y", $Scooldata->sessionstart);
@@ -51,10 +49,6 @@ $previewnode = $PAGE->navigation->add('School Management', new moodle_url('/loca
 $thingnode = $previewnode->add('Edit School', new moodle_url('/local/dashboard/editschool.php'));
 $thingnode->make_active();
 
-// echo print_r($school);
-// $vardd = '20/04/2012';
-// $datee = str_replace('/', '-', $vardd);
-// $dateee=date('m-d-Y', strtotime($datee));
 ?>
 
 <!DOCTYPE html>
@@ -142,11 +136,16 @@ $thingnode->make_active();
       .eye {
          position: absolute;
          font: normal normal normal 14px/1 FontAwesome;
-         right: -87px;
+         right: 0px;
          top: 60%;
          transform: translate(-50%, -80%);
          z-index: 999;
       }
+    input, select
+    {
+        min-height: 35px !important;
+        max-height: 35px !important;
+    }
 
       body {
          background: #f7f7f7;
@@ -159,10 +158,10 @@ $thingnode->make_active();
 
    <div class="container">
       <div class="row">
-         <div class="col-md-12 m-auto box-shadow bg-white">
+         <div class="col-md-12 m-auto box-shadow bg-white px-4">
             <form action="/action_page.php" id="edituniversity">
                <div class="heading-row mb-3">
-                  <h5 style="font-weight:600;" class="mb-1 pl-3"><?php echo $Scooldata->name ?></h5>
+                  <h5 style="font-weight:600; color: white;" class="mb-1 pl-3"><?php echo $Scooldata->name ?></h5>
                </div>
                <div class="heading mb-3">
                   <h5 style="color: #000"><b>Edit University</b></h5>
@@ -213,31 +212,31 @@ $thingnode->make_active();
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err4">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name" name="username" value=<?php echo $admindata->username ?> required>
+                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name" name="username" value="<?php echo $admindata->username ?>" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err4">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" name="firstname" value=<?php echo $admindata->firstname ?> required>
+                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" name="firstname" value="<?php echo $admindata->firstname ?>" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Last Name <span class="err4">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" name="lastname" value=<?php echo $admindata->lastname ?> required>
+                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" name="lastname" value="<?php echo $admindata->lastname ?>" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err4">*</span></label>
-                  <input type="email" class="form-control col-md-9" id="email" placeholder="Enter Email-Id" name="email" value=<?php echo $admindata->email ?> required>
+                  <input type="email" class="form-control col-md-9" id="email" placeholder="Enter Email-Id" name="email" value="<?php echo $admindata->email ?>" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">New Password</label>
-                  <div class="calendar col-md-8 p-0">
+                  <div class="calendar col-md-9 p-0">
                      <input type="password" style="width: 112%;" class="form-control" placeholder="Enter New Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="myFunction2()"></i>
                   </div>

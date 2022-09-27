@@ -11,7 +11,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -162,8 +161,6 @@ $header.='<!DOCTYPE html>
   -moz-transition: ease-out 0.5s;
 }
 
-
-
 .btn.btn-border-5::after,
 .btn.btn-border-5::before {
     position: absolute;
@@ -207,9 +204,9 @@ $header.='<!DOCTYPE html>
 echo $header;
 
 echo $OUTPUT->header();
+$html='';
 
-   $html .= '<body>';
-     $html .= ' <div class="container-fluid">
+     $html .= '<body> <div class="container-fluid">
          <div class="row mt-4">';
          if(is_siteadmin()){
             $data=$DB->get_records_sql("SELECT mc.* FROM {course} mc where mc.visible=1");
@@ -220,7 +217,7 @@ echo $OUTPUT->header();
             $check1 = count($check);
             if($check1 == 1){
                $data=$DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
-               $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} mcs on mc.id = mcs.course_id inner join {school} ms on ms.id = mcs.university_id inner join {universityadmin} mcu on mcu.universityid = ms.id where mc.visible=1 and mcu.userid='$id'");
+               $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} mcs on mc.id = mcs.course_id inner join {school} ms on ms.id = mcs.university_id inner join {universityadmin} mcu on mcu.university_id = ms.id where mc.visible=1 and mcu.userid='$id'");
             }
             else{
                $data = $DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
@@ -250,7 +247,9 @@ echo $OUTPUT->header();
                 </div>
              </div>';
             }
-            foreach($data1 as $datavalue)
+            if (isset($data1) )
+            {
+               foreach($data1 as $datavalue)
             {
                $courseid = $datavalue->id;
 			   if(in_array($courseid,$course_exsit)) continue;
@@ -271,6 +270,8 @@ echo $OUTPUT->header();
                 </div>
              </div>';
             }
+            }
+            
 
          $html.='</div>
       </div>

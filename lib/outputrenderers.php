@@ -379,7 +379,8 @@ class renderer_base {
      * @return moodle_url|false
      */
     public function get_compact_logo_url($maxwidth = 300, $maxheight = 300) {
-        global $CFG;
+        global $CFG, $USER ,$DB;
+        
         $logo = get_config('core_admin', 'logocompact');
         if (empty($logo)) {
             return false;

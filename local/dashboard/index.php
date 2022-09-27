@@ -86,8 +86,8 @@ $PAGE->set_pagelayout('standard');
       .eye {
             position: absolute;
             font: normal normal normal 14px/1 FontAwesome;
-            right: -87px;
-            top: 40%;
+            right: 0px;
+            top: 35%;
             transform: translate(-50%, -80%);
             z-index: 999;
         }
@@ -141,6 +141,11 @@ $PAGE->set_pagelayout('standard');
          display:block;
          width: 50%;
       }
+      input, select
+      {
+        min-height: 35px !important;
+        max-height: 35px !important;
+    }
    </style>
 </head>
 
@@ -244,7 +249,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
-                  <div class="calendar col-md-8 p-0">
+                  <div class="calendar col-md-9 p-0">
                      <input type="password" style="width: 112%;" class="form-control" placeholder="Enter Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
                      <span class="errormsg2" id="pasward"></span>
@@ -254,7 +259,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Password <span class="err">*</span></label>
-                  <div class="calendar col-md-8 p-0">
+                  <div class="calendar col-md-9 p-0">
                      <input type="password" class="form-control" style="width: 112%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i>
                      <div class="col-md-3"></div>

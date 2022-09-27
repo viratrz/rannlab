@@ -5,7 +5,7 @@ require_login();
 
 global $USER, $DB;
 
-$title = 'Create New Admin';
+$title = 'Create User';
 $pagetitle = $title;
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
@@ -16,7 +16,7 @@ $PAGE->set_pagelayout('standard');
 
 <head>
    <meta charset="utf-8">
-   <title>Create New Admin </title>
+   <title>Create User </title>
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -34,6 +34,7 @@ $PAGE->set_pagelayout('standard');
       .error1 {
          color: red;
          font-size: 15px;
+         display: none;
       }
 
       .err {
@@ -54,9 +55,8 @@ $PAGE->set_pagelayout('standard');
       .eye {
             position: absolute;
             font: normal normal normal 14px/1 FontAwesome;
-            right: 5px  !important;
+            right: 0px;
             top: 22px;
-    right: 22px;
             transform: translate(-50%, -80%);
             z-index: 999;
         }
@@ -94,7 +94,13 @@ $PAGE->set_pagelayout('standard');
          border-color: #fbe700;
       }
 
-      .
+      .daterangepicker td.active,
+      .daterangepicker td.active:hover {
+         background-color: #1d1d1b;
+         border-color: transparent;
+         color: #fff;
+      }
+
       .form-control:disabled,
       .form-control[readonly] {
          background: inherit !important;
@@ -113,7 +119,7 @@ $PAGE->set_pagelayout('standard');
       <div class="row">
          <div class="col-md-12 px-0">
             <div class="heading mb-3 heading-row">
-               <h5 style="color: red;" class="px-2 mb-0" ><b style="color: white;">Create New Admin</b></h5>
+               <h5 style="color: red;" class="px-2 mb-0" ><b style="color: white;">Create User</b></h5>
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
@@ -151,23 +157,46 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
-                  <div class="col-md-9 p-0">
-                     <input type="password"  class="form-control" placeholder="Enter Password" id="password" name="password" value="">
-                     <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i></div>
-                     <div class="col-md-3"></div>
+                  <div class="calendar col-md-9 p-0">
+                     <input type="password" style="width: 112%;" class="form-control" placeholder="Enter Password" id="password" name="password" value="">
+                     <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
                      <span class="errormsg2" id="pasward"></span>
+                     <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
+                  </div>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Password <span class="err">*</span></label>
-                  <div class="col-md-9 p-0">
-                     <input type="password" class="form-control" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
-                     <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i></div>
+                  <div class="calendar col-md-9 p-0">
+                     <input type="password" class="form-control" style="width: 100%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
+                     <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i>
                      <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
+                  </div>
+               </div>
+               <?php $all_role = $DB->get_records_sql("SELECT * FROM {role}"); 
+               ?>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Role Of User<span class="err">*</span></label>
+                  <div class="calendar col-md-3 p-0">
+                     <select name="role_id" id="role"style="width: 100%;" class="form-control">
+                        <option value="">Select Role</option>
+                     <?php 
+                        foreach($all_role as $role)
+                        { 
+                           if ($role->shortname == 'teacher' || $role->shortname == 'student' || $role->shortname == 'trainer') 
+                           {                          
+                     ?>
+                        <option value="<?php echo $role->id; ?>"><?php echo ucwords($role->shortname); ?></option>
+                     <?php  } } ?>
+                     </select>
+                     <span class="errormsg2" id="roleid">   </span>                  
+                  </div>
+                  <div class="col-md-6 pl-2"><span class="error1 pl-0 "></span></div>
+                  
                </div>
                   <div class="d-flex">
-                     <a href="#" class="button d-block  text-center" onclick="addAdmin();">Create New Admin</a> &nbsp;
+                     <a href="#" class="button d-block  text-center" onclick="addAdmin();">Create User</a> &nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
                   </div>
             </form>
@@ -220,20 +249,26 @@ function addAdmin()
    var confirm_email = $("#confirmemail").val();
    var password = $("#password").val();
    var confirm_password = $("#confirmpassword").val();
+   var role = $("#role").val();
 
-   var arr_val=[username, firstname, lastname, email, confirm_email, password, confirm_password];
+   var arr_val=[username, firstname, lastname, email, confirm_email, password, confirm_password, role];
    var err =document.getElementsByClassName("error1");
-   for (let i = 0; i < 7; i++) 
+   for (let i = 0; i < 8; i++) 
    {
       var ws_val = arr_val[i];
       ws_val = arr_val[i].trim();
       if ( ws_val !='') 
       {
          err[i].innerHTML="";
+         err[i].style.display="none";
       } 
       else 
       {
-         err[i].innerHTML="* this field is required";
+         if (i == 7)
+         err[i].innerHTML="* Please Select Role";
+         else 
+            err[i].innerHTML="* this field is required";
+         err[i].style.display="block";
       }
    }
    var pass_val=false;
@@ -264,14 +299,15 @@ function addAdmin()
 
    if (eml_val && pass_val && username.trim() && firstname.trim() && lastname.trim()) 
    {
-      if (email.indexOf('@') < 0 || email.indexOf('.') < 0) {
+      if (email.indexOf('@') < 0 || email.indexOf('.') < 0) 
+      {
          $("#emailer").text('email id not valid');
       }
       else {
   
       $.ajax({
       type: "POST",
-      url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin.php",
+      url: "<?php echo $CFG->wwwroot ?>" + "/local/createuser/create_user.php",
       dataType: "json",
       data: $("#addnewAdmin").serialize(),
       async: false,
@@ -280,7 +316,7 @@ function addAdmin()
          if (json.success) 
          {
             alert(json.msg);
-            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin_list.php";
+            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/user_list.php";
          } 
          else
          {

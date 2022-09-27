@@ -176,7 +176,7 @@ $PAGE->set_pagelayout('standard');
             </div>
           </div>
           <div class="d-flex">
-            <div class="mb-4 mr-3">
+            <div class="mr-3">
               <select id="filterselect" class="form-control">
                 <option value="1" id="schoolfilter">University Name</option>
                 <option value="2" id="countryfilter">Country</option>
@@ -187,10 +187,10 @@ $PAGE->set_pagelayout('standard');
               <input id="myInput" class="form-control" onkeyup="filtertable()">
             </div>
 
-            <div style="text-align:end;" class="mt-2 ml-2">
+            <div style="text-align:end;" class="ml-2">
               <a href="javascript:window.location.reload(true)" class="button">Clear</a>
             </div>
-            <div style="text-align:end;" class="ml-auto mt-2">
+            <div style="text-align:end;" class="ml-auto">
               <a href="<?php echo $CFG->wwwroot ?>/local/dashboard/index.php" class="button"><i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
                 Add New University</a>
             </div>

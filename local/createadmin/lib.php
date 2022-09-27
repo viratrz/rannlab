@@ -21,7 +21,7 @@ function local_createadmin_extend_navigation(global_navigation $nav)
 
         $nav->add(
             'Admin List',
-            new moodle_url($CFG->wwwroot . '/local/createadmin/table.php'),
+            new moodle_url($CFG->wwwroot . '/local/createadmin/custom_admin_list.php'),
             navigation_node::TYPE_SYSTEM,
             null,
             'local_createadmin',
@@ -30,3 +30,4 @@ function local_createadmin_extend_navigation(global_navigation $nav)
     }
 
 }
+

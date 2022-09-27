@@ -39,7 +39,7 @@ $PAGE->set_pagelayout('standard');
 
       .err {
          color: red;
-         font-size: 150%;
+         font-size: 18px;
       }
 
       .button {
@@ -105,6 +105,11 @@ $PAGE->set_pagelayout('standard');
       .form-control[readonly] {
          background: inherit !important;
       }
+      input
+      {
+        min-height: 35px !important;
+        max-height: 35px !important;
+    }
    </style>
 </head>
 
@@ -118,24 +123,24 @@ $PAGE->set_pagelayout('standard');
                <h5 style="color: red;" class="px-2 mb-0" ><b style="color: white;">Create New Package</b></h5>
             </div>
          </div>
-         <div class="col-md-12 m-auto box-shadow bg-white">
+         <div class="col-md-12 m-auto box-shadow bg-white px-4 py-2">
             <form action="package_save.php" method="post" name="package">
                      
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Package Value(Rs./Month)<span class="err">*</span></label>
-                  <input type="number" class="form-control col-md-9" placeholder="Enter Package Value" name="p_value" required>
+                  <label for="label" class="col-md-4">Package Value(Rs./Month)<span class="err">*</span></label>
+                  <input type="number" class="form-control col-md-8" placeholder="Enter Package Value" name="p_value" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Number of User <span class="err">*</span></label>
-                  <input type="number" class="form-control col-md-9" placeholder="Enter Number Of Users" name="num_of_user" required>
+                  <label for="label" class="col-md-4">Number of User <span class="err">*</span></label>
+                  <input type="number" class="form-control col-md-8" placeholder="Enter Number Of Users" name="num_of_user" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Number of Course <span class="err">*</span></label>
-                  <input type="number" class="form-control col-md-9" placeholder="Enter Number Of Course" name="num_of_course" required>
+                  <label for="label" class="col-md-4">Number of Course <span class="err">*</span></label>
+                  <input type="number" class="form-control col-md-8" placeholder="Enter Number Of Course" name="num_of_course" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
