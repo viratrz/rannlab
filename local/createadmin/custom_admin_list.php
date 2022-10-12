@@ -110,59 +110,28 @@ $PAGE->set_pagelayout('standard');
 
 <body>
   <?php echo $OUTPUT->header(); ?>
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background:#1d1d1b; border:1px solid #ffe500;">
-          <h5 class="modal-title" id="exampleModalLabel" style="color:#fff;"><b>Login As</b></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" style="color:#fff;">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <form id="country" method="post">
-            <input type="hidden" name="schoolid" id="schoolid" value="<?php echo $id; ?>">
-            <div class="form-group row">
-              <label for="label" class="col-md-12"><b> University Admin List </b></label>
-              <select name="cars" class="col-md-11 m-auto modal-select" id="adminlist" style="padding:8px; border-radius:5px;">
-
-              </select>
-              <div class="col-md-12 mt-3">
-                <a href="#" class="button mb-1 text-center" onclick="schooladmin();">Login</a>
-                <a href="#" class="button mt-1 text-center" onclick="cleardata();" data-dismiss="modal">Cancel</a>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <div class="box-shadow">
-          <div class="row mb-4 heading-row">
+      <div class="p-0 col-md-12">
+        <div class="p-0 box-shadow">
+          <div class="heading-row">
             <div class="col-md-12">
-              <h5 class="mb-0" style="color: white;" >Admin List</h5>
+              <h5 style="color: white;" >Admin List</h5>
             </div>
           </div>
-          
-
-          <table class="table table-striped table-bordered">
+          <h5 class="mt-2 mr-1" style="color: purple; text-align: end;"><a class="btn btn-info" href="<?php echo $CFG->wwwroot.'/local/createadmin/index.php'; ?>"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add New Admin</a></h5>
+          <table class="table table-hover table-bordered w-100">
             <thead>
-              <tr class="bg-grey">
+              <tr class="bg-secondary">
                 <th>User Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email-Id</th>
-
-
-                <th style="width:200px;">Action</th>
-
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody class="myTable">
+            <tbody>
               <?php foreach ($uni_admins as $s_admin) { ?>
                 <tr>
                   <td><?php echo $s_admin->username; ?></td>
@@ -170,7 +139,7 @@ $PAGE->set_pagelayout('standard');
                   <td><?php echo $s_admin->lastname; ?></td>
                   <td><?php echo $s_admin->email; ?></td>
                   <td><a href="#" class="p-2" onclick="editUser(<?php echo $s_admin->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
-                    <a href="#" onclick="deleteUser(<?php echo $s_admin->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
+                    <a href="#" onclick="deleteUser(<?php echo $s_admin->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash text-danger" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
                     <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
                   </td>
                 </tr>
@@ -178,18 +147,20 @@ $PAGE->set_pagelayout('standard');
             </tbody>
           </table>
         </div>
-      </div>
+        </div>
     </div>
   </div>
-  <div class="pagination mt-3">
-    <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
-  </div>
+<div class="pagination mt-3">
+  <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
+</div>
+
 <script>
 
 function deleteUser(id)
 {
-  if(confirm("Are you sure you want to Delete this university?"))
-    window.location.href="<?php echo $CFG->wwwroot?>"+"/local/createadmin/deleteuniversity.php?del_id="+id;   
+  // alert(id);
+  if(confirm("Are you sure you want to delete this user?"))
+    window.location.href="<?php echo $CFG->wwwroot?>"+"/local/createadmin/delete_admin.php?del_id="+id;   
 }
 
 function editUser(id) 

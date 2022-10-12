@@ -19,7 +19,6 @@ $get_username = $DB->get_record('user', array('username'=>$username));
 if($get_username)
 {
     $json = array();
-    $json['success'] = false;
     $json['msg2'] = "Username already exist";
     echo json_encode($json);
     exit;
@@ -29,8 +28,7 @@ $get_email = $DB->get_record('user', array('email'=>$email));
 if($get_email)
 {
     $json = array();
-    $json['success'] = false;
-    $json['msg3'] = "email already exist";
+    $json['msg3'] = "Email already exist";
     echo json_encode($json);
     exit;
 }
@@ -72,12 +70,27 @@ if ($package_id->num_of_user > $total_user)
     $user_id  = user_create_user($userdata, false, false);
     $contextid =1;
     role_assign($role_id, $user_id ,$contextid);
-    
+
+    if ($user_id) {
+        $sub = "Welcome";
+        $msg = "Hi";
+        $to_user = new stdClass();
+        $to_user->email= $email;
+        $to_user->id =(int)$user_id;
+
+        $from_user = new stdClass();
+        $from_user->email= 'clientsmtp@dcc.rannlab.com';
+        $from_user->maildisplay= true;
+
+        email_to_user($to_user,$from_user,$sub,$msg);
+    }
+
     if($user_id)
     {
     $user_info =  new stdClass();
     $user_info->userid = $user_id;
     $user_info->university_id = $uni_id->university_id;
+    $user_info->cb_userid = $USER->id;
     $insert_user = $DB->insert_record('university_user', $user_info, true, false);
 
     if($insert_user)
@@ -106,7 +119,7 @@ else
 {
     $json = array();
     $json['success'] = false;
-    $json['msg'] = "User Limit Exeed";
+    $json['ule'] = "User Limit Exeed";
     echo json_encode($json);
 }
 
@@ -114,12 +127,9 @@ if($updated || $inserted)
 {
     $json = array();
     $json['success'] = true;
-    $json['msg'] = "User Created Successfully!";
+    $json['ucs'] = "User Created Successfully!";
     echo json_encode($json);
 }
 
-
-
-
-
 ?>
+ 

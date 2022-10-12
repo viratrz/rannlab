@@ -267,7 +267,7 @@ function addAdmin()
          if (i == 7)
          err[i].innerHTML="* Please Select Role";
          else 
-            err[i].innerHTML="* this field is required";
+            err[i].innerHTML="* This field is required";
          err[i].style.display="block";
       }
    }
@@ -281,7 +281,8 @@ function addAdmin()
       } 
       else
       {
-         err[4].innerHTML="Email-Id Not Match";      
+         err[4].innerHTML="Email Id Does Not Match"; 
+         err[4].style.display="block";     
       }
    }
    
@@ -293,7 +294,8 @@ function addAdmin()
       } 
       else
       {
-         err[6].innerHTML="Password Not Match";      
+         err[6].innerHTML="Passwords Does Not Match";
+         err[6].style.display="block";      
       }
    }
 
@@ -301,7 +303,7 @@ function addAdmin()
    {
       if (email.indexOf('@') < 0 || email.indexOf('.') < 0) 
       {
-         $("#emailer").text('email id not valid');
+         $("#emailer").text('Invalid Email');
       }
       else {
   
@@ -315,19 +317,21 @@ function addAdmin()
 
          if (json.success) 
          {
-            alert(json.msg);
+            alert(json.ucs);
             window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/user_list.php";
          } 
-         else
+        if(json.ule)
          {
-            alert(json.msg);
+            alert(json.ule);
          }
          if (json.msg2) {
             $("#a_username").html(json.msg2);
+            $("#a_username").show();
          }
          if (json.msg3) {
             $("#a_email").html(json.msg3);
-         }            
+            $("#a_email").show();
+         }           
       }
    });
 }

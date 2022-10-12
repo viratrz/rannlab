@@ -84,6 +84,7 @@ if ($package_id->num_of_user > $total_user)
         $admininfo =  new stdClass();
         $admininfo->userid = $user_id;
         $admininfo->university_id = $uni_id->university_id;
+        $admininfo->cb_userid = $USER->id;
 
         $insert_admin = $DB->insert_record('universityadmin', $admininfo, true, false);
         $insert_user = $DB->insert_record('university_user', $admininfo, true, false);

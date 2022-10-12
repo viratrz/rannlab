@@ -123,7 +123,7 @@ $PAGE->set_pagelayout('standard');
             <form action="/action_page.php" id="addnewAdmin" method="get">
                      
                <div class="form-group row">
-                <input type="hidden" name="user_id" value="<?php echo $user_info->id ; ?>" required>
+                <input type="hidden" name="user_id" value="<?php echo $user_info->id ; ?>">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
                   <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name" name="username" value="<?php echo $user_info->username ; ?>" required>
                   <div class="col-md-3"></div>
@@ -159,139 +159,101 @@ $PAGE->set_pagelayout('standard');
                
                   <div class="d-flex">
                      <a href="#" class="button d-block  text-center" onclick="addAdmin();">Update</a> &nbsp;
-                     <a href="<?php echo $CFG->wwwroot; ?>/local/createadmin/custom_admin_list.php?>" class="button d-block   text-center">Cancel</a>
+                     <a href="<?php echo $CFG->wwwroot; ?>/local/createuser/user_list.php?>" class="button d-block   text-center">Cancel</a>
                   </div>
             </form>
          </div>
       </div>
    </div>
-
-<script>
-$(document).ready(function() 
-{
-   $(".eye").click(function() {
-      $(this).toggleClass("fa fa-eye fa fa-eye-slash");
-   });
-});
-
-function showPassword(obj) 
-{  
-   if (obj == 1) 
-   {
-      var x = document.getElementById("password");
-      if (x.type === "password") {
-         x.type = "text";
-      } else {
-         x.type = "password";
-      }
-   }
-   else
-   {
-      var x = document.getElementById("confirmpassword");
-      if (x.type === "password") {
-         x.type = "text";
-      } else {
-         x.type = "password";
-      }
-   }
-}
-
-function validateEmail(email) 
-{
-   var re = /\S+@\S+\.\S+/;
-   return re.test(email);
-}
-
-function addAdmin() 
-{
-   var username = $("#username").val();
-   var firstname = $("#firstname").val();
-   var lastname = $("#lastname").val();
-   var email = $("#email").val();
-   var confirm_email = $("#confirmemail").val();
-   var password = $("#password").val();
-   var confirm_password = $("#confirmpassword").val();
-
-   var arr_val=[username, firstname, lastname, email, confirm_email, password, confirm_password];
-   var err =document.getElementsByClassName("error1");
-   for (let i = 0; i < 7; i++) 
-   {
-      var ws_val = arr_val[i];
-      ws_val = arr_val[i].trim();
-      if ( ws_val !='') 
-      {
-         err[i].innerHTML="";
-      } 
-      else 
-      {
-         err[i].innerHTML="* this field is required";
-      }
-   }
-   var pass_val=false;
-   var eml_val=false;
-   if (confirm_email.trim()) 
-   {
-      if (email == confirm_email) 
-      {
-         eml_val=true;
-      } 
-      else
-      {
-         err[4].innerHTML="Email-Id Not Match";      
-      }
-   }
-   
-   if (confirm_password.trim()) 
-   {
-      if (password == confirm_password) 
-      {
-         pass_val=true;
-      } 
-      else
-      {
-         err[6].innerHTML="Password Not Match";      
-      }
-   }
-
-   if (eml_val && pass_val && username.trim() && firstname.trim() && lastname.trim()) 
-   {
-      if (email.indexOf('@') < 0 || email.indexOf('.') < 0) {
-         $("#emailer").text('email id not valid');
-      }
-      else {
-  
-      $.ajax({
-      type: "POST",
-      url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin.php",
-      dataType: "json",
-      data: $("#addnewAdmin").serialize(),
-      async: false,
-      success: function(json) {
-
-         if (json.success) 
-         {
-            alert(json.msg);
-            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin_list.php";
-         } 
-         else
-         {
-            alert(json.msg);
-         }
-         if (json.msg2) {
-            $("#a_username").html(json.msg2);
-         }
-         if (json.msg3) {
-            $("#a_email").html(json.msg3);
-         }            
-      }
-   });
-}
-   }
-}
-</script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </body>
 </html>
 
+<script>
+   $(document).ready(function() 
+   {
+      $(".eye").click(function() {
+         $(this).toggleClass("fa fa-eye fa fa-eye-slash");
+      });
+   });
+
+   function showPassword(obj) 
+   {  
+      if (obj == 1) 
+      {
+         var x = document.getElementById("password");
+         if (x.type === "password") {
+            x.type = "text";
+         } else {
+            x.type = "password";
+         }
+      }
+   }
+
+   function validateEmail(email) 
+   {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
+   }
+
+   function addAdmin() 
+   {
+      var username = $("#username").val();
+      var firstname = $("#firstname").val();
+      var lastname = $("#lastname").val();
+      var email = $("#email").val();
+
+
+      var arr_val=[username, firstname, lastname, email];
+      var err =document.getElementsByClassName("error1");
+      var tiktok =true;
+      for (let i = 0; i < 4; i++) 
+      {
+         var ws_val = arr_val[i];
+         ws_val = arr_val[i].trim();
+         if ( ws_val !='') 
+         {
+            err[i].innerHTML="";
+
+         } 
+         else 
+         {
+            err[i].innerHTML="* this field is required";
+            tiktok = false;
+         }
+      }
+      
+      if (tiktok) 
+      {
+         // if (!validateEmail(email)) {
+         if (email.indexOf('@') < 0 || email.indexOf('.') < 0) 
+         {
+            $("#a_email").text('Email id not valid');
+         }
+         else 
+         {
+            $.ajax({
+            type: "POST",
+            url: "<?php echo $CFG->wwwroot.'/local/createuser/save_edit_user.php'; ?>",
+            dataType: "json",
+            data: $("#addnewAdmin").serialize(),
+            async: false,
+            success: function(json) 
+            {
+               if (json.success) 
+               {
+                  alert(json.msg);
+                  window.location.href = "<?php echo $CFG->wwwroot.'/local/createuser/user_list.php'; ?>";
+               } 
+               if (json.username)
+                  $("#a_username").html(json.username);
+               if (json.email) 
+                  $("#a_email").html(json.email);  
+            }
+         });
+         }
+      }
+   }
+</script>
 <?php echo $OUTPUT->footer(); ?>

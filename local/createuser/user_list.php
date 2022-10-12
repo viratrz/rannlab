@@ -5,19 +5,36 @@ require_once('lib.php');
 $perpage      = optional_param('perpage', 10, PARAM_INT);
 $page         = optional_param('page', 0, PARAM_INT);
 require_login();
+
+
+
+$sub = "Welcome";
+$msg = "Hi";
+$to_user = new stdClass();
+$to_user->email= "titumoney2401@gmail.com";
+$to_user->id =2;
+
+$from_user = new stdClass();
+$from_user->email= 'clientsmtp@dcc.rannlab.com';
+$from_user->maildisplay= true;
+
+email_to_user($to_user,$from_user,$sub,$msg);
+
+
+
 global $USER, $DB;
 $un_id=$DB->get_record('universityadmin', ['userid'=>$USER->id]);
 
-$school = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {university_user} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id");
+$uni_users = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {university_user} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id ORDER BY u.id DESC");
 
-$totalcount = count($school);
+$totalcount = count($uni_users);
 
 $start = $page * $perpage;
-if ($start > count($school)) {
+if ($start > count($uni_users)) {
   $page = 0;
   $start = 0;
 }
-$school = array_slice($school, $start, $perpage, true);
+$uni_users = array_slice($uni_users, $start, $perpage, true);
 
 
 $name = 'User List';
@@ -109,68 +126,43 @@ $PAGE->set_pagelayout('standard');
 </head>
 
 <body>
-  <?php echo $OUTPUT->header(); ?>
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background:#1d1d1b; border:1px solid #ffe500;">
-          <h5 class="modal-title" id="exampleModalLabel" style="color:#fff;"><b>Login As</b></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" style="color:#fff;">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <form id="country" method="post">
-            <input type="hidden" name="schoolid" id="schoolid" value="<?php echo $id; ?>">
-            <div class="form-group row">
-              <label for="label" class="col-md-12"><b> University User List </b></label>
-              <select name="cars" class="col-md-11 m-auto modal-select" id="adminlist" style="padding:8px; border-radius:5px;">
-
-              </select>
-              <div class="col-md-12 mt-3">
-                <a href="#" class="button mb-1 text-center" onclick="schooladmin();">Login</a>
-                <a href="#" class="button mt-1 text-center" onclick="cleardata();" data-dismiss="modal">Cancel</a>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+<?php echo $OUTPUT->header(); ?>
+  
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <div class="box-shadow">
-          <div class="row mb-4 heading-row">
+      <div class="p-0 col-md-12">
+        <div class="p-0 box-shadow">
+          <div class="heading-row">
             <div class="col-md-12">
               <h5 class="mb-0" style="color: white;" >User List</h5>
             </div>
           </div>
-          
-
-          <table class="table table-striped table-bordered">
+          <h5 class="mt-2 mr-1" style="color: purple; text-align: end;"><a class="btn btn-info" href="<?php echo $CFG->wwwroot.'/local/createuser/index.php'; ?>"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add New User</a></h5>
+          <table class="table table-hover table-bordered">
             <thead>
-              <tr class="bg-grey">
+              <tr class="bg-secondary">
                 <th>User Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email-Id</th>
-
-
-                <th style="width:200px;">Action</th>
-
+                <th>Role</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody class="myTable">
-              <?php foreach ($school as $sch) { ?>
+            <tbody>
+              <?php foreach ($uni_users as $user) {
+                $role_id = $DB->get_record('role_assignments', ['userid'=>$user->id]);
+                $role_name = $DB->get_record('role', ['id'=>$role_id->roleid]);
+                ?>
                 <tr>
-                  <td><?php echo $sch->username; ?></td>
-                  <td><?php echo $sch->firstname; ?></td>
-                  <td><?php echo $sch->lastname; ?></td>
-                  <td><?php echo $sch->email; ?></td>
-                  <td><a href="#" class="p-2" onclick="editUser(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
-                    <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
+                  
+                  <td><?php echo $user->username; ?></td>
+                  <td><?php echo $user->firstname; ?></td>
+                  <td><?php echo $user->lastname; ?></td>
+                  <td><?php echo $user->email; ?></td>
+                  <td><?php if($role_name->shortname == 'ua')echo "University Admin";else echo ucfirst($role_name->shortname); ?></td>
+                  <td><a href="#" class="p-2" onclick="editUser(<?php echo $user->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
+                    <a href="#" onclick="deleteUser(<?php echo $user->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash text-danger" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
                     <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
                   </td>
                 </tr>
@@ -181,40 +173,27 @@ $PAGE->set_pagelayout('standard');
       </div>
     </div>
   </div>
-  <div class="pagination mt-3">
-    <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
-  </div>
-  <script>
-    function adminlist(schoolid) {
-      var admin = 1;
-      $.ajax({
-        type: "GET",
-        url: "<?php echo $CFG->wwwroot ?>" + "/local/createuser/adminlist.php",
-        dataType: "json",
-        data: {
-          admin: admin,
-          schoolid: schoolid
-        },
-        async: false,
-        success: function(json) {
-          if (json.sucess) {
-            $("#adminlist").html(json.html);
-          }
-        }
-      });
-    }
 
-function deleteUser(id)
-{
-  if(confirm("Are you sure you want to Delete this university?"))
-    window.location.href="<?php echo $CFG->wwwroot?>"+"/local/createuser/deleteuniversity.php?del_id="+id;   
-}
+<div class="pagination mt-3">
+  <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
+</div>
 
-function editUser(id) 
-{
-  window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/edit_user.php/?edit_id=" + id;
-}
-  </script>
 </body>
 </html>
+
+<script>
+  function deleteUser(id)
+  {
+    // alert(id);
+    if(confirm("Are you sure you want to delete this user?"))
+      window.location.href="<?php echo $CFG->wwwroot?>"+"/local/createuser/delete_user.php?del_id="+id;   
+  }
+
+  function editUser(id) 
+  {
+    window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/edit_user.php?edit_id=" + id;
+  }
+</script>
+
 <?php echo $OUTPUT->footer(); ?>
+
