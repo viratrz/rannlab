@@ -40,7 +40,7 @@ echo $OUTPUT->header();
     {   
         $new_name = $mform->get_new_filename('userfile');
         $path= 'logo/'.$new_name;
-        $fullpath = "$CFG->httpswwwroot/local/changelogo/". $path;
+        $fullpath = "/local/changelogo/". $path;
         $success = $mform->save_file('userfile', $path, true);
         
         $university = $DB->get_record('universityadmin',array('userid' => $USER->id));
@@ -53,7 +53,7 @@ echo $OUTPUT->header();
         
         if($success)
         {
-            redirect("http://148.72.245.159/MoodleLMS/my/", "Logo Changed Successfully");
+            redirect("$CFG->wwwroot./my/", "Logo Changed Successfully");
             // echo "<img src='$path' style='width:100px; height: 80px;'>";
             // echo "<h5 style='background: green; color: white; padding: 5px 4px; width: fit-content; margin: 5px 0 0 0;'>Logo Changed Successfully Done!</h5>";
             // echo "<script> 
