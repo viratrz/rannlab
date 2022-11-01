@@ -27,7 +27,6 @@
 require(__DIR__ . '/../config.php');
 require(__DIR__ . '/lib.php');
 require_once($CFG->libdir . '/authlib.php');
-
 $data = optional_param('data', '', PARAM_RAW);  // Formatted as:  secret/username
 
 $p = optional_param('p', '', PARAM_ALPHANUM);   // Old parameter:  secret

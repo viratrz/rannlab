@@ -1,29 +1,4 @@
 <?php
-
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Main login page.
- *
- * @package    core
- * @subpackage auth
- * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 require_once('../../config.php');
 require_once('lib.php');
 require_once('../../user/lib.php');
@@ -47,7 +22,6 @@ if(isset($_GET['longname']))
 {
     $schoolname = $_GET['longname'];
     $schoolnamedata = $DB->get_record('school', array('name'=>$schoolname));
-
     if($schoolnamedata){
         $json = array();
         $json['success'] = false;
@@ -57,6 +31,32 @@ if(isset($_GET['longname']))
         }
 }
 
+if(isset($_GET['shortname']))
+{
+    $shortname = $_GET['shortname'];
+    $schoolnamedata = $DB->get_record('school', array('shortname'=>$shortname));
+    if($schoolnamedata)
+    {
+        $json = array();
+        $json['success'] = false;
+        $json['msg4'] = "Shortname already exist";
+        echo json_encode($json);
+        exit;
+    }
+}
+if(isset($_GET['domain']))
+{
+    $domain = $_GET['domain'];
+    $get_domain = $DB->get_record_sql("SELECT * FROM {school} WHERE domain= '$domain'");
+    if($get_domain)
+    {
+        $json = array();
+        $json['success'] = false;
+        $json['unique'] = "Domain already exist";
+        echo json_encode($json);
+        exit;
+    }
+}
 if(isset($username))
 {
     $usernamedata = $DB->get_record('user', array('username'=>$username));
@@ -78,26 +78,11 @@ if(isset($_GET['email']))
     {
         $json = array();
         $json['success'] = false;
-        $json['msg3'] = "email already exist";
+        $json['msg3'] = "Email already exist";
         echo json_encode($json);
         exit;
     }
 }
-
-if(isset($_GET['shortname']))
-{
-    $shortname = $_GET['shortname'];
-    $schoolnamedata = $DB->get_record('school', array('shortname'=>$shortname));
-    if($schoolnamedata)
-    {
-        $json = array();
-        $json['success'] = false;
-        $json['msg4'] = "Shortname already exist";
-        echo json_encode($json);
-        exit;
-    }
-}
-
 $package_id = $_GET['package'];
 if ($package_id ) 
 {
@@ -107,6 +92,7 @@ if ($package_id )
     $data->address = $_GET['address'];
     $data->city = $_GET['city'];
     $data->country = $_GET['country'];
+    $data->domain = $_GET['domain'];
     $inserted = $DB->insert_record('school', $data, true);
 }
 
@@ -155,8 +141,21 @@ if ($pack)
         $roleid = 9;
         $contextid = 1;
         role_assign($roleid, $user_id ,$contextid);
-    }
+    } 
     
+    if ($user_id) {
+        $sub = "Welcome";
+        $msg = "Hi";
+        $to_user = new stdClass();
+        $to_user->email= $email;
+        $to_user->id =(int)$user_id;
+
+        $from_user = new stdClass();
+        $from_user->email= 'clientsmtp@dcc.rannlab.com';
+        $from_user->maildisplay= true;
+
+        email_to_user($to_user,$from_user,$sub,$msg);
+    }
 }
 
 if($user_id)
@@ -164,9 +163,8 @@ if($user_id)
     $admininfo = new stdClass();
     $admininfo->userid = $user_id;
     $admininfo->university_id = $inserted;
-
+    $admininfo->cb_userid = $USER->id;
     $inserted1 = $DB->insert_record('universityadmin', $admininfo);
-
     if($inserted1)
     {   
         $json = array();

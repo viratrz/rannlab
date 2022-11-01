@@ -24,7 +24,8 @@ foreach($course_id as $c_id)
 			$assign_course->university_id = $uni_id;
 			$assign_course->course_id = $c_id;
 			$inserted = $DB->insert_record('assign_course', $assign_course);
-			enrol_try_internal_enrol($c_id, $user_id->userid, 3, time());
+			$role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
+			createresource($c_id,$uni_id,$user_id->userid);
 		}
 
 		if($inserted)

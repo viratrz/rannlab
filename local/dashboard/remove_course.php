@@ -16,6 +16,20 @@ if(isset($c_id))
         if($deleted)
         {
             $DB->delete_records('assign_course', array("id"=>$deleted->id));
+
+
+            $resourse_course=$DB->get_record_sql("SELECT * FROM {courseresource}  WHERE userid='$user_id->userid' AND course_id= '$id'");
+            $instances2 = $DB->get_records('enrol', array('courseid' => $resourse_course->resourcecourseid));
+            foreach ($instances2 as $instance2) 
+            {
+                $plugin = enrol_get_plugin($instance2->enrol);
+                $plugin->unenrol_user($instance2, $user_id->userid);
+            }
+            $sql="DELETE FROM {courseresource} WHERE userid='$user_id->userid' AND course_id= '$id'";
+            $DB->execute($sql);
+
+            $DB->delete_records('courseresource', array("id"=>$deleted->id));
+
             $instances = $DB->get_records('enrol', array('courseid' => $id));
             foreach ($instances as $instance) 
             {

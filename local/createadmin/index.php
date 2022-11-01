@@ -104,6 +104,11 @@ $PAGE->set_pagelayout('standard');
          min-height: 35px !important;
          max-height: 35px !important;
       }
+      #loader
+      {
+         display: none;
+         text-align: center;
+      }
    </style>
 </head>
 
@@ -117,7 +122,7 @@ $PAGE->set_pagelayout('standard');
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
-            <form action="/action_page.php" id="addnewAdmin" method="get">
+            <form action="" id="addnewAdmin" method="get">
                      
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
@@ -167,8 +172,14 @@ $PAGE->set_pagelayout('standard');
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                   <div class="d-flex">
-                     <a href="#" class="button d-block  text-center" onclick="addAdmin();">Create New Admin</a> &nbsp;
+                     <a href="##" class="button d-block  text-center" onclick="addAdmin();">Create New Admin</a> &nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
+                     
+                     <div id="loader" class="col-md-6">
+                     <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                     </div>
+                     </div>
                   </div>
             </form>
          </div>
@@ -274,13 +285,17 @@ function addAdmin()
       url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin.php",
       dataType: "json",
       data: $("#addnewAdmin").serialize(),
-      async: false,
+      beforeSend: function(){
+      $("#loader").show();
+      },
+      complete:function(data){
+      $("#loader").hide();
+      },
       success: function(json) {
 
          if (json.success) 
          {
-            alert(json.msg);
-            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin_list.php";
+            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/custom_admin_list.php?msg="+json.msg;
          } 
          else
          {

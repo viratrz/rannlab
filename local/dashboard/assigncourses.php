@@ -18,7 +18,7 @@ $lang = $DB->get_records_sql("SELECT * FROM {course_categories} WHERE depth=3 an
 
 $Schooldata=$DB->get_record_sql("SELECT * FROM {school} WHERE id=$id");
 
-$course = $DB->get_records_sql("SELECT * FROM {course}");
+$course = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname !='Resourcecourse'");
 
 $coursearray = (array) $course;
 

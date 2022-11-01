@@ -54,7 +54,9 @@ $PAGE->set_title($name);
 $PAGE->set_heading($name);
 $PAGE->set_pagelayout('standard');
 
-
+if ($_GET['msg']) {
+  echo(\core\notification::success($_GET['msg']));
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -138,44 +140,17 @@ $PAGE->set_pagelayout('standard');
 
 <body>
   <?php echo $OUTPUT->header(); ?>
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background:#1d1d1b; border:1px solid #ffe500;">
-          <h5 class="modal-title" id="exampleModalLabel" style="color:#fff;"><b>Login As</b></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" style="color:#fff;">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <form id="country" method="post">
-            <input type="hidden" name="schoolid" id="schoolid" value="<?php echo $id; ?>">
-            <div class="form-group row">
-              <label for="label" class="col-md-12"><b> University Admin List </b></label>
-              <select name="cars" class="col-md-11 m-auto modal-select" id="adminlist" style="padding:8px; border-radius:5px;">
-
-              </select>
-              <div class="col-md-12 mt-3">
-                <a href="#" class="button mb-1 text-center" onclick="schooladmin();">Login</a>
-                <a href="#" class="button mt-1 text-center" onclick="cleardata();" data-dismiss="modal">Cancel</a>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <div class="box-shadow">
-          <div class="row mb-4 heading-row">
+      <div class="p-0 col-md-12">
+        <div class=" p-0 box-shadow">
+          <div class="mb-3 heading-row">
             <div class="col-md-12">
               <h5 class="mb-0" style="color: white;" >University List</h5>
             </div>
           </div>
-          <div class="d-flex">
+          <div class="d-flex px-1">
             <div class="mr-3">
               <select id="filterselect" class="form-control">
                 <option value="1" id="schoolfilter">University Name</option>
@@ -188,23 +163,25 @@ $PAGE->set_pagelayout('standard');
             </div>
 
             <div style="text-align:end;" class="ml-2">
-              <a href="javascript:window.location.reload(true)" class="button">Clear</a>
+              <a href="javascript:window.location.reload(true)" class="btn">Clear</a>
             </div>
             <div style="text-align:end;" class="ml-auto">
-              <a href="<?php echo $CFG->wwwroot ?>/local/dashboard/index.php" class="button"><i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
+              <a href="<?php echo $CFG->wwwroot ?>/local/dashboard/index.php" class="btn btn-info"><i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
                 Add New University</a>
             </div>
           </div>
 
-          <table class="table table-striped table-bordered">
+          <table class="table table-hover table-bordered">
             <thead>
-              <tr class="bg-grey">
+              <tr class="bg-secondary">
                 <th>University Name</th>
+                <th>Domain Name</th>
                 <th>Country</th>
                 <th>City/Town</th>
+                
 
 
-                <th style="width:200px;">Action</th>
+                <th style="width:150px;">Action</th>
 
               </tr>
             </thead>
@@ -212,13 +189,12 @@ $PAGE->set_pagelayout('standard');
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
+                  <td><a href="http://<?php echo $sch->domain.".rationalmind.in"; ?>" target="_blank"><?php echo $sch->domain.".rationalmind.in"; ?></a></td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
-                  <td><a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit School" style="color:#000;"></i></a>
+                  <td><a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
                     <a href="#" class="p-2" onclick="assigncourse(<?php echo $sch->id; ?>);"><i class="fa fa-book" title="Assign Course" aria-hidden="true" style="color:#000;"></i></a>
-                    <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash" title="Delete Seller"  aria-hidden="true" style="color:#000;"></i></a>
-
-                    <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
+                    <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash" title="Delete"  aria-hidden="true" style="color:red;"></i></a>
                   </td>
                 </tr>
               <?php } ?>

@@ -27,7 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->libdir.'/completionlib.php');
-
+// echo"<pre>";
+// var_dump($CFG->libdir.'/filelib.php',$CFG->libdir.'/completionlib.php');
+// die;
 // Horrible backwards compatible parameter aliasing.
 if ($topic = optional_param('topic', 0, PARAM_INT)) {
     $url = $PAGE->url;
@@ -55,8 +57,10 @@ $renderer = $PAGE->get_renderer('format_topics');
 if (!empty($displaysection)) {
     $format->set_section_number($displaysection);
 }
+
 $outputclass = $format->get_output_classname('content');
 $widget = new $outputclass($format);
+
 echo $renderer->render($widget);
 
 // Include course format js module.

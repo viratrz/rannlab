@@ -1622,7 +1622,6 @@ abstract class base {
         if ($sr) {
             $this->set_section_number($sr);
         }
-
         switch($action) {
             case 'hide':
             case 'show':
@@ -1682,7 +1681,6 @@ abstract class base {
     public function get_config_for_external() {
         return array();
     }
-
     /**
      * Course deletion hook.
      *

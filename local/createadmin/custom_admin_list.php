@@ -8,7 +8,7 @@ require_login();
 global $USER, $DB;
 $un_id=$DB->get_record('universityadmin', ['userid'=>$USER->id]);
 
-$uni_admins = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {universityadmin} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id LIMIT 1,10000000000");
+$uni_admins = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {universityadmin} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id LIMIT 1,10000000000 ");
 
 $totalcount = count($uni_admins);
 
@@ -27,6 +27,9 @@ $PAGE->set_title($name);
 $PAGE->set_heading($name);
 $PAGE->set_pagelayout('standard');
 
+if ($_GET['msg']) {
+  echo(\core\notification::success($_GET['msg']));
+}
 ?>
 <!DOCTYPE html>
 <html>

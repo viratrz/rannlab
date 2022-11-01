@@ -337,6 +337,7 @@ if ($csv) {
 }
 
 // Row for each user
+
 foreach($progress as $user) {
     // User name
     if ($csv) {

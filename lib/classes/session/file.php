@@ -71,8 +71,13 @@ class file extends handler {
         }
 
         // NOTE: we cannot set any lock acquiring timeout here - bad luck.
-        ini_set('session.save_handler', 'files');
-        ini_set('session.save_path', $this->sessiondir);
+        if (! $_SESSION) 
+        {
+            ini_set('session.save_handler', 'files');
+            ini_set('session.save_path', $this->sessiondir);
+        }
+        // ini_set('session.save_handler', 'files');
+        // ini_set('session.save_path', $this->sessiondir);
     }
 
     /**

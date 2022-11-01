@@ -1,3 +1,7 @@
+<style>
+    .add-left{
+        text-align: left !important;    }
+</style>
 <?php
 
 //  Display the course home page.
@@ -18,6 +22,23 @@
     $marker      = optional_param('marker',-1 , PARAM_INT);
     $switchrole  = optional_param('switchrole',-1, PARAM_INT); // Deprecated, use course/switchrole.php instead.
     $return      = optional_param('return', 0, PARAM_LOCALURL);
+    $school_id= (int)$_SESSION['university_id'];
+
+    // if($school_id>0){
+    //     $course = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'courseid'=>$id), '*');
+    //     if(!$course){
+    //       redirect(new moodle_url("/my"));  
+    //     }
+    // } 
+
+if($school_id>0){
+     $resource = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'resourseid'=>$id), '*');
+     if($resource->courseid>0){
+	 $cid1=$resource->courseid;
+	 redirect(new moodle_url("/course/view.php?id=".$cid1));
+
+	 }
+}
 
     $params = array();
     if (!empty($name)) {
@@ -91,6 +112,7 @@
 
 
     require_once($CFG->dirroot.'/calendar/lib.php');    /// This is after login because it needs $USER
+
 
     // Must set layout before gettting section info. See MDL-47555.
     $PAGE->set_pagelayout('course');
@@ -287,5 +309,51 @@
     if ($completion->is_enabled()) {
         $PAGE->requires->js_call_amd('core_course/view', 'init');
     }
+$school_id= (int)$_SESSION['university_id'];
+// var_dump($school_id,$id,$USER->id);
+// die;
 
+if($school_id>0){
+     $resource = $DB->get_record('courseresource', array('university_id'=>$school_id, 'course_id'=>$id), '*');
+     if($resource->resourcecourseid){
+	 $cid=$resource->resourcecourseid;
+	 $curl= new moodle_url("/course/view1.php?id=".$cid); 
+	 echo file_get_contents( $curl);
+
+	 }
+}
+
+
+//This is additional resources button for another course which is inbuild in this courses
+        $straddeither = get_string('addresourceoractivity');
+
+        $ajaxcontrol = html_writer::start_tag('div', array('class' => 'mdl-right'));
+        $ajaxcontrol .= html_writer::start_tag('div', array('class' => 'section-modchooser add-left'));
+
+        $icon = $OUTPUT->pix_icon('t/add', '');
+        $span = html_writer::tag('span', $straddeither, array('class' => 'section-modchooser-text '));
+
+        $ajaxcontrol .= html_writer::tag('button', $icon . $span, [
+            'class' => 'section-modchooser-link btn btn-link',
+            'data-action' => 'open-chooser',
+            'data-sectionid' => $section,
+            'data-sectionreturnid' => $sectionreturn,
+        ]);
+
+        $ajaxcontrol .= html_writer::end_tag('div');
+        $ajaxcontrol .= html_writer::end_tag('div');
+
+        // Load the JS for the modal.
+		$roleassignments = $DB->get_record_sql("SELECT * FROM {role_assignments} WHERE roleid IN(4,9,10,11) AND userid= $USER->id");
+		$roleidc=(int)$roleassignments->id; 
+		$resource_id = $DB->get_record("courseresource",['course_id'=>$course->id, 'university_id'=>$_SESSION['university_id']]);
+        // var_dump($resource_id->resourcecourseid);
+        // die;
+        $obj = new core_course_renderer($PAGE,'General');
+        $obj->course_activitychooser($course->id);
+        if($roleidc)
+        {
+        //  echo $ajaxcontrol;
+         echo "<a href='$CFG->wwwroot/course/view.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>Add Resources</a>";
+        }
     echo $OUTPUT->footer();

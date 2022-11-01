@@ -1,37 +1,10 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Main login page.
- *
- * @package    core
- * @subpackage auth
- * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 require_once('../../config.php');
 require_once('lib.php');
 require_login();
 
 
 global $USER, $DB;
-
-// $tt=user_has_role_assignment($USER->id, 11);
-// var_dump($tt);
 
 if (!is_siteadmin()) {
    redirect(new moodle_url("/my"));
@@ -146,11 +119,16 @@ $PAGE->set_pagelayout('standard');
         min-height: 35px !important;
         max-height: 35px !important;
     }
+    #loader
+    {
+      display: none;
+    }
    </style>
 </head>
 
 <body>
    <?php echo $OUTPUT->header(); ?>
+   
    <div class="container">
       <div class="row">
          <div class="col-md-12 px-0">
@@ -159,7 +137,7 @@ $PAGE->set_pagelayout('standard');
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
-            <form action="/action_page.php" id="addnewuniversity" method="get">
+            <form action="" id="addnewuniversity" method="get">
                <div class="form-group row">
                   <label for="label" class="col-md-3">Long Name <span class="err"> *</span> </label>
                   <input type="text" class="form-control col-md-9 err" id="longname" placeholder="Enter Long Name" name="longname" required>
@@ -192,10 +170,17 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">City/Town <span class="err">*</span> </label>
-                  <input type="text" class="form-control col-md-9" id="city" placeholder="Enter City/Town" name="city" required>
+                  <input type="text" class="form-control col-md-9" id="city" placeholder="Enter City/Town" onblur="allLetter(this)" title="Minimum Three letter Require In City/Town" name="city" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0" id="city_msg"></span>
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Enter Domain<span class="err"> *</span></label> 
+                  <input type="text" class="form-control col-md-9" id="domain" placeholder="Enter Domain" name="domain" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
+
                <?php 
                   $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
                ?>
@@ -212,28 +197,27 @@ $PAGE->set_pagelayout('standard');
                <span id="package_info"> </span>
 
                </div>
-               
-
+                        
                <div class="heading mb-3">
                   <h5 class="text-primary font-weight-bold">Enter University Super Admin Details</h5>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name" name="username" required>
+                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name"  name="username" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" name="firstname" required>
+                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" onblur="allLetter(this)" name="firstname" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                     <span class="error1 col-md-8 pl-0" id="firstname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Last Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" name="lastname" required>
+                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" onblur="allLetter(this)" name="lastname" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                     <span class="error1 col-md-8 pl-0" id="lastname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err">*</span></label>
@@ -265,9 +249,14 @@ $PAGE->set_pagelayout('standard');
                      <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                   </div>
-                  <div class="d-flex">&nbsp;&nbsp;
-                     <a href="#" class="button d-block  text-center" onclick="adduniversity();">Create New University </a>&nbsp;
+                  <div class="d-flex col-md-6">
+                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New University </a>&nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
+                  </div>
+                  <div class="justify-content-center col-md-1" id="loader">
+                  <div class="spinner-border text-primary" role="status">
+                     <span class="sr-only">Loading...</span>
+                  </div>
                   </div>
             </form>
          </div>
@@ -275,6 +264,26 @@ $PAGE->set_pagelayout('standard');
    </div>
 
 <script>
+function allLetter(inputtxt)
+{ 
+   var letters = /^[A-Za-z]+$/;
+   var msg_id = inputtxt.name;
+   msg_id = msg_id+"_msg";
+   if(inputtxt.value.length > 0)
+   {
+      if(inputtxt.value.match(letters))
+      {
+         $("#"+msg_id).html("");
+      return true;
+      }
+      else
+      {
+         $("#"+msg_id).html("Please input alphabet characters only");
+      return false;
+      }
+      }
+   }
+      
 $(document).ready(function() 
 {
    $(".eye").click(function() 
@@ -317,6 +326,7 @@ function adduniversity()
    var address = $("#address").val();
    var country = $("#country").val();
    var city = $("#city").val();
+   var domain = $("#domain").val();
    var package = $("#package").val();
    
    var username = $("#username").val();
@@ -327,7 +337,7 @@ function adduniversity()
    var password = $("#password").val();
    var confirm_password = $("#confirmpassword").val();
 
-   var arr = [schoolname, shortname, address, country, city, package, username, firstname, lastname, email, confirm_email, password, confirm_password];
+   var arr = [schoolname, shortname, address, country, city, domain, package, username, firstname, lastname, email, confirm_email, password, confirm_password];
    var error1 = document.getElementsByClassName('error1');
    var tiktok=true;
    for(let i=0; i<arr.length; i++)
@@ -341,9 +351,9 @@ function adduniversity()
       else
       {
          if(i == 3)
-            error1[i].innerHTML = "Please Select Atleat One";
-         else if(i == 5)
-            error1[i].innerHTML = "Please Select Atleat One";
+            error1[i].innerHTML = "Please Select One";
+         else if(i == 6)
+            error1[i].innerHTML = "Please Select One";
          else
             error1[i].innerHTML = "This Field Is Required";
          error1[i].style.color = "Red";
@@ -355,28 +365,28 @@ function adduniversity()
    {
       if(validateEmail(email))
       {
-         error1[9].innerHTML="";
+         error1[10].innerHTML="";
          if (email == confirm_email) 
          {
-            error1[10].innerHTML="";
+            error1[11].innerHTML="";
             var pass= true;
          }
          else 
-            error1[10].innerHTML="Confirm Email Not Match";
+            error1[11].innerHTML="Confirm Email Not Match";
       }
       else
       {
-         error1[9].innerHTML="Invalid Email Format";
+         error1[10].innerHTML="Invalid Email Format";
       }
       if (pass) 
       {
          if (password == confirm_password) 
          {
-            error1[12].innerHTML="";
+            error1[13].innerHTML="";
             var jadu = true;
          } 
          else 
-            error1[12].innerHTML="Confirm Password Not Match";
+            error1[13].innerHTML="Confirm Password Not Match";
       } 
    }
    
@@ -387,28 +397,32 @@ function adduniversity()
          url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/customuniversity.php",
          dataType: "json",
          data: $("#addnewuniversity").serialize(),
-         async: false,
+         beforeSend: function(){
+         $("#loader").show();
+         },
+         complete:function(data){
+         $("#loader").hide();
+         },
          success: function(json) 
          {
             if (json.success) {
-               alert(json.msg);
-               window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/table.php";
+               // alert(json.msg);
+               window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/table.php?msg="+json.msg;
             }
             if (json.msg1){
-               document.getElementsByClassName("error1")[0].innerHTML = "University already exist";   
-                  document.getElementById("longname").style.borderColor = "red";  
-            }
-            if (json.msg2){
-               document.getElementsByClassName("error1")[6].innerHTML = "Username already exist";   
-                  document.getElementById("username").style.borderColor = "red";  
-            }
-            if (json.msg3){
-               document.getElementsByClassName("error1")[9].innerHTML = "email already exist";   
-                  document.getElementById("email").style.borderColor = "red";  
+               error1[0].innerHTML = json.msg1;    
             }
             if (json.msg4){
-               document.getElementsByClassName("error1")[1].innerHTML = "shortname already exist";   
-                  document.getElementById("shortname").style.borderColor = "red";  
+               error1[1].innerHTML = json.msg4;    
+            }
+            if (json.unique){
+               error1[5].innerHTML = json.unique;     
+            }
+            if (json.msg2){
+               error1[7].innerHTML = json.msg2;    
+            }
+            if (json.msg3){
+               error1[10].innerHTML = json.msg3;   
             }
          }
       });

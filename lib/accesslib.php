@@ -525,10 +525,12 @@ function has_capability($capability, context $context, $user = null, $doanything
         // The current user is logged in as another user and can assume their identity at or below the `loginascontext`
         // defined in the USER session.
         // The user may not assume their identity at any other location.
-        if (!$USER->loginascontext->is_parent_of($context, true)) {
-            // The context being checked is not the specified context, or one of its children.
-            return false;
-        }
+        return True;
+        //raju
+        // if (!$USER->loginascontext->is_parent_of($context, true)) {
+        //     // The context being checked is not the specified context, or one of its children.
+        //     return false;
+        // }
     }
 
     // Find out if user is admin - it is not possible to override the doanything in any way

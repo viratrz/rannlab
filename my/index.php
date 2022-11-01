@@ -199,8 +199,8 @@ $header.='<!DOCTYPE html>
   align-items: center;
   height: 100%;
 }
-      </style>
-   </head>';
+</style>
+</head>';
 echo $header;
 
 echo $OUTPUT->header();
@@ -216,8 +216,8 @@ $html='';
             $check = $DB->get_records_sql("select * from {universityadmin} where userid = '$id'");
             $check1 = count($check);
             if($check1 == 1){
-               $data=$DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
-               $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} mcs on mc.id = mcs.course_id inner join {school} ms on ms.id = mcs.university_id inner join {universityadmin} mcu on mcu.university_id = ms.id where mc.visible=1 and mcu.userid='$id'");
+               // $data=$DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
+               $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} assc on mc.id = assc.course_id inner join {school} ms on ms.id = assc.university_id inner join {universityadmin} ua on ua.university_id = ms.id WHERE ua.university_id= $_SESSION[university_id]");
             }
             else{
                $data = $DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
@@ -278,5 +278,6 @@ $html='';
    </body>
 </html>';
 echo $html;
+
 echo $OUTPUT->footer();
 ?>

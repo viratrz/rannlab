@@ -182,7 +182,9 @@ class course_enrolment_manager {
             $sqltotal .= "WHERE $filtersql";
             $this->totalusers = (int)$DB->count_records_sql($sqltotal, $params);
         }
+        
         return $this->totalusers;
+        
     }
 
     /**
@@ -213,6 +215,7 @@ class course_enrolment_manager {
                            ue.id IS NULL";
             $this->totalotherusers = (int)$DB->count_records_sql($sql, $params);
         }
+        
         return $this->totalotherusers;
     }
 
@@ -258,6 +261,7 @@ class course_enrolment_manager {
                   ORDER BY $sort $direction";
             $this->users[$key] = $DB->get_records_sql($sql, $params, $page*$perpage, $perpage);
         }
+     
         return $this->users[$key];
     }
 
@@ -512,12 +516,27 @@ class course_enrolment_manager {
 
         $fields      = 'SELECT '.$ufields;
         $countfields = 'SELECT COUNT(1)';
-        $sql = " FROM {user} u
+        // ******************Start***************
+        if (is_siteadmin()) 
+        {
+            $sql = " FROM {user} u
                       $joins
             LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
                 WHERE $wherecondition
                       AND ue.id IS NULL";
         $params['enrolid'] = $enrolid;
+        } 
+        else 
+        {
+            $sql = " FROM {user} u
+                      $joins
+            LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
+            LEFT JOIN {university_user} ua ON (ua.userid = u.id)
+                WHERE $wherecondition AND ua.university_id = $_SESSION[university_id]
+                      AND ue.id IS NULL";
+        $params['enrolid'] = $enrolid;
+        }
+        // ******************Start***************     
 
         return $this->execute_search_queries($search, $fields, $countfields, $sql, $params, $page, $perpage, $addedenrollment,
                 $returnexactcount);

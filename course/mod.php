@@ -64,7 +64,6 @@ if ($groupmode !== '') {
 $PAGE->set_url($url);
 
 require_login();
-
 //check if we are adding / editing a module that has new forms using formslib
 if (!empty($add)) {
     $id          = required_param('id', PARAM_INT);
@@ -131,7 +130,6 @@ if (!empty($add)) {
 
     redirect($return);
 }
-
 
 if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
     $cm     = get_coursemodule_from_id('', $USER->activitycopy, 0, true, MUST_EXIST);

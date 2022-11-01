@@ -44,6 +44,10 @@ $PAGE->set_title($name);
 $PAGE->set_heading($name);
 $PAGE->set_pagelayout('standard');
 
+if ($_GET['msg']) {
+  echo(\core\notification::success($_GET['msg']));
+}
+
 ?>
 <!DOCTYPE html>
 <html>

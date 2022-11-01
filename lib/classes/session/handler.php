@@ -42,7 +42,10 @@ abstract class handler {
      * @return bool success
      */
     public function start() {
-        return session_start();
+        if (! $_SESSION) {
+            return session_start();
+        }
+        return true;
     }
 
     /**

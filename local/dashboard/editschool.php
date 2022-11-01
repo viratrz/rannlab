@@ -186,9 +186,6 @@ $thingnode->make_active();
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
-               <div class="heading mb-3">
-                  <h5 style="color: #000"><b>More Details</b></h5>
-               </div>
 
                <div class="form-group row">
                   <label for="label" class="col-md-3">Country <span class="err4"> *</span></label>

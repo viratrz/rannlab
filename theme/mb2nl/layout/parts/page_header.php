@@ -23,7 +23,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+global $CFG, $DB,$USER;
 $coursemenu = $OUTPUT->context_header_settings_menu();
 $modmenu = $OUTPUT->region_main_settings_menu();
 $showheadingbuttons = ( ! $coursemenu && $OUTPUT->page_heading_button() );
@@ -32,9 +32,13 @@ $headerstyle = theme_mb2nl_theme_setting( $PAGE, 'headerstyle' );
 $bgimg = theme_header_bgimage();
 $cls = $bgimg ? 'isbg' : 'nobg';
 $headingcls = $COURSE->id > 1 ? ' iscurse' : ' nocourse';
-
+$status=$DB->record_exists("school", array("id"=>$_SESSION['university_id']));
+if($status)
+{
+	$universe=$DB->get_record("school", array("id"=>$_SESSION['university_id']));
+}
 ?>
-<div id="page-header" class="<?php echo $cls; ?>">
+<div id="page-header" style="background-color:<?php echo $universe->header_color; ?>" class="<?php echo $cls; ?>">
 	<?php if ( $bgimg ) : ?>
 		<div class="page-header-img" style="background-image:url('<?php echo $bgimg; ?>');"></div>
 	<?php endif; ?>

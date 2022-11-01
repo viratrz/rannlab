@@ -196,13 +196,15 @@ if (!empty($instanceid) && !empty($roleid)) {
         $groupsql = "JOIN {groups_members} gm ON (gm.userid = u.id AND gm.groupid = :groupid)";
         $params['groupid'] = $currentgroup;
     }
+    $uni = $_SESSION['university_id'];
 
     $countsql = "SELECT COUNT(DISTINCT(ra.userid))
                    FROM {role_assignments} ra
                    JOIN {user} u ON u.id = ra.userid
+                   JOIN {university_user} uu ON u.id = uu.userid
                    $groupsql
-                  WHERE ra.contextid $relatedctxsql AND ra.roleid = :roleid";
-
+                  WHERE ra.contextid $relatedctxsql AND ra.roleid = :roleid AND uu.university_id =$uni";
+    
     $totalcount = $DB->count_records_sql($countsql, $params);
 
     list($twhere, $tparams) = $table->get_sql_where();
@@ -260,8 +262,10 @@ if (!empty($instanceid) && !empty($roleid)) {
 
     // Get record from sql_internal_table_reader and merge with records got from legacy log (if needed).
     if (!$onlyuselegacyreader) {
+        $univ=$_SESSION["university_id"];
         $sql = "SELECT ra.userid, $usernamefields, u.idnumber, COUNT(DISTINCT l.timecreated) AS count
                   FROM {user} u
+                  JOIN {university_user} uu ON uu.userid =u.id 
                   JOIN {role_assignments} ra ON u.id = ra.userid AND ra.contextid $relatedctxsql AND ra.roleid = :roleid
              $groupsql
                   LEFT JOIN {" . $logtable . "} l
@@ -271,7 +275,7 @@ if (!empty($instanceid) && !empty($roleid)) {
                        AND l.anonymous = 0
                        AND l.contextlevel = :contextlevel
                        AND (l.origin = 'web' OR l.origin = 'ws')
-                       AND l.userid = ra.userid";
+                       AND l.userid = ra.userid   WHERE uu.university_id=$univ";
         // We add this after the WHERE statement that may come below.
         $groupbysql = " GROUP BY ra.userid, $usernamefields, u.idnumber";
 
@@ -279,7 +283,7 @@ if (!empty($instanceid) && !empty($roleid)) {
         $params['contextlevel'] = CONTEXT_MODULE;
 
         if ($twhere) {
-            $sql .= ' WHERE '.$twhere; // Initial bar.
+            $sql .= 'WHERE'.$twhere; // Initial bar.
         }
         $sql .= $groupbysql;
         if ($table->get_sql_sort()) {

@@ -247,6 +247,7 @@ if ($action !== false && confirm_sesskey()) {
             // Start output.
             /* @var core_course_management_renderer|core_renderer $renderer */
             $renderer = $PAGE->get_renderer('core_course', 'management');
+           
             echo $renderer->header();
             echo $renderer->heading(get_string('deletecategory', 'moodle', $category->get_formatted_name()));
 
@@ -498,6 +499,7 @@ if ($displaycategorylisting) {
     echo $renderer->category_listing($category);
     echo $renderer->grid_column_end();
 }
+
 if ($displaycourselisting) {
     echo $renderer->grid_column_start($coursesize, 'course-listing');
     if (!$issearching) {

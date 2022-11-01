@@ -10,7 +10,9 @@ $pagetitle = $title;
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagelayout('standard');
+
 ?>
+   <?php echo $OUTPUT->header(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -110,11 +112,16 @@ $PAGE->set_pagelayout('standard');
          min-height: 35px !important;
          max-height: 35px !important;
       }
+      #loader
+      {
+         display: none;
+         text-align: center;
+      }
    </style>
 </head>
 
 <body>
-   <?php echo $OUTPUT->header(); ?>
+
    <div class="container">
       <div class="row">
          <div class="col-md-12 px-0">
@@ -123,7 +130,7 @@ $PAGE->set_pagelayout('standard');
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
-            <form action="/action_page.php" id="addnewAdmin" method="get">
+            <form action="" id="addnewAdmin" method="get">
                      
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
@@ -196,15 +203,23 @@ $PAGE->set_pagelayout('standard');
                   
                </div>
                   <div class="d-flex">
-                     <a href="#" class="button d-block  text-center" onclick="addAdmin();">Create User</a> &nbsp;
+                     <a href="##" class="button d-block  text-center" onclick="addAdmin();">Create User</a> &nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
+
+                     <div id="loader" class="col-md-6">
+                     <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                     </div>
+                     </div>
                   </div>
+                  
             </form>
          </div>
       </div>
    </div>
 
 <script>
+
 $(document).ready(function() 
 {
    $(".eye").click(function() {
@@ -306,19 +321,22 @@ function addAdmin()
          $("#emailer").text('Invalid Email');
       }
       else {
-  
       $.ajax({
       type: "POST",
       url: "<?php echo $CFG->wwwroot ?>" + "/local/createuser/create_user.php",
       dataType: "json",
       data: $("#addnewAdmin").serialize(),
-      async: false,
+      beforeSend: function(){
+      $("#loader").show();
+      },
+      complete:function(data){
+      $("#loader").hide();
+      },
       success: function(json) {
 
          if (json.success) 
          {
-            alert(json.ucs);
-            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/user_list.php";
+            window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/user_list.php?msg="+json.ucs;
          } 
         if(json.ule)
          {
@@ -333,6 +351,8 @@ function addAdmin()
             $("#a_email").show();
          }           
       }
+      
+
    });
 }
    }

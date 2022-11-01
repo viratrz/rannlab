@@ -819,6 +819,7 @@ class group_members_selector extends groups_user_selector_base {
  * @copyright 1999 onwards Martin Dougiamas  http://dougiamas.com
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 class group_non_members_selector extends groups_user_selector_base {
     /**
      * An array of user ids populated by find_users() used in print_user_summaries()

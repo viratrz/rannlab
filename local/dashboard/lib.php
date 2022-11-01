@@ -1,13 +1,14 @@
 <?php
 
+// require_once('../../user/lib.php');
+// require_once($CFG->libdir.'/adminlib.php');
+// require_once($CFG->libdir.'/clilib.php');
 function local_dashboard_extend_navigation(global_navigation $nav){
-
 
     global $CFG, $PAGE,$DB,$USER;
 
-     
-
     $universityadmin = $DB->get_record("universityadmin",array("userid"=>$USER->id));
+
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
     if($universityadmin)
     {
@@ -157,7 +158,7 @@ function get_child_cat($id){
    return $id1;
 }
 // function createresource($id,$schoolid){
-//     global $DB;
+//    global $DB;
 // 	$tomorrow = new DateTime("now", core_date::get_server_timezone_object());
 //     $newcourse=new stdClass();
 //     $newcourse->category=22;
@@ -198,3 +199,118 @@ function get_child_cat($id){
 //      return $courseid;
 
 // }
+
+function create_coursess($event)
+{
+    global $DB;
+    purge_caches();
+    $table="course";
+    $dataobject=new stdClass();
+    $dataobject->id=(int)$event->objectid;
+    $dataobject->cb_userid=(int)$event->userid;
+    $dataobject->tenent_id=(int)$_SESSION['university_id'];
+    $DB->update_record($table, $dataobject);
+}
+
+function module_create($evv)
+{
+    global $DB;
+    purge_caches();
+    $table2="course_modules";
+    $dataobject2=new stdClass();
+    $dataobject2->id=(int)$evv->objectid;
+    $dataobject2->cb_userid=(int)$evv->userid;
+    $dataobject2->tenent_id=(int)$_SESSION['university_id'];
+    $DB->update_record($table2, $dataobject2);
+}
+
+
+function createresource($id,$schoolid,$user){
+    global $DB, $USER;
+    $maincat2 = $DB->get_record_sql("SELECT id FROM {course_categories} WHERE idnumber='resourcecat'");
+	$tomorrow = new DateTime("now", core_date::get_server_timezone_object());
+    $newcourse=new stdClass();
+    $newcourse->category=$maincat2->id;
+    $newcourse->sortorder=900000;
+    $newcourse->fullname='Resourcecourse';
+    $newcourse->shortname="course".$id."#".time();
+    $newcourse->idnumber="";
+    $newcourse->summary="";
+    $newcourse->summaryformat=1;
+    $newcourse->format="topics";
+    $newcourse->showgrades=1;
+    $newcourse->newsitems=3;
+    $newcourse->startdate=$tomorrow->getTimestamp();
+    $newcourse->enddate=$tomorrow->getTimestamp();
+    $newcourse->relativedatesmode=0;
+    $newcourse->marker=1;
+    $newcourse->maxbytes=0;
+    $newcourse->legacyfiles=0;
+    $newcourse->showreports=0;
+    $newcourse->visible=0;
+    $newcourse->visibleold=0;
+    $newcourse->groupmode=0;
+    $newcourse->groupmodeforce=0;
+    $newcourse->defaultgroupingid=0;
+    $newcourse->lang="";
+    $newcourse->calendartype="";
+    $newcourse->theme="";
+    $newcourse->timecreated=time();
+    $newcourse->timemodified=time();
+    $newcourse->requested=0;
+    $newcourse->enablecompletion=1;
+    $newcourse->completionnotify=0;
+    $newcourse->cacherev=1655381653;
+    $newcourse->showactivitydates=1;
+    $newcourse->showcompletionconditions=1;
+     //$DB->set_debug(true);
+    $courseid=$DB->insert_record('course', $newcourse);
+
+    // if($courseid)
+    //  {
+    //     $enrol=new stdClass();
+    //     $enrol->enrol="manual";
+    //     $enrol->status=0;
+    //     $enrol->courseid=$courseid;
+    //     $enrol->sortorder=0;
+    //     $enrol->enrolperiod=0;
+    //     $enrol->enrolstartdate=0;
+    //     $enrol->enrolenddate=0;
+    //     $enrol->expirynotify=0;
+    //     $enrol->expirythreshold=86400;
+    //     $enrol->notifyall=0;
+    //     $enrol->roleid=3;
+    //     $enrol->timecreated=time();
+    //     $enrol->timemodified=time();
+    //     $enrolid=$DB->insert_record('enrol', $enrol);
+    //  }
+    if ($courseid) 
+    {
+        $enrol=new stdClass();
+        $enrol->enrol="manual";
+        $enrol->status=0;
+        $enrol->courseid=$courseid;
+        $enrol->sortorder=0;
+        $enrol->enrolperiod=0;
+        $enrol->enrolstartdate=0;
+        $enrol->enrolenddate=0;
+        $enrol->expirynotify=0;
+        $enrol->expirythreshold=86400;
+        $enrol->notifyall=0;
+        $enrol->roleid=3;
+        $enrol->timecreated=time();
+        $enrol->timemodified=time();
+        $enrolid=$DB->insert_record('enrol', $enrol);
+        purge_caches();
+        purge_caches();
+        enrol_try_internal_enrol($courseid, $user, 9, time());
+        $courseresource = new stdClass();
+        $courseresource->university_id=$schoolid;
+        $courseresource->course_id=$id;
+        $courseresource->userid	=$user;
+        $courseresource->timecreated=time();
+        $courseresource->resourcecourseid=$courseid;
+        $courseresource->usermodified=$USER->id;
+        $DB->insert_record('courseresource', $courseresource);
+    }
+}

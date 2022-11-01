@@ -2153,7 +2153,7 @@ function course_overviewfiles_options($course) {
  * @return object new course instance
  */
 function create_course($data, $editoroptions = NULL) {
-    global $DB, $CFG;
+    global $DB, $CFG, $USER;
 
     //check the categoryid - must be given for all new courses
     $category = $DB->get_record('course_categories', array('id'=>$data->category), '*', MUST_EXIST);
@@ -2214,6 +2214,14 @@ function create_course($data, $editoroptions = NULL) {
     $data->visibleold = $data->visible;
 
     $newcourseid = $DB->insert_record('course', $data);
+
+    // if ($newcourseid) 
+    // {
+    //     $created_by = new stdClass();
+    //     $created_by->id = $newcourseid;
+    //     $created_by->cb_userid = $USER->id;
+    //     $DB->update_record('course', $created_by);
+    // }
     $context = context_course::instance($newcourseid, MUST_EXIST);
 
     if ($editoroptions) {

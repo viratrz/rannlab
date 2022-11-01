@@ -375,7 +375,10 @@ class manager {
         }
 
         // Set configuration.
-        session_name($sessionname);
+        if (! $_SESSION) {
+            session_name($sessionname);
+        }
+        // session_name($sessionname);
 
         $sessionoptions = [
             'lifetime' => 0,
@@ -390,9 +393,12 @@ class manager {
             $sessionoptions['samesite'] = 'None';
         }
 
-        session_set_cookie_params($sessionoptions);
-
-        ini_set('session.use_trans_sid', '0');
+        if (! $_SESSION) {
+            session_set_cookie_params($sessionoptions);
+        }
+        // session_set_cookie_params($sessionoptions);
+        if (! $_SESSION) {
+            ini_set('session.use_trans_sid', '0');
         ini_set('session.use_only_cookies', '1');
         ini_set('session.use_strict_mode', '0');      // We have custom protection in session init.
         ini_set('session.serialize_handler', 'php');  // We can move to 'php_serialize' after we require PHP 5.5.4 form Moodle.
@@ -401,6 +407,8 @@ class manager {
         ini_set('session.gc_probability', 1);
         ini_set('session.gc_divisor', 1000);
         ini_set('session.gc_maxlifetime', 60*60*24*4);
+        }
+        
     }
 
     /**

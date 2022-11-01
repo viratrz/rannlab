@@ -78,7 +78,20 @@ if ($package_id->num_of_user > $total_user)
     $contextid = 1;
 
     role_assign($roleid, $user_id ,$contextid);
+    
+    if ($user_id) {
+        $sub = "Welcome";
+        $msg = "Hi";
+        $to_user = new stdClass();
+        $to_user->email= $email;
+        $to_user->id =(int)$user_id;
 
+        $from_user = new stdClass();
+        $from_user->email= 'clientsmtp@dcc.rannlab.com';
+        $from_user->maildisplay= true;
+
+        email_to_user($to_user,$from_user,$sub,$msg);
+    }
     if($user_id)
     {
         $admininfo =  new stdClass();

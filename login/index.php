@@ -29,6 +29,15 @@ require_once('lib.php');
 
 redirect_if_major_upgrade_required();
 
+if (isset($_COOKIE['uname'])) {
+    $login = \core\session\manager::get_login_token();
+    $username = $_COOKIE['uname'];
+    $password = $_COOKIE['pass'];
+    $auth = authenticate_user_login($username,$password,$login);
+    if ($auth){
+        complete_user_login($auth);
+    }
+}
 $testsession = optional_param('testsession', 0, PARAM_INT); // test session works properly
 $anchor      = optional_param('anchor', '', PARAM_RAW);     // Used to restore hash anchor to wantsurl.
 
@@ -150,6 +159,10 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         $frm = false;
     } else {
         if (empty($errormsg)) {
+            // var_dump($frm->username,$frm->password);
+            // die;
+            setcookie('uname', $frm->username, time()+60*60*24*90);
+            setcookie('pass', $frm->password, time()+60*60*24*90);
             $logintoken = isset($frm->logintoken) ? $frm->logintoken : '';
             $user = authenticate_user_login($frm->username, $frm->password, false, $errorcode, $logintoken);
         }
@@ -207,11 +220,18 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
             die;
         }
 
+        // setcookie('user', 1, time()+60*60*24*30);
+        // setcookie('d', $user, time()+60*60*24*30);
+        // unset(setcookie());
+        // $_SESSION['university_id'] = $universityadmin->university_id;
     /// Let's get them all set up.
         complete_user_login($user);
 
+        $universityadmin = $DB->get_record_sql("SELECT university_id FROM {universityadmin} WHERE userid= $USER->id UNION SELECT university_id FROM {university_user} WHERE userid= $USER->id");
+        $_SESSION["university_id"] = $universityadmin->university_id;
+        
         \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
-
+        
         // sets the username cookie
         if (!empty($CFG->nolastloggedin)) {
             // do not store last logged in user in cookie
@@ -227,6 +247,7 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         }
 
         $urltogo = core_login_get_return_url();
+        
 
     /// check if user password has expired
     /// Currently supported only for ldap-authentication module
@@ -273,6 +294,13 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
 
         // test the session actually works by redirecting to self
         $SESSION->wantsurl = $urltogo;
+// ****************************************************
+        global $DB;
+        $university = $DB->get_record_sql("SELECT  mu.university_id  FROM mdl_universityadmin mu  WHERE mu.userid= $USER->id UNION SELECT muu.university_id FROM mdl_university_user muu  WHERE muu.userid= $USER->id");
+        $domain = $DB->get_record("school", ['id'=>$university->university_id]);
+        $CFG->wwwroot='http://'.$domain->domain.'.rationalmind.in';
+
+// ****************************************************
         redirect(new moodle_url(get_login_url(), array('testsession'=>$USER->id)));
 
     } else {

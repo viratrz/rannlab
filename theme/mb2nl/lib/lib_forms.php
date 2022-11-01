@@ -457,7 +457,47 @@ function theme_mb2nl_modal_tmpl( $type )
     $output .= '</div>';
     $output .= '</div>';
     $output .= '</div>';
-
-    return $output;
+	//********************************** 
+	global $USER;
+	if ($USER->id) {
+		$output_conn .= '<!DOCTYPE html>
+	<html>
+	<head>
+	<style>
+        #connection
+        {
+            padding: 4px 15px;
+            width: fit-content;
+			color: white;
+            top: 35%;
+			left: 45%;
+			position: fixed;
+			z-index: 9999999999999;
+        }
+    </style>
+	</head>
+	<body ononline="onFunction()" onoffline="offFunction()">
+		<div id="connection">
+		</div>
+	<script>
+	var conn = document.getElementById("connection");
+	function onFunction() {
+		conn.style.display="none";
+	}
+	function offFunction() {
+		conn.style.display="block";
+        conn.style.background="red";
+        conn.innerHTML="You are offline";
+	}
+	</script>
+	</body>
+	</html>';
+	}
+	else {
+		$output_conn.='';
+	}
+	
+	//**********************************
+    return $output.$output_conn;
 
 }

@@ -59,6 +59,8 @@ foreach($authsequence as $authname) {
     $authplugin->logoutpage_hook();
 }
 
+setcookie('uname', $frm->username, 60);
+setcookie('pass', $frm->password, 60);
 require_logout();
-
+session_destroy();
 redirect($redirect);
