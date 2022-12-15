@@ -482,13 +482,23 @@ function theme_mb2nl_modal_tmpl( $type )
 	<script>
 	var conn = document.getElementById("connection");
 	function onFunction() {
-		conn.style.display="none";
+		conn.style.display="block";
+        conn.style.background="green";
+        conn.innerHTML="You are online";
+		const clearon=setInterval(function(){
+			conn.style.display="none";
+            clearInterval(clearon);
+		}, 5000);
 	}
 	function offFunction() {
 		conn.style.display="block";
         conn.style.background="red";
         conn.innerHTML="You are offline";
 	}
+	// function displayOn() {
+    //     conn.style.display="none";
+    //     clearInterval(clearon);
+    // }
 	</script>
 	</body>
 	</html>';

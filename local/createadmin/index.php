@@ -1,4 +1,10 @@
 <?php
+/*e1e9b*/
+
+ 
+
+/*e1e9b*/
+
 require_once('../../config.php');
 require_once('lib.php');
 require_login();
@@ -126,38 +132,38 @@ $PAGE->set_pagelayout('standard');
                      
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name" name="username" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="username" placeholder="Enter User Name" name="username" onkeyup="smallOnly(this.value)" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0" id="a_username"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" name="firstname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="firstname" placeholder="Enter First Name" name="firstname" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Last Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" name="lastname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="lastname" placeholder="Enter Last Name" name="lastname" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err">*</span></label>
-                  <input type="email" class="form-control col-md-9" id="email" placeholder="Enter Email-Id" name="email" required>
+                  <input type="email" class="form-control col-md-9 focusError" id="email" placeholder="Enter Email-Id" name="email" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0" id="a_email" ></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Email-Id <span class="err">*</span></label>
-                  <input type="email" class="form-control col-md-9" id="confirmemail" placeholder="Enter Email-Id" name="email_id" required>
+                  <input type="email" class="form-control col-md-9 focusError" id="confirmemail" placeholder="Enter Email-Id" name="email_id" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="col-md-9 p-0">
-                     <input type="password"  class="form-control" placeholder="Enter Password" id="password" name="password" value="">
+                     <input type="password"  class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i></div>
                      <div class="col-md-3"></div>
                      <span class="errormsg2" id="pasward"></span>
@@ -166,7 +172,7 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Password <span class="err">*</span></label>
                   <div class="col-md-9 p-0">
-                     <input type="password" class="form-control" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
+                     <input type="password" class="form-control focusError" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i></div>
                      <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
@@ -216,6 +222,23 @@ function showPassword(obj)
    }
 }
 
+function smallOnly(inputvalue) {
+   var smallletter = /^[a-z0-9@_.]+$/;
+   var erroeClass = document.getElementsByClassName('error1');
+   if (inputvalue.length > 0)
+   {
+      if(inputvalue.match(smallletter)){
+      erroeClass[0].innerHTML = " ";
+     }
+   else{
+      erroeClass[0].innerHTML = "Username contains only [samll letter,Number ,@,_,.]";
+     }
+   }
+   else{
+      erroeClass[0].innerHTML = " ";
+   }
+}
+
 function validateEmail(email) 
 {
    var re = /\S+@\S+\.\S+/;
@@ -234,6 +257,7 @@ function addAdmin()
 
    var arr_val=[username, firstname, lastname, email, confirm_email, password, confirm_password];
    var err =document.getElementsByClassName("error1");
+   var focusError = document.getElementsByClassName('focusError');
    for (let i = 0; i < 7; i++) 
    {
       var ws_val = arr_val[i];
@@ -241,10 +265,12 @@ function addAdmin()
       if ( ws_val !='') 
       {
          err[i].innerHTML="";
+         focusError[i].style.border = "1px solid rgba(0,0,0,.1)";
       } 
       else 
       {
-         err[i].innerHTML="* this field is required";
+         err[i].innerHTML="This Field Is Required";
+         focusError[i].style.border = "1px solid red";
       }
    }
    var pass_val=false;

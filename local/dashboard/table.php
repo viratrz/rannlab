@@ -64,9 +64,11 @@ if ($_GET['msg']) {
 <head>
   <meta charset="utf-8">
   <title>University List</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://kit.fontawesome.com/5e0bc8cc0d.js" crossorigin="anonymous"></script>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  
 
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -91,10 +93,7 @@ if ($_GET['msg']) {
     }
 
     td a {
-      padding: 6px 32px;
       color: #fff;
-      border-radius: 8px;
-      white-space: nowrap;
     }
 
     td a:hover {
@@ -147,7 +146,7 @@ if ($_GET['msg']) {
         <div class=" p-0 box-shadow">
           <div class="mb-3 heading-row">
             <div class="col-md-12">
-              <h5 class="mb-0" style="color: white;" >University List</h5>
+              <h5 class="mb-0 ml-0" style="color: white;">University List</h5>
             </div>
           </div>
           <div class="d-flex px-1">
@@ -178,24 +177,27 @@ if ($_GET['msg']) {
                 <th>Domain Name</th>
                 <th>Country</th>
                 <th>City/Town</th>
-                
-
-
+                <th>Subcription & Payment Details</th>
+                <!-- <th>Current Month Bill</th> -->
                 <th style="width:150px;">Action</th>
-
+                
               </tr>
             </thead>
             <tbody class="myTable">
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
-                  <td><a href="http://<?php echo $sch->domain.".rationalmind.in"; ?>" target="_blank"><?php echo $sch->domain.".rationalmind.in"; ?></a></td>
+                  <td><a  href="http://<?php echo $sch->domain.".rationalmind.in"; ?>" target="_blank" class="p-0"><?php echo $sch->domain.".rationalmind.in"; ?></a></td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
-                  <td><a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
+                  <!-- <td>Nov</td> -->
+                  <td style="text-align: center;"><a href="<?php echo $CFG->wwwroot.'/local/dashboard/subcription_payment.php?un_id='.$sch->id.'';?>" class="btn btn-info py-0 px-1">View</a></td>
+                  <td>
+                    <a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
                     <a href="#" class="p-2" onclick="assigncourse(<?php echo $sch->id; ?>);"><i class="fa fa-book" title="Assign Course" aria-hidden="true" style="color:#000;"></i></a>
-                    <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash" title="Delete"  aria-hidden="true" style="color:red;"></i></a>
-                  </td>
+                    <a href="<?php echo $CFG->wwwroot.'/local/changelogo/theme.php?uni_id='.$sch->id; ?>" class="mr-2" style="padding:2px;" title="Change Theme"><i class="fa-sharp fa-solid fa-palette"></i></a>
+                    <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:2px; color: red;" ><i class="fa-solid fa-trash"></i></a>
+                  </td>                 
                 </tr>
               <?php } ?>
             </tbody>
@@ -263,15 +265,15 @@ if ($_GET['msg']) {
 
 
     function editschool(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/editschool.php/?edit=" + id;
+      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/editschool.php?edit=" + id;
     }
 
     function assignschool(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assignschool.php/?id=" + id;
+      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assignschool.php?id=" + id;
     }
 
     function assigncourse(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assigncourses.php/?id=" + id;
+      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assigncourses.php?id=" + id;
     }
 
     function schooladmin() {

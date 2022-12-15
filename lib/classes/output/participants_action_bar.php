@@ -217,9 +217,14 @@ class participants_action_bar implements \renderable {
      *              - renderedcontent Rendered content to be displayed in line with the tertiary nav
      */
     public function export_for_template(\renderer_base $output) {
-        return [
-            'urlselect' => $this->get_dropdown($output),
-            'renderedcontent' => $this->renderedcontent,
-        ];
+        if (is_siteadmin()) {
+            return [
+                'urlselect' => $this->get_dropdown($output),
+                'renderedcontent' => $this->renderedcontent,
+            ];
+        }
+        else {
+            return "";
+        }
     }
 }

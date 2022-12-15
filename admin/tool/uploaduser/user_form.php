@@ -41,9 +41,15 @@ class admin_uploaduser_form1 extends moodleform {
         $mform->addElement('header', 'settingsheader', get_string('upload'));
 
         $url = new moodle_url('example.csv');
+        $url2 = new moodle_url('Upload User with Course.csv');
         $link = html_writer::link($url, 'example.csv');
-        $mform->addElement('static', 'examplecsv', get_string('examplecsv', 'tool_uploaduser'), $link);
+        $link2 = html_writer::link($url2, 'Upload User with Course.csv');
+        $mform->addElement('static', 'examplecsv', 'For Bulk User Upload
+        ', $link);
         $mform->addHelpButton('examplecsv', 'examplecsv', 'tool_uploaduser');
+
+        $mform->addElement('static', 'examplecsv', 'For Bulk User With Courses
+        ', $link2);
 
         $mform->addElement('filepicker', 'userfile', get_string('file'));
         $mform->addRule('userfile', null, 'required');

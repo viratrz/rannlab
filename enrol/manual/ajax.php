@@ -32,8 +32,12 @@ require_once($CFG->dirroot.'/enrol/locallib.php');
 require_once($CFG->dirroot.'/group/lib.php');
 require_once($CFG->dirroot.'/enrol/manual/locallib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
-require_once($CFG->dirroot . '/enrol/manual/classes/enrol_users_form.php');
-
+require_once($CFG->dirroot .'/enrol/manual/classes/enrol_users_form.php');
+#Include By Raju
+// require_once('../../user/lib.php');
+require_once('../../user/lib.php');
+global $USER;
+#End
 $id      = required_param('id', PARAM_INT); // Course id.
 $action  = required_param('action', PARAM_ALPHANUMEXT);
 
@@ -163,8 +167,16 @@ switch ($action) {
         $plugin = $plugins[$instance->enrol];
         if ($plugin->allow_enrol($instance) && has_capability('enrol/'.$plugin->get_name().':enrol', $context)) {
             foreach ($users as $user) {
+                #Getting Resourse Course Id
+                purge_caches();
+                $res_course = $DB->get_record_sql("SELECT resourcecourseid FROM {courseresource} WHERE course_id =$instance->courseid AND userid=$USER->id");
                 $plugin->enrol_user($instance, $user->id, $roleid, $timestart, $timeend, null, $recovergrades);
+                if ($roleid == 4) {
+                    $roleid =3;
+                }
+                $enrol_check = enrol_try_internal_enrol($res_course->resourcecourseid, $user->id, $roleid, time());
             }
+
             $outcome->count += count($users);
             foreach ($cohorts as $cohort) {
                 $totalenrolledusers = $plugin->enrol_cohort($instance, $cohort->id, $roleid, $timestart, $timeend, null, $recovergrades);

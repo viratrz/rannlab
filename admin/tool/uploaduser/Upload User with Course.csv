@@ -1,0 +1,4 @@
+username,firstname,lastname,email,course1,course2,course3,course4
+student1,Student,One,s1@example.com,example1_Course,example2_Course,example3_Course,example4_Course
+student2,Student,Two,s2@example.com,example1_Course2,example2_Course2,example3_Course2,example4_Course2
+student3,Student,Three,s3@example.com,example1_Course3,example2_Course3,example3_Course3,example4_Course3

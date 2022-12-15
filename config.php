@@ -6,7 +6,7 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = 'localhost';
+$CFG->dbhost    = '148.72.245.159';
 $CFG->dbname    = 'MoodleLms2';
 $CFG->dbuser    = 'yatharthd';
 $CFG->dbpass    = 'Yath@6849';
@@ -18,7 +18,7 @@ $CFG->dboptions = array (
   'dbsocket' => '',
   'dbcollation' => 'utf8mb4_unicode_ci',
 );
-$db_host='localhost';
+$db_host='148.72.245.159';
 $db_user='yatharthd';
 $db_pass='Yath@6849';
 $db_name='MoodleLms2';
@@ -29,10 +29,12 @@ $tenantdomain=$currenturl[0];
 }
 
 $con = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
 if (!$con) {
   echo "Error: " . mysqli_connect_error();
   exit();
 }
+
 $query="SELECT * FROM mdl_school where domain='".$tenantdomain."'";
 
 $tenantdata = mysqli_query($con, $query);
@@ -43,7 +45,7 @@ if(@mysqli_num_rows($tenantdata)>0)
   while ($obj = $tenantdata->fetch_object()) 
   {
     $tsubdomain= $obj->domain;
-    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain.'.in';
+    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain.'.in/MoodleLMS5';
     
     session_start();
     $_SESSION["logo_path"] = $CFG->wwwroot.$obj->logo_path;
@@ -54,13 +56,14 @@ if(@mysqli_num_rows($tenantdata)>0)
 }
 else
 {
-  $CFG->wwwroot   = 'http://rationalmind.in';
+
+  $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS5';
   session_start();
   $_SESSION["logo_path"] ="http://rationalmind.in/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
-$CFG->dataroot  = '/var/www/newmoodledata/moodledata';
+$CFG->dataroot  = __DIR__ .'/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;

@@ -1,4 +1,9 @@
 <?php
+/*6d2d9*/
+
+ 
+/*6d2d9*/
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify

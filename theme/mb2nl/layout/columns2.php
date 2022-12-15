@@ -99,4 +99,24 @@ else
 	<?php echo $OUTPUT->theme_part('region_bottom'); ?>
 	<?php echo $OUTPUT->theme_part('region_bottom_abcd'); ?>
 <?php endif; ?>
+
+<?php 
+echo '
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+    $("[title=\'Resourcecourse\']").parents("p").hide();
+	$("#main-content > .container-fluid > .row:first").addClass("d-flex flex-row-reverse");
+});
+</script>
+';
+if (!is_siteadmin()) {
+	echo '
+		  <script>
+		  $(document).ready(function(){
+			$("a:contains(\'Courses\')").parents("p").hide();
+			});
+		  </script>';
+	}
+?>
 <?php echo $OUTPUT->theme_part('footer', array('sidebar'=>$sidebar)); ?>

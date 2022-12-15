@@ -981,8 +981,73 @@ class process {
                 $user->password = AUTH_PASSWORD_NOT_CACHED;
                 $this->upt->track('password', '-', 'normal', false);
             }
+            #Code By Raju
+            if (!is_siteadmin()) 
+            {
+                global $USER;
+                $uni_id = $DB->get_record("universityadmin", ['userid'=>$USER->id]);
+                
+                $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
+                $package_id = $DB->get_record_sql("SELECT p.* FROM mdl_package p JOIN mdl_admin_subscription mas ON p.id = mas.package_id  WHERE mas.university_id= $uni_id->university_id ");
+                
+                if ($package_id->num_of_user > $total_user) 
+                {   
+                    $user->id = user_create_user($user, false, false);
 
-            $user->id = user_create_user($user, false, false);
+                    // $user_id = $user->id;
+                    // if ($user_id) 
+                    // {
+                    //     $sub = "Welcome";
+                    //     $msg = "Hi";
+                    //     $to_user = new stdClass();
+                    //     $to_user->email= $email;
+                    //     $to_user->id =(int)$user_id;
+
+                    //     $from_user = new stdClass();
+                    //     $from_user->email= 'clientsmtp@dcc.rannlab.com';
+                    //     $from_user->maildisplay= true;
+
+                    //     email_to_user($to_user,$from_user,$sub,$msg);
+                    // }
+
+                    // if($user_id)
+                    // {
+                    //     $user_info =  new stdClass();
+                    //     $user_info->userid = $user_id;
+                    //     $user_info->university_id = $uni_id->university_id;
+                    //     $user_info->cb_userid = $USER->id;
+                    //     $insert_user = $DB->insert_record('university_user', $user_info, true, false);
+
+                    //     if($insert_user)
+                    //     {	
+                    //         $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
+
+                    //         $user_course =  new stdClass();
+
+                    //         $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $uni_id->university_id");
+                    //         if ($check_uni_id) 
+                    //         {
+                    //             $user_course->id = $check_uni_id->id;
+                    //             $user_course->user_count = $total_user;
+                    //             $updated = $DB->update_record("university_user_course_count", $user_course, false);
+                    //         } 
+                    //         else 
+                    //         {
+                    //             $user_course->university_id = $uni_id->university_id;
+                    //             $user_course->user_count = $total_user;
+                    //             $inserted = $DB->insert_record("university_user_course_count", $user_course, false);
+                    //         }
+                    //     }
+                    // }
+                }
+            }
+            else 
+            {
+                $user->id = user_create_user($user, false, false);
+            }
+            // $user->id = user_create_user($user, false, false); #Pre Code.
+            #End
+            
             $this->upt->track('username', \html_writer::link(
                 new \moodle_url('/user/profile.php', ['id' => $user->id]), s($user->username)), 'normal', false);
 

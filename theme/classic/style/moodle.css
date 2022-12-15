@@ -2838,6 +2838,7 @@ pre {
 
 .row {
   display: flex;
+  flex-direction: row-reverse;
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px; }

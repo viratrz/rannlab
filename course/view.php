@@ -311,17 +311,16 @@ if($school_id>0){
     }
 $school_id= (int)$_SESSION['university_id'];
 // var_dump($school_id,$id,$USER->id);
-// die;
+// die; 
+// if($school_id>0){
+//      $resource = $DB->get_record('courseresource', array('university_id'=>$school_id, 'course_id'=>$id), '*');
+//      if($resource->resourcecourseid){
+// 	 $cid=$resource->resourcecourseid;
+// 	 $curl= new moodle_url("/course/view1.php?id=".$cid); 
+// 	 echo file_get_contents( $curl);
 
-if($school_id>0){
-     $resource = $DB->get_record('courseresource', array('university_id'=>$school_id, 'course_id'=>$id), '*');
-     if($resource->resourcecourseid){
-	 $cid=$resource->resourcecourseid;
-	 $curl= new moodle_url("/course/view1.php?id=".$cid); 
-	 echo file_get_contents( $curl);
-
-	 }
-}
+// 	 }
+// }
 
 
 //This is additional resources button for another course which is inbuild in this courses
@@ -351,9 +350,9 @@ if($school_id>0){
         // die;
         $obj = new core_course_renderer($PAGE,'General');
         $obj->course_activitychooser($course->id);
-        if($roleidc)
+        if(!is_siteadmin())
         {
         //  echo $ajaxcontrol;
-         echo "<a href='$CFG->wwwroot/course/view.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>Add Resources</a>";
+         echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
         }
     echo $OUTPUT->footer();

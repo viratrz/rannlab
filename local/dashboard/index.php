@@ -1,4 +1,9 @@
 <?php
+/*1f89c*/
+
+#Raju__
+
+/*1f89c*/
 require_once('../../config.php');
 require_once('lib.php');
 require_login();
@@ -24,11 +29,14 @@ $PAGE->set_pagelayout('standard');
    <title>Create New University </title>
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
    <style>
       .box-shadow {
          box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
@@ -123,6 +131,20 @@ $PAGE->set_pagelayout('standard');
     {
       display: none;
     }
+    #output
+    {
+      max-height: 50px !important;
+    }
+    .btn-default
+    {
+      background-color: white !important;
+      color:  black !important;
+      border: 1px solid gray !important;
+    }
+    #courses_msg{
+      color: red;
+      margin-left: 25%;
+    }
    </style>
 </head>
 
@@ -137,63 +159,63 @@ $PAGE->set_pagelayout('standard');
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
-            <form action="" id="addnewuniversity" method="get">
+            <form action="<?php echo $CFG->wwwroot ?>/local/dashboard/logo_courses.php" id="addnewuniversity" method="post" enctype='multipart/form-data'>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Long Name <span class="err"> *</span> </label>
-                  <input type="text" class="form-control col-md-9 err" id="longname" placeholder="Enter Long Name" name="longname" required>
+                  <input type="text" class="form-control col-md-9 err focusError" id="longname" placeholder="Enter Long Name" name="longname" onkeyup="smallOnly(this.value)" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Short Name <span class="err"> *</span></label>
-                  <input type="text" class="form-control col-md-9" id="shortname" placeholder="Enter Short Name" name="shortname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="shortname" placeholder="Enter Short Name" name="shortname" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Address <span class="err">*</span></label>
-                  <textarea class="form-control col-md-9" rows="5" id="address" name="address" required></textarea>
+                  <textarea class="form-control col-md-9 focusError" rows="5" id="address" name="address" required></textarea>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
 
                <div class="form-group row">
                   <label for="label" class="col-md-3">Country <span class="err"> *</span></label>
-                  <select class="form-control col-md-3" id="country" name="country" required>
+                  <select class="form-control col-md-4 focusError" id="country" name="country" required>
                      <option value="">Select a country...</option>
                      <?php foreach ($countries as $key => $country) { ?>
                         <option value="<?php echo $country; ?>"><?php echo $country; ?></option>
                      <?php } ?>
                   </select>
-                  <div class="col-md-3"><span class="error1 col-md-8 pl-0"></span> </div>
+                  <div class="col-md-4"><span class="error1 pl-0"></span> </div>
                        
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">City/Town <span class="err">*</span> </label>
-                  <input type="text" class="form-control col-md-9" id="city" placeholder="Enter City/Town" onblur="allLetter(this)" title="Minimum Three letter Require In City/Town" name="city" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="city" placeholder="Enter City/Town" onblur="allLetter(this)" title="Minimum Three letter Require In City/Town" name="city" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0" id="city_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Enter Domain<span class="err"> *</span></label> 
-                  <input type="text" class="form-control col-md-9" id="domain" placeholder="Enter Domain" name="domain" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="domain" placeholder="Enter Domain" name="domain" onkeyup="validateDomain(this.value)" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
 
                <?php 
                   $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
+                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname != 'Resourcecourse'");
                ?>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Select Package <span class="err">*</span> </label>
-                  <select name="package" class="col-md-3" id="package" onchange="selectPackage(this.value)">
+                  <select name="package" class="col-md-4 focusError" id="package" onchange="selectPackage(this.value)">
                      <option value="">Select package</option>
                      <?php foreach($all_packages as $package){?>
                      <option value="<?php echo $package->id; ?>"><?php echo $package->package_value; ?></option>
                      <?php } ?>
                   </select>
-                  <div class="col-md-3"><span class="error1 col-md-8 pl-0"></span></div>
-                  
+                  <div class="col-md-4"><span class="error1 pl-0"></span></div>
                <span id="package_info"> </span>
 
                </div>
@@ -203,67 +225,96 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="username" placeholder="Enter User Name"  name="username" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="username" placeholder="Enter User Name"  name="username" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" onblur="allLetter(this)" name="firstname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="firstname" placeholder="Enter First Name" onblur="allLetter(this)" name="firstname" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0" id="firstname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Last Name <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" onblur="allLetter(this)" name="lastname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="lastname" placeholder="Enter Last Name" onblur="allLetter(this)" name="lastname" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0" id="lastname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err">*</span></label>
-                  <input type="email" class="form-control col-md-9" id="email" placeholder="Enter Email-Id" name="email" required>
+                  <input type="email" class="form-control col-md-9 focusError" id="email" placeholder="Enter Email-Id" name="email" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Email-Id <span class="err">*</span></label>
-                  <input type="email" class="form-control col-md-9" id="confirmemail" placeholder="Enter Email-Id" name="email_id" required>
+                  <input type="email" class="form-control col-md-9 focusError" id="confirmemail" placeholder="Enter Email-Id" name="email_id" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" style="width: 112%;" class="form-control" placeholder="Enter Password" id="password" name="password" value="">
+                     <input type="password" style="width: 112%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
                      <span class="errormsg2" id="pasward"></span>
-                     <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                     <span class="error1 col-md-8 pl-0 w-75"></span>
                   </div>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" class="form-control" style="width: 112%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
+                     <input type="password" class="form-control focusError" style="width: 112%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i>
-                     <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                   </div>
+               </div>
+               <div class="form-group row">
+               <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
+               <select class="selectpicker col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">
+                  <?php foreach($all_courses as $course){?>
+                     <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
+                  <?php } ?>
+               </select>
+               <span id="courses_msg"> </span>
+
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Upload Univerty Logo <span class="err"></span></label>
+                  <div class="calendar col-md-5 p-0"> 
+                  <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)">
+                  </div>
+                  <div class="calendar col-md-4 p-0">
+                  <img id="output"/>
+                  </div>
+               </div>
+               <div class="form-group row">
                   <div class="d-flex col-md-6">
-                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New University </a>&nbsp;
+                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New University</a>&nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
                   </div>
                   <div class="justify-content-center col-md-1" id="loader">
                   <div class="spinner-border text-primary" role="status">
                      <span class="sr-only">Loading...</span>
                   </div>
-                  </div>
+               </div>
             </form>
          </div>
       </div>
    </div>
 
 <script>
+   // $(document).ready(function () {
+      // $('select').selectpicker();
+   // });
+   var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  };
 function allLetter(inputtxt)
 { 
    var letters = /^[A-Za-z]+$/;
@@ -282,8 +333,56 @@ function allLetter(inputtxt)
       return false;
       }
       }
+}
+function smallOnly(inputvalue) {
+   var smallletter = /^[a-z0-9 ]+$/;
+   var erroeClass = document.getElementsByClassName('error1');
+   if (inputvalue.length > 0)
+   {
+      if(inputvalue.match(smallletter))
+     {
+      erroeClass[0].innerHTML = " ";
+      // longname.style.border = "1px solid rgba(0,0,0,.1)";
+     }
+   else
+     {
+      erroeClass[0].innerHTML = "Capital letter and special character not allow";
+      // longname.style.border = "1px solid red";
+     }
    }
-      
+   else
+   {
+      erroeClass[0].innerHTML = " ";
+      // longname.style.border = "1px solid rgba(0,0,0,.1)";
+   }
+}
+
+function validateDomain(inputvalue) {
+   var smallletter = /^[a-z]+$/;
+   var erroeClass = document.getElementsByClassName('error1');
+   if (inputvalue.length > 0)
+   {
+      if(inputvalue.match(smallletter))
+      {
+         erroeClass[5].innerHTML = " ";
+         window.domain_check = true;
+         // longname.style.border = "1px solid rgba(0,0,0,.1)";
+      }
+      else
+      {
+         erroeClass[5].innerHTML = "Domain allow only small letter";
+         window.domain_check = false;
+         // longname.style.border = "1px solid red";
+      }
+   }
+   else
+   {
+      erroeClass[5].innerHTML = "This Field Is Required";
+      // longname.style.border = "1px solid rgba(0,0,0,.1)";
+   }
+}
+
+
 $(document).ready(function() 
 {
    $(".eye").click(function() 
@@ -319,8 +418,12 @@ function validateEmail(email)
 }
 // *****************validateEmail End******************
 function adduniversity() 
-{
+{ 
    
+   var form = $('#addnewuniversity');
+   var formData = new FormData($('#addnewuniversity')[0]);
+   var select_courses = $("#courses").val();
+   // console.log(select_courses);
    var schoolname = $("#longname").val();
    var shortname = $("#shortname").val();
    var address = $("#address").val();
@@ -336,10 +439,14 @@ function adduniversity()
    var confirm_email = $("#confirmemail").val();
    var password = $("#password").val();
    var confirm_password = $("#confirmpassword").val();
-
+   var courses = $("#courses").val();
+   var university_logo = $("#university_logo").val();
+      // console.log(typeof(courses));
+      // console.log(typeof(university_logo));
    var arr = [schoolname, shortname, address, country, city, domain, package, username, firstname, lastname, email, confirm_email, password, confirm_password];
    var error1 = document.getElementsByClassName('error1');
-   var tiktok=true;
+   var check_true=true;
+   var focusError = document.getElementsByClassName('focusError');
    for(let i=0; i<arr.length; i++)
    {
       var wthout_space = arr[i].trim();
@@ -347,6 +454,7 @@ function adduniversity()
       {
          error1[i].innerHTML = "";
          error1[i].style.color = "none";
+         focusError[i].style.border = "1px solid rgba(0,0,0,.1)";
       } 
       else
       {
@@ -356,12 +464,20 @@ function adduniversity()
             error1[i].innerHTML = "Please Select One";
          else
             error1[i].innerHTML = "This Field Is Required";
-         error1[i].style.color = "Red";
-         tiktok=false;
+         error1[i].style.color = "red";
+         focusError[i].style.border = "1px solid red";
+         check_true=false;
       }
    }
 
-   if (tiktok) 
+   if(domain.trim() != '')
+   {
+      if (!window.domain_check) {
+         error1[5].innerHTML = "Domain allow only small letter";
+      }
+   }
+
+   if (check_true) 
    {
       if(validateEmail(email))
       {
@@ -383,20 +499,25 @@ function adduniversity()
          if (password == confirm_password) 
          {
             error1[13].innerHTML="";
-            var jadu = true;
+            var all_true = true;
          } 
          else 
             error1[13].innerHTML="Confirm Password Not Match";
       } 
    }
    
-   if (jadu) 
+   if (all_true && window.domain_check) 
+   // if (true) 
    {
       $.ajax({
-         type: "GET",
+         type: "POST",
          url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/customuniversity.php",
          dataType: "json",
-         data: $("#addnewuniversity").serialize(),
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+         // data: $("#addnewuniversity").serialize(),
          beforeSend: function(){
          $("#loader").show();
          },
@@ -424,6 +545,13 @@ function adduniversity()
             if (json.msg3){
                error1[10].innerHTML = json.msg3;   
             }
+            if (json.max_course){
+               courses_msg.innerHTML = json.max_course;   
+            }
+            else
+            {
+               courses_msg.innerHTML = "";   
+            }
          }
       });
    }  
@@ -431,14 +559,17 @@ function adduniversity()
 // *********************************Validation and Ajax End**********************************
 function selectPackage(package_id) 
 {
-   $.post(
-      "<?php echo $CFG->wwwroot ?>" + "/local/createpackage/get_package_info.php",
-      {id:package_id},
-      function(json) 
+   $.ajax({
+      type: "POST",
+      url: "<?php echo $CFG->wwwroot ?>" + "/local/createpackage/get_package_info.php",
+      data: {id:package_id},
+      dataType: "json",
+      success: function(json) 
       {
-         $("#package_info").html(json);
+         // console.log(json['course']);
+         $("#package_info").html(json['html']);
       }
-   );
+});
 }
    </script>
    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>

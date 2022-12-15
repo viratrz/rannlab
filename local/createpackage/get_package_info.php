@@ -23,6 +23,8 @@ $html='<table class="table table-sm table-bordered">
             </tr>
             </tbody>
         </table>';
-echo ($html);
+echo json_encode(array("html" =>$html, 'course' => $package_info->num_of_course));
+exit;
+// echo ($html);
 
 ?>

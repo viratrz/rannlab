@@ -184,11 +184,4 @@ if ($regresponse) {
         $appreg = $appregrepo->save($draftreg);
 
         $deployment = $appreg->add_tool_deployment($toolconfig->deployment_id, $toolconfig->deployment_id);
-        $deploymentrepo = new deployment_repository();
-        $deploymentrepo->save($deployment);
-    }
-}
-
-echo "<script>
-(window.opener || window.parent).postMessage({subject: 'org.imsglobal.lti.close'}, '$openidconfig->issuer');
-</script>";
+ 

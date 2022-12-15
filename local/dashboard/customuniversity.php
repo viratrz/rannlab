@@ -2,25 +2,41 @@
 require_once('../../config.php');
 require_once('lib.php');
 require_once('../../user/lib.php');
+date_default_timezone_set('Asia/Kolkata');
+global $USER, $DB, $CFG;
 
-global $USER,$DB;
-
-if(isset($_GET['username']))
+$select_course = count($_POST["courses"]);
+$package_id = $_POST['package'];
+$package = $DB->get_record_sql("SELECT * FROM mdl_package WHERE id= $package_id ");
+$num_of_course = (int)$package->num_of_course;
+// var_dump($package_id,$select_course, $num_of_course);
+// die;
+if ($package_id && $select_course > $num_of_course) 
 {
-    $username =$_GET['username'];
+    $json = array();
+    $json['success'] = false;
+    $json['max_course'] = "Please select max number of course according to selected package";
+    echo json_encode($json);
+    exit;
 }
 
-if(isset($_GET['firstname']))
+
+if(isset($_POST['username']))
 {
-    $firstname =$_GET['firstname'];
+    $username =$_POST['username'];
 }
 
-$lastname =   $_GET['lastname'];
-$password = $_GET['password'];
-
-if(isset($_GET['longname']))
+if(isset($_POST['firstname']))
 {
-    $schoolname = $_GET['longname'];
+    $firstname =$_POST['firstname'];
+}
+
+$lastname =   $_POST['lastname'];
+$password = $_POST['password'];
+
+if(isset($_POST['longname']))
+{
+    $schoolname = $_POST['longname'];
     $schoolnamedata = $DB->get_record('school', array('name'=>$schoolname));
     if($schoolnamedata){
         $json = array();
@@ -31,9 +47,9 @@ if(isset($_GET['longname']))
         }
 }
 
-if(isset($_GET['shortname']))
+if(isset($_POST['shortname']))
 {
-    $shortname = $_GET['shortname'];
+    $shortname = $_POST['shortname'];
     $schoolnamedata = $DB->get_record('school', array('shortname'=>$shortname));
     if($schoolnamedata)
     {
@@ -44,9 +60,9 @@ if(isset($_GET['shortname']))
         exit;
     }
 }
-if(isset($_GET['domain']))
+if(isset($_POST['domain']))
 {
-    $domain = $_GET['domain'];
+    $domain = $_POST['domain'];
     $get_domain = $DB->get_record_sql("SELECT * FROM {school} WHERE domain= '$domain'");
     if($get_domain)
     {
@@ -70,9 +86,9 @@ if(isset($username))
     }       
 }
 
-if(isset($_GET['email']))
+if(isset($_POST['email']))
 {
-    $email = $_GET['email'];
+    $email = $_POST['email'];
     $emaildata = $DB->get_record('user', array('email'=>$email));
     if($emaildata)
     {
@@ -83,26 +99,42 @@ if(isset($_GET['email']))
         exit;
     }
 }
-$package_id = $_GET['package'];
+$package_id = $_POST['package'];
+
 if ($package_id ) 
 {
     $data = new stdClass();
-    $data->name = $_GET['longname'];
-    $data->shortname = $_GET['shortname'];
-    $data->address = $_GET['address'];
-    $data->city = $_GET['city'];
-    $data->country = $_GET['country'];
-    $data->domain = $_GET['domain'];
+    $data->name = $_POST['longname'];
+    $data->shortname = $_POST['shortname'];
+    $data->address = $_POST['address'];
+    $data->city = $_POST['city'];
+    $data->country = $_POST['country'];
+    $data->domain = $_POST['domain'];
     $inserted = $DB->insert_record('school', $data, true);
-}
 
+        if (basename($_FILES["university_logo"]["name"]) && $inserted) 
+        {
+            $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
+            $target_file = $CFG->dirroot.$path_filename;
+            $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
+            if ($uploaed ) 
+            {
+                $set_logo = new stdclass();
+                $set_logo->id = $inserted;
+                $set_logo->logo_path = $path_filename;
+                $DB->update_record('school', $set_logo);
+            }
+        }
+        
+}
 if ($inserted) 
 {
-    $date =date("d/m/Y");
+    $date = date('Y-m-d', strtotime('+1 month'));
     $package_sub = new stdClass();
-
     $package_sub->package_id=$package_id;	
     $package_sub->university_id= $inserted;
+    $package_sub->sub_date = date('Y/m/d H:i:s');
+    $package_sub->end_date= $date;
     $pack = $DB->insert_record('admin_subscription', $package_sub, true);
 }
 if ($pack) 
@@ -167,6 +199,59 @@ if($user_id)
     $inserted1 = $DB->insert_record('universityadmin', $admininfo);
     if($inserted1)
     {   
+        $course_id = $_POST["courses"];
+        $user_id = $DB->get_record_sql("SELECT userid FROM {universityadmin} WHERE university_id=$inserted");
+        $package_id = $DB->get_record_sql("SELECT p.* FROM mdl_package p JOIN mdl_admin_subscription mas ON p.id = mas.package_id  WHERE mas.university_id= $inserted ");
+        $assign_course = new stdClass();
+        $count_add = 0;
+        foreach($course_id as $c_id)
+        {
+            $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
+
+            if ($package_id->num_of_course > $total_course) 
+            {
+                $count_add = $count_add+1;
+                if($c_id)
+                {
+                    $assign_course->university_id = $inserted;
+                    $assign_course->course_id = $c_id;
+                    purge_caches();
+                    $assign_id = $DB->insert_record('assign_course', $assign_course);
+                    purge_caches();
+                    // $role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
+                    createresource($c_id,$inserted,$user_id->userid);
+                }
+
+                if($inserted)
+                {
+                    $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $inserted");
+                    $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
+
+                    $user_course =  new stdClass();
+                    if ($check_uni_id) 
+                    {
+                        $user_course->id = $check_uni_id->id;
+                        $user_course->course_count = $total_course;
+                        $updated = $DB->update_record("university_user_course_count", $user_course, false);
+                    } 
+                    else 
+                    {
+                        $user_course->university_id = $inserted;
+                        $user_course->course_count = $total_course;
+                        $inserted_count = $DB->insert_record("university_user_course_count", $user_course, false);
+                    }
+                }
+            }
+            else 
+            {
+                $json = array();
+                $json['success'] = true;
+                // $json['msg'] = "Courses Assign Limit Exeed";
+                $json['msg'] = "University and University Admin Created Successfully, But only $count_add Course Addded";
+                echo json_encode($json);
+                exit;
+            }
+        }
         $json = array();
         $json['success'] = true;
         $json['msg'] = "University and University Admin Created Successfully!";

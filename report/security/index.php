@@ -1,4 +1,10 @@
 <?php
+/*5a60d*/
+
+ 
+
+/*5a60d*/
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify

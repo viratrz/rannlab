@@ -199,7 +199,7 @@ width: 158px !important;
             <div class="col-md-12 m-auto box-shadow bg-white">
                <div class="row mb-4 heading-row">
                   <div class="col-md-12">
-                     <h5 class="mb-0"><?php echo $Schooldata->name; ?></h5>
+                     <h5 class="mb-0 text-white"><?php echo $Schooldata->name; ?></h5>
 
                   </div>
                </div>

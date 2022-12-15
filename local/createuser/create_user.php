@@ -71,7 +71,8 @@ if ($package_id->num_of_user > $total_user)
     $contextid =1;
     role_assign($role_id, $user_id ,$contextid);
 
-    if ($user_id) {
+    if ($user_id) 
+    {
         $sub = "Welcome";
         $msg = "Hi";
         $to_user = new stdClass();
@@ -87,32 +88,32 @@ if ($package_id->num_of_user > $total_user)
 
     if($user_id)
     {
-    $user_info =  new stdClass();
-    $user_info->userid = $user_id;
-    $user_info->university_id = $uni_id->university_id;
-    $user_info->cb_userid = $USER->id;
-    $insert_user = $DB->insert_record('university_user', $user_info, true, false);
+        $user_info =  new stdClass();
+        $user_info->userid = $user_id;
+        $user_info->university_id = $uni_id->university_id;
+        $user_info->cb_userid = $USER->id;
+        $insert_user = $DB->insert_record('university_user', $user_info, true, false);
 
-    if($insert_user)
-    {	
-        $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
+        if($insert_user)
+        {	
+            $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
 
-        $user_course =  new stdClass();
+            $user_course =  new stdClass();
 
-        $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $uni_id->university_id");
-        if ($check_uni_id) 
-        {
-            $user_course->id = $check_uni_id->id;
-            $user_course->user_count = $total_user;
-            $updated = $DB->update_record("university_user_course_count", $user_course, false);
-        } 
-        else 
-        {
-            $user_course->university_id = $uni_id->university_id;
-            $user_course->user_count = $total_user;
-            $inserted = $DB->insert_record("university_user_course_count", $user_course, false);
+            $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $uni_id->university_id");
+            if ($check_uni_id) 
+            {
+                $user_course->id = $check_uni_id->id;
+                $user_course->user_count = $total_user;
+                $updated = $DB->update_record("university_user_course_count", $user_course, false);
+            } 
+            else 
+            {
+                $user_course->university_id = $uni_id->university_id;
+                $user_course->user_count = $total_user;
+                $inserted = $DB->insert_record("university_user_course_count", $user_course, false);
+            }
         }
-    }
     }
 } 
 else 

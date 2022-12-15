@@ -3251,10 +3251,10 @@ class global_navigation extends navigation_node {
                 if ($coursecat->parent && isset($this->addedcategories[$coursecat->parent])) {
                     $parent = $this->addedcategories[$coursecat->parent];
                 }
-                if (!$parent) {
-                    // If it has no parent, then it should be right under the My courses node.
-                    $parent = $this->rootnodes['mycourses'];
-                }
+                // if (!$parent) {
+                //     // If it has no parent, then it should be right under the My courses node.
+                //     $parent = $this->rootnodes['mycourses'];
+                // }
 
                 // Build the category object based from the coursecat object.
                 $mycategory = new stdClass();

@@ -20,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> -->
     <title>Package List</title>
     <style>
         #table
@@ -57,7 +57,7 @@
                     <td><?php echo $package->package_value; ?></td>
                     <td><?php echo $package->num_of_user; ?></td>
                     <td><?php echo $package->num_of_course; ?></td>
-                    <td><button class="btn bg-danger text-white px-1 py-0" onclick="deletePackage(<?php echo $package->id; ?>)">Delete</button></td>
+                    <td><button class="btn bg-danger text-white px-1 py-0 border-0 " onclick="deletePackage(<?php echo $package->id; ?>)">Delete</button></td>
                 </tr>
                 <?php } ?>
                 </tbody>

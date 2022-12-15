@@ -1,5 +1,6 @@
 <?php
-
+require_once('../../user/lib.php');
+// require_once($CFG->libdir.'/adminlib.php');
 require_once('../../config.php');
 require_once('lib.php');
 GLOBAL $USER,$DB;
@@ -23,8 +24,10 @@ foreach($course_id as $c_id)
 		{
 			$assign_course->university_id = $uni_id;
 			$assign_course->course_id = $c_id;
+        	purge_caches();
 			$inserted = $DB->insert_record('assign_course', $assign_course);
-			$role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
+			purge_caches();
+			// $role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
 			createresource($c_id,$uni_id,$user_id->userid);
 		}
 
@@ -60,7 +63,6 @@ foreach($course_id as $c_id)
 		echo json_encode($json);
 		exit;
 	}
-    
 }
 
 if($inserted_count || $updated)
