@@ -444,7 +444,7 @@ class process {
      * @throws \moodle_exception
      */
     public function process_line(array $line) {
-        global $DB, $CFG, $SESSION;
+        global $DB, $CFG, $SESSION, $USER;
 
         if (!$user = $this->prepare_user_record($line)) {
             return;
@@ -984,7 +984,6 @@ class process {
             #Code By Raju
             if (!is_siteadmin()) 
             {
-                global $USER;
                 $uni_id = $DB->get_record("universityadmin", ['userid'=>$USER->id]);
                 
                 $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
@@ -993,52 +992,43 @@ class process {
                 if ($package_id->num_of_user > $total_user) 
                 {   
                     $user->id = user_create_user($user, false, false);
+                    
+                    $user_id = $user->id;
+                    if($user_id)
+                    {
+                        $user_info =  new \stdClass();
+                        $user_info->userid = $user_id;
+                        $user_info->university_id = $uni_id->university_id;
+                        $user_info->cb_userid = $USER->id;
+                        $insert_user = $DB->insert_record('university_user', $user_info, true, false);
+                    
 
-                    // $user_id = $user->id;
-                    // if ($user_id) 
-                    // {
-                    //     $sub = "Welcome";
-                    //     $msg = "Hi";
-                    //     $to_user = new stdClass();
-                    //     $to_user->email= $email;
-                    //     $to_user->id =(int)$user_id;
+                        if($insert_user)
+                        {	
+                            $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
 
-                    //     $from_user = new stdClass();
-                    //     $from_user->email= 'clientsmtp@dcc.rannlab.com';
-                    //     $from_user->maildisplay= true;
+                            $user_course =  new \stdClass();
 
-                    //     email_to_user($to_user,$from_user,$sub,$msg);
-                    // }
-
-                    // if($user_id)
-                    // {
-                    //     $user_info =  new stdClass();
-                    //     $user_info->userid = $user_id;
-                    //     $user_info->university_id = $uni_id->university_id;
-                    //     $user_info->cb_userid = $USER->id;
-                    //     $insert_user = $DB->insert_record('university_user', $user_info, true, false);
-
-                    //     if($insert_user)
-                    //     {	
-                    //         $total_user = $DB->count_records('university_user', array('university_id'=>$uni_id->university_id));
-
-                    //         $user_course =  new stdClass();
-
-                    //         $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $uni_id->university_id");
-                    //         if ($check_uni_id) 
-                    //         {
-                    //             $user_course->id = $check_uni_id->id;
-                    //             $user_course->user_count = $total_user;
-                    //             $updated = $DB->update_record("university_user_course_count", $user_course, false);
-                    //         } 
-                    //         else 
-                    //         {
-                    //             $user_course->university_id = $uni_id->university_id;
-                    //             $user_course->user_count = $total_user;
-                    //             $inserted = $DB->insert_record("university_user_course_count", $user_course, false);
-                    //         }
-                    //     }
-                    // }
+                            $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $uni_id->university_id");
+                            if ($check_uni_id) 
+                            {
+                                $user_course->id = $check_uni_id->id;
+                                $user_course->user_count = $total_user;
+                                $updated = $DB->update_record("university_user_course_count", $user_course, false);
+                            } 
+                            else 
+                            {
+                                $user_course->university_id = $uni_id->university_id;
+                                $user_course->user_count = $total_user;
+                                $inserted = $DB->insert_record("university_user_course_count", $user_course, false);
+                            }
+                        }
+                    }
+                }
+                else 
+                {
+                    $msg = "Last user created from bulk showing above in list";
+                    redirect("$CFG->wwwroot/local/createuser/user_list.php?msg=$msg", "Few user created only, because of limit exceed!, Now You are redirect on user list", null, \core\output\notification::NOTIFY_INFO);
                 }
             }
             else 
