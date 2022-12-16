@@ -1,4 +1,5 @@
 <?php
+
 require_once('../../config.php');
 require_once('lib.php');
 require_once('../../user/lib.php');
@@ -7,11 +8,15 @@ global $USER, $DB, $CFG;
 
 $select_course = count($_POST["courses"]);
 $package_id = $_POST['package'];
-$package = $DB->get_record_sql("SELECT * FROM mdl_package WHERE id= $package_id ");
+$phone_no = $_POST['phone_no'];
+
+$package = $DB->get_record_sql("SELECT * FROM mdl_package WHERE id=$package_id");
 $num_of_course = (int)$package->num_of_course;
+
 // var_dump($package_id,$select_course, $num_of_course);
 // die;
-if ($package_id && $select_course > $num_of_course) 
+
+if ($package_id && ($select_course > $num_of_course)) 
 {
     $json = array();
     $json['success'] = false;
@@ -60,6 +65,37 @@ if(isset($_POST['shortname']))
         exit;
     }
 }
+
+if(isset($_POST['client_id']))
+{
+    $client_id = $_POST['client_id'];
+    // $school_client_id = $DB->get_record('school', array('client_id'=>"$client_id"));
+    $school_client_id = $DB->get_record_sql("SELECT * FROM {school} WHERE client_id ='$client_id'");
+    if($school_client_id)
+    {
+        $json = array();
+        $json['success'] = false;
+        $json['client_id_msg'] = "Client id already exist";
+        echo json_encode($json);
+        exit;
+    }
+}
+
+if(isset($_POST['rto_code']))
+{
+    $rto_code = $_POST['rto_code'];
+    // $school_rto_code = $DB->get_record('school', array('rto_code'=>"$rto_code"));
+    $school_rto_code = $DB->get_record_sql("SELECT * FROM {school} WHERE rto_code ='$rto_code'");
+    if($school_rto_code)
+    {
+        $json = array();
+        $json['success'] = false;
+        $json['rto_code_msg'] = "RTO code id already exist";
+        echo json_encode($json);
+        exit;
+    }
+}
+
 if(isset($_POST['domain']))
 {
     $domain = $_POST['domain'];
@@ -73,9 +109,11 @@ if(isset($_POST['domain']))
         exit;
     }
 }
+
 if(isset($username))
 {
-    $usernamedata = $DB->get_record('user', array('username'=>$username));
+    // $usernamedata = $DB->get_record('user', array('username'=>$username));
+    $usernamedata = $DB->get_record_sql("SELECT * FROM {user} WHERE username='.$username.'");
     if($usernamedata)
     {
         $json = array();
@@ -103,9 +141,12 @@ $package_id = $_POST['package'];
 
 if ($package_id ) 
 {
+   
     $data = new stdClass();
     $data->name = $_POST['longname'];
     $data->shortname = $_POST['shortname'];
+    $data->client_id = $client_id;
+    $data->rto_code = $rto_code;
     $data->address = $_POST['address'];
     $data->city = $_POST['city'];
     $data->country = $_POST['country'];
@@ -152,7 +193,7 @@ if ($pack)
     $userdata->lastname = $lastname;
     $userdata->email = $email;
     $userdata->emailstop = 0;
-    $userdata->phone1 = '';
+    $userdata->phone1 = $phone_no;
     $userdata->city = '';
     $userdata->country = '';
     $userdata->lang = 'en';

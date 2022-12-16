@@ -1,9 +1,5 @@
 <?php
-/*1f89c*/
 
-#Raju__
-
-/*1f89c*/
 require_once('../../config.php');
 require_once('lib.php');
 require_login();
@@ -173,6 +169,18 @@ $PAGE->set_pagelayout('standard');
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
+                  <label for="label" class="col-md-3">Client ID <span class="err"> *</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="client" placeholder="Enter Client ID" name="client_id" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0"></span>
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">RTO Code <span class="err"> *</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="rto" placeholder="Enter RTO Code" name="rto_code" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0"></span>
+               </div>
+               <div class="form-group row">
                   <label for="label" class="col-md-3">Address <span class="err">*</span></label>
                   <textarea class="form-control col-md-9 focusError" rows="5" id="address" name="address" required></textarea>
                   <div class="col-md-3"></div>
@@ -198,7 +206,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Enter Domain<span class="err"> *</span></label> 
-                  <input type="text" class="form-control col-md-9 focusError" id="domain" placeholder="Enter Domain" name="domain" onkeyup="validateDomain(this.value)" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="domain" placeholder="Enter Domain" name="domain" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
@@ -240,6 +248,12 @@ $PAGE->set_pagelayout('standard');
                   <input type="text" class="form-control col-md-9 focusError" id="lastname" placeholder="Enter Last Name" onblur="allLetter(this)" name="lastname" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0" id="lastname_msg"></span>
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Phone Number <span class="err">*</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeydown="numberOnly(this.value)" required>
+                  <div class="col-md-3"></div>
+                     <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err">*</span></label>
@@ -325,15 +339,28 @@ function allLetter(inputtxt)
       if(inputtxt.value.match(letters))
       {
          $("#"+msg_id).html("");
-      return true;
+         return true;
       }
       else
       {
          $("#"+msg_id).html("Please input alphabet characters only");
-      return false;
+         return false;
       }
-      }
+   }
 }
+
+
+// function numberOnly(inputvalue) 
+// {
+   
+//    var smallletter = /^[0-9]+$/;
+//    if (inputvalue.length > 0 && inputvalue.match(smallletter))
+//    {
+//       phone.value = inputvalue;
+//       console.log(inputvalue);
+//    }
+// }
+
 function smallOnly(inputvalue) {
    var smallletter = /^[a-z0-9 ]+$/;
    var erroeClass = document.getElementsByClassName('error1');
@@ -356,33 +383,7 @@ function smallOnly(inputvalue) {
       // longname.style.border = "1px solid rgba(0,0,0,.1)";
    }
 }
-
-function validateDomain(inputvalue) {
-   var smallletter = /^[a-z]+$/;
-   var erroeClass = document.getElementsByClassName('error1');
-   if (inputvalue.length > 0)
-   {
-      if(inputvalue.match(smallletter))
-      {
-         erroeClass[5].innerHTML = " ";
-         window.domain_check = true;
-         // longname.style.border = "1px solid rgba(0,0,0,.1)";
-      }
-      else
-      {
-         erroeClass[5].innerHTML = "Domain allow only small letter";
-         window.domain_check = false;
-         // longname.style.border = "1px solid red";
-      }
-   }
-   else
-   {
-      erroeClass[5].innerHTML = "This Field Is Required";
-      // longname.style.border = "1px solid rgba(0,0,0,.1)";
-   }
-}
-
-
+      
 $(document).ready(function() 
 {
    $(".eye").click(function() 
@@ -419,13 +420,14 @@ function validateEmail(email)
 // *****************validateEmail End******************
 function adduniversity() 
 { 
-   
    var form = $('#addnewuniversity');
    var formData = new FormData($('#addnewuniversity')[0]);
    var select_courses = $("#courses").val();
    // console.log(select_courses);
    var schoolname = $("#longname").val();
    var shortname = $("#shortname").val();
+   var client = $("#client").val();
+   var rto = $("#rto").val();
    var address = $("#address").val();
    var country = $("#country").val();
    var city = $("#city").val();
@@ -435,6 +437,7 @@ function adduniversity()
    var username = $("#username").val();
    var firstname = $("#firstname").val();
    var lastname = $("#lastname").val();
+   var phone = $("#phone").val();
    var email = $("#email").val();
    var confirm_email = $("#confirmemail").val();
    var password = $("#password").val();
@@ -443,7 +446,7 @@ function adduniversity()
    var university_logo = $("#university_logo").val();
       // console.log(typeof(courses));
       // console.log(typeof(university_logo));
-   var arr = [schoolname, shortname, address, country, city, domain, package, username, firstname, lastname, email, confirm_email, password, confirm_password];
+   var arr = [schoolname, shortname, client, rto, address, country, city, domain, package, username, firstname, lastname, phone, email, confirm_email, password, confirm_password];
    var error1 = document.getElementsByClassName('error1');
    var check_true=true;
    var focusError = document.getElementsByClassName('focusError');
@@ -458,9 +461,9 @@ function adduniversity()
       } 
       else
       {
-         if(i == 3)
+         if(i == 5)
             error1[i].innerHTML = "Please Select One";
-         else if(i == 6)
+         else if(i == 8)
             error1[i].innerHTML = "Please Select One";
          else
             error1[i].innerHTML = "This Field Is Required";
@@ -470,43 +473,43 @@ function adduniversity()
       }
    }
 
-   if(domain.trim() != '')
-   {
-      if (!window.domain_check) {
-         error1[5].innerHTML = "Domain allow only small letter";
-      }
-   }
+   // if(check_true)
+   // {
+   //    var d=$('#courses').val();
+   //    console.log(d);
+   //    alert("ok");
+   // }
 
    if (check_true) 
    {
       if(validateEmail(email))
       {
-         error1[10].innerHTML="";
+         error1[13].innerHTML="";
          if (email == confirm_email) 
          {
-            error1[11].innerHTML="";
+            error1[14].innerHTML="";
             var pass= true;
          }
          else 
-            error1[11].innerHTML="Confirm Email Not Match";
+            error1[14].innerHTML="Confirm Email Not Match";
       }
       else
       {
-         error1[10].innerHTML="Invalid Email Format";
+         error1[13].innerHTML="Invalid Email Format";
       }
       if (pass) 
       {
          if (password == confirm_password) 
          {
-            error1[13].innerHTML="";
+            error1[16].innerHTML="";
             var all_true = true;
          } 
          else 
-            error1[13].innerHTML="Confirm Password Not Match";
+            error1[16].innerHTML="Confirm Password Not Match";
       } 
    }
    
-   if (all_true && window.domain_check) 
+   if (all_true) 
    // if (true) 
    {
       $.ajax({
@@ -536,14 +539,20 @@ function adduniversity()
             if (json.msg4){
                error1[1].innerHTML = json.msg4;    
             }
+            if (json.client_id_msg){
+               error1[2].innerHTML = json.client_id_msg;    
+            }
+            if (json.rto_code_msg){
+               error1[3].innerHTML = json.rto_code_msg;    
+            }
             if (json.unique){
-               error1[5].innerHTML = json.unique;     
+               error1[7].innerHTML = json.unique;     
             }
             if (json.msg2){
-               error1[7].innerHTML = json.msg2;    
+               error1[9].innerHTML = json.msg2;    
             }
             if (json.msg3){
-               error1[10].innerHTML = json.msg3;   
+               error1[12].innerHTML = json.msg3;   
             }
             if (json.max_course){
                courses_msg.innerHTML = json.max_course;   
