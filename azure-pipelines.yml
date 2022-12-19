@@ -26,5 +26,6 @@ stages:
           - checkout: git://MoodleLMS/MoodleLMS@UAT
             persistCredentials: true
           - script: |
+                  su elearngroup
                   cp -a $(Pipeline.Workspace)/s/* /home/elearngroup/public_html
                   chown elearngroup:elearngroup * -R
