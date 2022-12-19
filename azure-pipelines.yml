@@ -27,3 +27,4 @@ stages:
             persistCredentials: true
           - script: |
                   cp -a $(Pipeline.Workspace)/s/* /home/elearngroup/public_html
+                  chown elearngroup:elearngroup * -R
