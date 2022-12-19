@@ -26,4 +26,4 @@ stages:
           - checkout: git://MoodleLMS/MoodleLMS@UAT
             persistCredentials: true
           - script: |
-                  cp $(Pipeline.Workspace)/s/* /home/elearngroup/public_htmll̥
+                  cp $(Pipeline.Workspace)/s/* /home/elearngroup/public_html
