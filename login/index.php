@@ -299,7 +299,7 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         global $DB;
         $university = $DB->get_record_sql("SELECT  mu.university_id  FROM mdl_universityadmin mu  WHERE mu.userid= $USER->id UNION SELECT muu.university_id FROM mdl_university_user muu  WHERE muu.userid= $USER->id");
         $domain = $DB->get_record("school", ['id'=>$university->university_id]);
-        $CFG->wwwroot='http://'.$domain->domain.'.rationalmind.in/MoodleLMS5';
+        $CFG->wwwroot='http://'.$domain->domain.'.rationalmind.in/';
 
 // ****************************************************
         redirect(new moodle_url(get_login_url(), array('testsession'=>$USER->id)));
