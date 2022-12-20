@@ -58,7 +58,7 @@ else
 {
 
   // $CFG->wwwroot   = 'http://rationalmind.in/';
-  $CFG->wwwroot   = 'https://uat.elearngroup.com.au/';
+  $CFG->wwwroot   = 'https://uat.elearngroup.com.au';
   session_start();
   $_SESSION["logo_path"] ="https://uat.elearngroup.com.au/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
