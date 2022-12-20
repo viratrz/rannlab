@@ -39,13 +39,13 @@ $query="SELECT * FROM mdl_school where domain='".$tenantdomain."'";
 
 $tenantdata = mysqli_query($con, $query);
 
-$maindomain="rationalmind";
+$maindomain="uat.elearngroup.com.au";
 if(@mysqli_num_rows($tenantdata)>0)
 {
   while ($obj = $tenantdata->fetch_object()) 
   {
     $tsubdomain= $obj->domain;
-    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain;
+    $CFG->wwwroot='https://'.$tsubdomain.'.'.$maindomain;
     
     session_start();
     $_SESSION["logo_path"] = $CFG->wwwroot.$obj->logo_path;
@@ -57,9 +57,10 @@ if(@mysqli_num_rows($tenantdata)>0)
 else
 {
 
-  $CFG->wwwroot   = 'http://rationalmind.in/';
+  // $CFG->wwwroot   = 'http://rationalmind.in/';
+  $CFG->wwwroot   = 'https://uat.elearngroup.com.au/';
   session_start();
-  $_SESSION["logo_path"] ="http://rationalmind.in/theme/image.php/mb2nl/theme/1664522056/logo-default";
+  $_SESSION["logo_path"] ="https://uat.elearngroup.com.au/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
