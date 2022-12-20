@@ -45,7 +45,7 @@ if(@mysqli_num_rows($tenantdata)>0)
   while ($obj = $tenantdata->fetch_object()) 
   {
     $tsubdomain= $obj->domain;
-    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain.'.in/MoodleLMS5';
+    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain;
     
     session_start();
     $_SESSION["logo_path"] = $CFG->wwwroot.$obj->logo_path;
@@ -57,13 +57,14 @@ if(@mysqli_num_rows($tenantdata)>0)
 else
 {
 
-  $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS5';
+  $CFG->wwwroot   = 'http://rationalmind.in/';
   session_start();
   $_SESSION["logo_path"] ="http://rationalmind.in/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
-$CFG->dataroot  = __DIR__ .'/moodledata';
+// $CFG->dataroot  = __DIR__ .'/moodledata';
+$CFG->dataroot  = '/home/elearngroup/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;
