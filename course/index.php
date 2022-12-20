@@ -1,11 +1,4 @@
 <?php
-/*42225*/
-
-#Raju__
-
-/*42225*/
-
-
 
 // This file is part of Moodle - http://moodle.org/
 //
