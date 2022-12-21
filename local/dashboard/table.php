@@ -29,7 +29,7 @@ require_once('lib.php');
 $perpage      = optional_param('perpage', 10, PARAM_INT);
 $page         = optional_param('page', 0, PARAM_INT);
 require_login();
-global $USER, $DB;
+global $USER, $DB,$CFG;
 if (user_has_role_assignment($USER->id, 11)) {
   $school = $DB->get_records_sql("SELECT * FROM {seller_school} ss INNER JOIN {school} s ON s.id=ss.schoolid WHERE ss.userid=$USER->id ORDER BY s.id desc");
 } else {
@@ -187,7 +187,7 @@ if ($_GET['msg']) {
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
-                  <td><a  href="http://<?php echo $sch->domain.".rationalmind.in"; ?>" target="_blank" class="p-0"><?php echo $sch->domain.".rationalmind.in"; ?></a></td>
+                  <td><a  href="http://<?php echo $sch->domain.'.'.$CFG->maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.".".$CFG->maindomain; ?></a></td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
                   <!-- <td>Nov</td> -->
