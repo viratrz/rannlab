@@ -6,10 +6,10 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = '148.72.245.159';
-$CFG->dbname    = 'MoodleLms2';
-$CFG->dbuser    = 'yatharthd';
-$CFG->dbpass    = 'Yath@6849';
+$CFG->dbhost    = 'localhost:3306';
+$CFG->dbname    = 'elearngroup_vetmoodle';
+$CFG->dbuser    = 'elearngroup_vetmoodle';
+$CFG->dbpass    = 'YfQqb4)-=xcv';
 $CFG->prefix    = 'mdl_';
 $CFG->dbsessions='0';
 $CFG->dboptions = array (
@@ -18,10 +18,10 @@ $CFG->dboptions = array (
   'dbsocket' => '',
   'dbcollation' => 'utf8mb4_unicode_ci',
 );
-$db_host='148.72.245.159';
-$db_user='yatharthd';
-$db_pass='Yath@6849';
-$db_name='MoodleLms2';
+$db_host='localhost:3306';
+$db_user='elearngroup_vetmoodle';
+$db_pass='YfQqb4)-=xcv';
+$db_name='elearngroup_vetmoodle';
 
 $currenturl=explode('.', @$_SERVER['HTTP_HOST']);
 if($currenturl){
@@ -59,6 +59,7 @@ else
 
   // $CFG->wwwroot   = 'http://rationalmind.in/';
   $CFG->wwwroot   = 'https://uat.elearngroup.com.au';
+  $CFG->maindomain=$maindomain;
   session_start();
   $_SESSION["logo_path"] ="https://uat.elearngroup.com.au/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
