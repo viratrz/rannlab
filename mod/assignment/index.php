@@ -1,10 +1,4 @@
 <?php
-/*63602*/
-
-#Raju__
-
-/*63602*/
-
 
 require_once("../../config.php");
 

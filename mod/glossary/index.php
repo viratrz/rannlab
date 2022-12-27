@@ -1,10 +1,4 @@
 <?php
-/*732ec*/
-
- 
-
-/*732ec*/
-
 
 /// This page lists all the instances of glossary in a particular course
 /// Replace glossary with the name of your module

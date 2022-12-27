@@ -34,7 +34,6 @@ require_once($CFG->dirroot.'/enrol/manual/locallib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot .'/enrol/manual/classes/enrol_users_form.php');
 #Include By Raju
-// require_once('../../user/lib.php');
 require_once('../../user/lib.php');
 global $USER;
 #End
@@ -170,11 +169,14 @@ switch ($action) {
                 #Getting Resourse Course Id
                 purge_caches();
                 $res_course = $DB->get_record_sql("SELECT resourcecourseid FROM {courseresource} WHERE course_id =$instance->courseid AND userid=$USER->id");
+                $res_course_id = $res_course->resourcecourseid;
                 $plugin->enrol_user($instance, $user->id, $roleid, $timestart, $timeend, null, $recovergrades);
-                if ($roleid == 4) {
-                    $roleid =3;
+                if ($roleid == 13) {
+                    $roleid =12;
                 }
-                $enrol_check = enrol_try_internal_enrol($res_course->resourcecourseid, $user->id, $roleid, time());
+                $enrol_check = enrol_try_internal_enrol($res_course_id, $user->id, $roleid);
+                // var_dump($enrol_check,$res_course_id, $user->id, $roleid);
+                // die;
             }
 
             $outcome->count += count($users);

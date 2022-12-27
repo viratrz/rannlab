@@ -1,10 +1,4 @@
 <?php
-/*b4c6a*/
-
- 
-
-/*b4c6a*/
-
 
 // This file is part of Moodle - http://moodle.org/
 //
