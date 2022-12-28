@@ -1,10 +1,4 @@
 <?php
-/*9cf01*/
-
- 
-
-/*9cf01*/
-
 
 // This file is part of Moodle - http://moodle.org/
 //

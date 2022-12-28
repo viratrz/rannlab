@@ -1,10 +1,4 @@
 <?php
-/*23f8e*/
-
- 
-
-/*23f8e*/
-
 
     require_once("../../config.php");
     require_once("lib.php");

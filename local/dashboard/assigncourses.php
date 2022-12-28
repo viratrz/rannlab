@@ -203,7 +203,7 @@ width: 158px !important;
 
                   </div>
                </div>
-               <div class="row mb-4">
+               <div class="row mb-1">
                  <div class="col-md-12 pr-0 d-flex">
                    <div class="country">
                    <p class="mb-0 "><b>Country</b></p>
@@ -215,10 +215,7 @@ width: 158px !important;
                    <input class="test2" value="" readonly/>
                         </div>
                  </div>
-                  <div class="col-md-12">
-                     <a href="#" class="button mb-1 text-center" data-toggle="modal" data-target="#langmodal">Select Language</a>
-                     <a href="#" class="button mb-1 text-center" onclick="javascript:location.reload();" >Clear</a>
-                  </div>
+                  
                </div>
                <div class="row">
                   <div class="col-md-4">

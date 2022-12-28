@@ -40,7 +40,7 @@ function local_createuser_extend_navigation(global_navigation $nav)
         
         $nav->add(
             'C.U.E. Summary',
-            new moodle_url($CFG->wwwroot . "/local/createuser/cue_summary.php?uni_id=$uni_id"),
+            new moodle_url($CFG->wwwroot . "/local/createuser/student_list.php?"),
             navigation_node::TYPE_SYSTEM,
             null,
             'local_createuser',

@@ -21,7 +21,7 @@ function local_dashboard_extend_navigation(global_navigation $nav){
    
   
     //    if ($PAGE->theme->resolve_image_location('icon', 'local_dashboard', null)) {
-        $icon = new pix_icon('book', '', 'local_dashboard', array('class' => 'icon pluginicon'));
+    $icon = new pix_icon('book', '', 'local_dashboard', array('class' => 'icon pluginicon'));
     //     $icon1 = new pix_icon('online-course1', '', 'local_dashboard', array('class' => 'icon pluginicon'));
     // } 
     // else {
@@ -224,14 +224,17 @@ function module_create($evv)
 
 function createresource($id,$schoolid,$user){
     global $DB, $USER;
+    $main_course = $DB->get_record("course", ['id'=>$id]);
+    $school_name = $DB->get_record("school", ['id'=>$schoolid]);
     $maincat2 = $DB->get_record_sql("SELECT id FROM {course_categories} WHERE idnumber='resourcecat'");
 	$tomorrow = new DateTime("now", core_date::get_server_timezone_object());
 
     $newcourse=new stdClass();
     $newcourse->category=$maincat2->id;
     $newcourse->sortorder=900000;
-    $newcourse->fullname='Resourcecourse';
-    $newcourse->shortname="course".$id."#".time();
+    // $newcourse->fullname='Resourcecourse';
+    $newcourse->fullname=$main_course->fullname.' '."General_Block $school_name->name";
+    $newcourse->shortname=$main_course->shortname."_".$id."_".$schoolid;
     $newcourse->idnumber="";
     $newcourse->summary="";
     $newcourse->summaryformat=1;
@@ -284,22 +287,22 @@ function createresource($id,$schoolid,$user){
     //  }
     if ($courseid) 
     {
-        // $enrol=new stdClass();
-        // $enrol->enrol="manual";
-        // $enrol->status=0;
-        // $enrol->courseid=$courseid;
-        // $enrol->sortorder=0;
-        // $enrol->enrolperiod=0;
-        // $enrol->enrolstartdate=0;
-        // $enrol->enrolenddate=0;
-        // $enrol->expirynotify=0;
-        // $enrol->expirythreshold=86400;
-        // $enrol->notifyall=0;
-        // $enrol->roleid=3;
-        // $enrol->timecreated=time();
-        // $enrol->timemodified=time();
-        // $enrolid=$DB->insert_record('enrol', $enrol);
-        // purge_caches();
+        $enrol=new stdClass();
+        $enrol->enrol="manual";
+        $enrol->status=0;
+        $enrol->courseid=$courseid;
+        $enrol->sortorder=0;
+        $enrol->enrolperiod=0;
+        $enrol->enrolstartdate=0;
+        $enrol->enrolenddate=0;
+        $enrol->expirynotify=0;
+        $enrol->expirythreshold=86400;
+        $enrol->notifyall=0;
+        $enrol->roleid=1;
+        $enrol->timecreated=time();
+        $enrol->timemodified=time();
+        $enrolid=$DB->insert_record('enrol', $enrol);
+        purge_caches();
         // purge_caches();
         // enrol_try_internal_enrol($courseid, $user, 12, time());
         $courseresource = new stdClass();

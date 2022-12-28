@@ -29,14 +29,15 @@ require_once('lib.php');
 $perpage      = optional_param('perpage', 10, PARAM_INT);
 $page         = optional_param('page', 0, PARAM_INT);
 require_login();
-global $USER, $DB,$CFG;
+global $USER, $DB;
 if (user_has_role_assignment($USER->id, 11)) {
   $school = $DB->get_records_sql("SELECT * FROM {seller_school} ss INNER JOIN {school} s ON s.id=ss.schoolid WHERE ss.userid=$USER->id ORDER BY s.id desc");
 } else {
   $school = $DB->get_records_sql("SELECT * FROM {school} order by id desc");
 }
 
-
+// var_dump($maindomain);
+// die;
 $totalcount = count($school);
 
 $start = $page * $perpage;
@@ -187,15 +188,16 @@ if ($_GET['msg']) {
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
-                  <td><a  href="http://<?php echo $sch->domain.'.'.$CFG->maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.".".$CFG->maindomain; ?></a></td>
+                  <td><a  href="http://<?php echo $sch->domain.".".$maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.'.'.$maindomain; ?></a></td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
                   <!-- <td>Nov</td> -->
                   <td style="text-align: center;"><a href="<?php echo $CFG->wwwroot.'/local/dashboard/subcription_payment.php?un_id='.$sch->id.'';?>" class="btn btn-info py-0 px-1">View</a></td>
-                  <td>
+                  <td class="px-0">
                     <a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
                     <a href="#" class="p-2" onclick="assigncourse(<?php echo $sch->id; ?>);"><i class="fa fa-book" title="Assign Course" aria-hidden="true" style="color:#000;"></i></a>
-                    <a href="<?php echo $CFG->wwwroot.'/local/changelogo/theme.php?uni_id='.$sch->id; ?>" class="mr-2" style="padding:2px;" title="Change Theme"><i class="fa-sharp fa-solid fa-palette"></i></a>
+                    <a href="<?php echo $CFG->wwwroot.'/local/dashboard/course_report.php?uni_id='.$sch->id; ?>" class="mr-1" style="padding:2px;" title="View RTO UA Summary"><i class="fa-sharp fa-solid fa-eye"></i></a>
+                    <a href="<?php echo $CFG->wwwroot.'/local/changelogo/theme.php?uni_id='.$sch->id; ?>" class="mr-1" style="padding:2px;" title="Change Theme"><i class="fa-sharp fa-solid fa-palette"></i></a>
                     <a href="#" onclick="deleteUser(<?php echo $sch->id; ?>)" class="" style="padding:2px; color: red;" ><i class="fa-solid fa-trash"></i></a>
                   </td>                 
                 </tr>
@@ -206,9 +208,9 @@ if ($_GET['msg']) {
       </div>
     </div>
   </div>
-  <div class="pagination mt-3">
+  <!-- <div class="pagination mt-3"> -->
     <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
-  </div>
+  <!-- </div> -->
   <script>
     function adminlist(schoolid) {
       var admin = 1;
