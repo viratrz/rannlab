@@ -31,14 +31,14 @@
     //     }
     // } 
 
-if($school_id>0){
-     $resource = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'resourseid'=>$id), '*');
-     if($resource->courseid>0){
-	 $cid1=$resource->courseid;
-	 redirect(new moodle_url("/course/view.php?id=".$cid1));
+// if($school_id>0){
+//      $resource = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'resourseid'=>$id), '*');
+//      if($resource->courseid>0){
+// 	 $cid1=$resource->courseid;
+// 	 redirect(new moodle_url("/course/view.php?id=".$cid1));
 
-	 }
-}
+// 	 }
+// }
 
     $params = array();
     if (!empty($name)) {

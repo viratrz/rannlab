@@ -224,14 +224,17 @@ function module_create($evv)
 
 function createresource($id,$schoolid,$user){
     global $DB, $USER;
+    $main_course = $DB->get_record("course", ['id'=>$id]);
+    $school_name = $DB->get_record("school", ['id'=>$schoolid]);
     $maincat2 = $DB->get_record_sql("SELECT id FROM {course_categories} WHERE idnumber='resourcecat'");
 	$tomorrow = new DateTime("now", core_date::get_server_timezone_object());
 
     $newcourse=new stdClass();
     $newcourse->category=$maincat2->id;
     $newcourse->sortorder=900000;
-    $newcourse->fullname='Resourcecourse';
-    $newcourse->shortname="course".$id."#".time();
+    // $newcourse->fullname='Resourcecourse';
+    $newcourse->fullname=$main_course->fullname.' '."General_Block $school_name->name";
+    $newcourse->shortname=$main_course->shortname."_".$id."_".$schoolid;
     $newcourse->idnumber="";
     $newcourse->summary="";
     $newcourse->summaryformat=1;

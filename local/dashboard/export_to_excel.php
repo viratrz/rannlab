@@ -17,10 +17,10 @@
     <table class="table m-0" id="data">
     <thead class="thead-dark">
     <tr style="height: 20px; margin-bottom: 25px;">
-        <th scope="col" colspan="6" class="p-0"><h3 class="text-center bg-dark text-white m-0 py-2" style="font-weight: bolder">RTO Unit Allocation Summary</h3></th>
+        <th scope="col" colspan="6" class="p-0"><h3 class="text-center text-uppercase bg-dark text-white m-0 py-2" style="font-weight: bolder">RTO Unit Allocation Summary</h3></th>
     </tr>
-    <tr style="height: 40px;">
-        <th scope="col" class="pb-3 text-center h5" colspan="3">'.$university->name.'</th>
+    <tr style="height: 50px;">
+        <th scope="col" class="pb-3 text-center text-uppercase h4" colspan="3">'.$university->name.'</th>
         <th scope="col"></th>
         <th scope="col" colspan="2" class="text-center"><img class="text-center" src="'.$CFG->wwwroot.$university->logo_path.'" alt="" width="50" height="40"></th>
       </tr>

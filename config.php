@@ -4,12 +4,12 @@ unset($CFG);
 global $CFG;
 $CFG = new stdClass();
 
-$CFG->dbtype    = 'mysqli';
+$CFG->dbtype    = 'mariadb';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = '148.72.245.159';
-$CFG->dbname    = 'MoodleLms2';
-$CFG->dbuser    = 'yatharthd';
-$CFG->dbpass    = 'Yath@6849';
+$CFG->dbhost    = 'localhost';
+$CFG->dbname    = 'local_moodlelms2';
+$CFG->dbuser    = 'root';
+$CFG->dbpass    = '';
 $CFG->prefix    = 'mdl_';
 $CFG->dbsessions='0';
 $CFG->dboptions = array (
@@ -18,10 +18,10 @@ $CFG->dboptions = array (
   'dbsocket' => '',
   'dbcollation' => 'utf8mb4_unicode_ci',
 );
-$db_host='148.72.245.159';
-$db_user='yatharthd';
-$db_pass='Yath@6849';
-$db_name='MoodleLms2';
+$db_host='localhost';
+$db_user='root';
+$db_pass='';
+$db_name='local_moodlelms2';
 
 $currenturl=explode('.', @$_SERVER['HTTP_HOST']);
 if($currenturl){
@@ -39,13 +39,14 @@ $query="SELECT * FROM mdl_school where domain='".$tenantdomain."'";
 
 $tenantdata = mysqli_query($con, $query);
 
-$maindomain="rationalmind";
+$maindomain="localhost/MoodleLMS6";
 if(@mysqli_num_rows($tenantdata)>0)
 {
   while ($obj = $tenantdata->fetch_object()) 
   {
     $tsubdomain= $obj->domain;
-    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain.'.in/MoodleLMS5';
+    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain;
+    // $CFG->wwwroot   = 'http://localhost/MoodleLMS6';
     
     session_start();
     $_SESSION["logo_path"] = $CFG->wwwroot.$obj->logo_path;
@@ -57,13 +58,15 @@ if(@mysqli_num_rows($tenantdata)>0)
 else
 {
 
-  $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS5';
+  // $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS6';
+  $CFG->wwwroot   = 'http://localhost/MoodleLMS6';
   session_start();
   $_SESSION["logo_path"] ="http://rationalmind.in/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
-$CFG->dataroot  = __DIR__ .'/moodledata';
+$CFG->dataroot  = 'D:\\xampp\\moodledatalms6';
+// $CFG->dataroot  = __DIR__ .'/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;

@@ -9,12 +9,9 @@ global $USER, $DB, $CFG;
 $select_course = count($_POST["courses"]);
 $package_id = $_POST['package'];
 $phone_no = $_POST['phone_no'];
-if(isset($package_id))
-{
-    $package = $DB->get_record_sql("SELECT * FROM mdl_package WHERE id=$package_id");
-    $num_of_course = (int)$package->num_of_course;   
-}
 
+$package = $DB->get_record_sql("SELECT * FROM mdl_package WHERE id=$package_id");
+$num_of_course = (int)$package->num_of_course;
 
 // var_dump($package_id,$select_course, $num_of_course);
 // die;

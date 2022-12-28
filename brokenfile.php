@@ -27,5 +27,5 @@
  * @copyright  2011 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-//test
+
 @header('HTTP/1.0 404 not found');
