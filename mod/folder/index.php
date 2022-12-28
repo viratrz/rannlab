@@ -1,10 +1,4 @@
 <?php
-/*266d9*/
-
-#Raju__
-
-/*266d9*/
-
 
 // This file is part of Moodle - http://moodle.org/
 //

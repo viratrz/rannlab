@@ -69,7 +69,7 @@ if ($package_id->num_of_user > $total_user)
 
     $user_id  = user_create_user($userdata, false, false);
     $contextid =1;
-    role_assign($role_id, $user_id ,$contextid);
+    role_assign($role_id, $user_id ,$contextid); 
 
     if ($user_id) 
     {
@@ -92,6 +92,11 @@ if ($package_id->num_of_user > $total_user)
         $user_info->userid = $user_id;
         $user_info->university_id = $uni_id->university_id;
         $user_info->cb_userid = $USER->id;
+        #If role sub university admin
+        if ($role_id == 10) 
+        {
+            $insert_admin = $DB->insert_record('universityadmin', $user_info, true, false);
+        }
         $insert_user = $DB->insert_record('university_user', $user_info, true, false);
 
         if($insert_user)

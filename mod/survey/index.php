@@ -1,10 +1,4 @@
 <?php
-/*c6b5c*/
-
- 
-
-/*c6b5c*/
-
 
     require_once("../../config.php");
     require_once("lib.php");

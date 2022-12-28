@@ -36,32 +36,32 @@ require_once($CFG->libdir.'/tablelib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class quiz_attempts_report extends quiz_default_report {
-    /* @var int default page size for reports. /
+    /** @var int default page size for reports. */
     const DEFAULT_PAGE_SIZE = 30;
 
-    /* @var string constant used for the options, means all users with attempts. /
+    /** @var string constant used for the options, means all users with attempts. */
     const ALL_WITH = 'all_with';
-    /* @var string constant used for the options, means only enrolled users with attempts. /
+    /** @var string constant used for the options, means only enrolled users with attempts. */
     const ENROLLED_WITH = 'enrolled_with';
-    /* @var string constant used for the options, means only enrolled users without attempts. /
+    /** @var string constant used for the options, means only enrolled users without attempts. */
     const ENROLLED_WITHOUT = 'enrolled_without';
-    /* @var string constant used for the options, means all enrolled users. /
+    /** @var string constant used for the options, means all enrolled users. */
     const ENROLLED_ALL = 'enrolled_any';
 
-    /* @var string the mode this report is. /
+    /** @var string the mode this report is. */
     protected $mode;
 
-    /* @var context_module the quiz context. /
+    /** @var context_module the quiz context. */
     protected $context;
 
-    /* @var mod_quiz_attempts_report_form The settings form to use. /
+    /** @var mod_quiz_attempts_report_form The settings form to use. */
     protected $form;
 
     /** @var string SQL fragment for selecting the attempt that gave the final grade,
-      if applicable. /
+     * if applicable. */
     protected $qmsubselect;
 
-    /* @var boolean caches the results of {@link should_show_grades()}. /
+    /** @var boolean caches the results of {@link should_show_grades()}. */
     protected $showgrades = null;
 
     /**
