@@ -24,22 +24,6 @@
     $return      = optional_param('return', 0, PARAM_LOCALURL);
     $school_id= (int)$_SESSION['university_id'];
 
-    // if($school_id>0){
-    //     $course = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'courseid'=>$id), '*');
-    //     if(!$course){
-    //       redirect(new moodle_url("/my"));  
-    //     }
-    // } 
-
-// if($school_id>0){
-//      $resource = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'resourseid'=>$id), '*');
-//      if($resource->courseid>0){
-// 	 $cid1=$resource->courseid;
-// 	 redirect(new moodle_url("/course/view.php?id=".$cid1));
-
-// 	 }
-// }
-
     $params = array();
     if (!empty($name)) {
         $params = array('shortname' => $name);

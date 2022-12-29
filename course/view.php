@@ -1,3 +1,7 @@
+<style>
+    .add-left{
+        text-align: left !important;    }
+</style>
 <?php
 
 //  Display the course home page.
@@ -20,21 +24,6 @@
     $return      = optional_param('return', 0, PARAM_LOCALURL);
     $school_id= (int)$_SESSION['university_id'];
 
-    // if($school_id>0){
-    //     $course = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'courseid'=>$id), '*');
-    //     if(!$course){
-    //       redirect(new moodle_url("/my"));  
-    //     }
-    // } 
-
-// if($school_id>0){
-//      $resource = $DB->get_record('school_courses', array('schoolid'=>$school_id, 'resourseid'=>$id), '*');
-//      if($resource->courseid>0){
-// 	 $cid1=$resource->courseid;
-// 	 redirect(new moodle_url("/course/view.php?id=".$cid1));
-
-// 	 }
-// }
 
     $params = array();
     if (!empty($name)) {
@@ -287,7 +276,7 @@
     // Include the actual course format.
     require($CFG->dirroot .'/course/format/'. $course->format .'/format.php');
     // Content wrapper end.
-
+    
     echo html_writer::end_tag('div');
 
     // Trigger course viewed event.
@@ -305,18 +294,8 @@
     if ($completion->is_enabled()) {
         $PAGE->requires->js_call_amd('core_course/view', 'init');
     }
+ 
 $school_id= (int)$_SESSION['university_id'];
-// var_dump($school_id,$id,$USER->id);
-// die; 
-// if($school_id>0){
-//      $resource = $DB->get_record('courseresource', array('university_id'=>$school_id, 'course_id'=>$id), '*');
-//      if($resource->resourcecourseid){
-// 	 $cid=$resource->resourcecourseid;
-// 	 $curl= new moodle_url("/course/view1.php?id=".$cid); 
-// 	 echo file_get_contents( $curl);
-
-// 	 }
-// }
 
 
 //This is additional resources button for another course which is inbuild in this courses
@@ -349,10 +328,15 @@ $school_id= (int)$_SESSION['university_id'];
         if(!is_siteadmin())
         {
         //  echo $ajaxcontrol;
-         echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
+            $roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
+            $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
+            if ($role_shortname->shortname === "student") 
+            {
+                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More</a>";
+            }
+            else 
+            {
+                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
+            }
         }
-       echo "<style>
-    .add-left{
-        text-align: left !important;    }
-</style>";
     echo $OUTPUT->footer();
