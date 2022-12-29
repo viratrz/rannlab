@@ -6,10 +6,10 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mariadb';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = 'localhost';
-$CFG->dbname    = 'local_moodlelms2';
-$CFG->dbuser    = 'root';
-$CFG->dbpass    = '';
+$CFG->dbhost    = 'localhost:3306';
+$CFG->dbname    = 'elearngroup_vetmoodle';
+$CFG->dbuser    = 'elearngroup_vetmoodle';
+$CFG->dbpass    = 'YfQqb4)-=xcv';
 $CFG->prefix    = 'mdl_';
 $CFG->dbsessions='0';
 $CFG->dboptions = array (
@@ -18,10 +18,10 @@ $CFG->dboptions = array (
   'dbsocket' => '',
   'dbcollation' => 'utf8mb4_unicode_ci',
 );
-$db_host='localhost';
-$db_user='root';
-$db_pass='';
-$db_name='local_moodlelms2';
+$db_host='localhost:3306';
+$db_user='elearngroup_vetmoodle';
+$db_pass='YfQqb4)-=xcv';
+$db_name='elearngroup_vetmoodle';
 
 $currenturl=explode('.', @$_SERVER['HTTP_HOST']);
 if($currenturl){
@@ -39,14 +39,13 @@ $query="SELECT * FROM mdl_school where domain='".$tenantdomain."'";
 
 $tenantdata = mysqli_query($con, $query);
 
-$maindomain="localhost/MoodleLMS6";
+$maindomain="uat.elearngroup.com.au";
 if(@mysqli_num_rows($tenantdata)>0)
 {
   while ($obj = $tenantdata->fetch_object()) 
   {
     $tsubdomain= $obj->domain;
-    $CFG->wwwroot='http://'.$tsubdomain.'.'.$maindomain;
-    // $CFG->wwwroot   = 'http://localhost/MoodleLMS6';
+    $CFG->wwwroot='https://'.$tsubdomain.'.'.$maindomain;
     
     session_start();
     $_SESSION["logo_path"] = $CFG->wwwroot.$obj->logo_path;
@@ -58,15 +57,16 @@ if(@mysqli_num_rows($tenantdata)>0)
 else
 {
 
-  // $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS6';
-  $CFG->wwwroot   = 'http://localhost/MoodleLMS6';
+  // $CFG->wwwroot   = 'http://rationalmind.in/';
+  $CFG->wwwroot   = 'https://uat.elearngroup.com.au';
+  $CFG->maindomain=$maindomain;
   session_start();
-  $_SESSION["logo_path"] ="http://rationalmind.in/theme/image.php/mb2nl/theme/1664522056/logo-default";
+  $_SESSION["logo_path"] ="https://uat.elearngroup.com.au/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
-$CFG->dataroot  = 'D:\\xampp\\moodledatalms6';
 // $CFG->dataroot  = __DIR__ .'/moodledata';
+$CFG->dataroot  = '/home/elearngroup/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;

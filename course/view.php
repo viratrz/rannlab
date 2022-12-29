@@ -1,7 +1,3 @@
-<style>
-    .add-left{
-        text-align: left !important;    }
-</style>
 <?php
 
 //  Display the course home page.
@@ -355,4 +351,8 @@ $school_id= (int)$_SESSION['university_id'];
         //  echo $ajaxcontrol;
          echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
         }
+       echo "<style>
+    .add-left{
+        text-align: left !important;    }
+</style>";
     echo $OUTPUT->footer();
