@@ -1,7 +1,4 @@
-<style>
-    .add-left{
-        text-align: left !important;    }
-</style>
+
 <?php
 
 //  Display the course home page.
@@ -312,12 +309,25 @@ $school_id= (int)$_SESSION['university_id'];
             'data-sectionreturnid' => $sectionreturn,
         ]);
 
+        $roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
+        $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
+        if ($role_shortname->shortname === "student") 
+        {
+            echo '<script>
+            $(document).ready(function(){
+                $("span:contains(\'My courses\')").parents(".item-mycourses").hide();
+            });
+            </script>
+            ';
+        }
     // var_dump(get_class_methods($OUTPUT));
     echo '
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
     $(document).ready(function(){
        $("a:contains(\'Courses\')").parents("p").hide();
+       $("#inst9").hide();
        });
     </script>';
+    
     echo $OUTPUT->footer();
