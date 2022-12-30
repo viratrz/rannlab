@@ -214,19 +214,21 @@ $html='';
 
      $html .= '<body> <div class="container-fluid">
          <div class="row mt-4">';
+         $resourse_category_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
          if(is_siteadmin()){
-            $data=$DB->get_records_sql("SELECT mc.* FROM {course} mc where mc.visible=1 AND id != 1 AND mc.fullname != 'Resourcecourse'");
+            $data=$DB->get_records_sql("SELECT mc.* FROM {course} mc where mc.visible=1 AND id != 1 AND mc.category != $resourse_category_id->id");
          }
          else{
             $id = $USER->id;
-            $check = $DB->get_records_sql("select * from {universityadmin} where userid = '$id'");
+            $check = $DB->get_records_sql("SELECT * from {universityadmin} where userid = '$id'");
             $check1 = count($check);
             if($check1 == 1){
                // $data=$DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
                $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} assc on mc.id = assc.course_id inner join {school} ms on ms.id = assc.university_id inner join {universityadmin} ua on ua.university_id = ms.id WHERE ua.university_id= $_SESSION[university_id]");
             }
             else{
-               $data = $DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual' AND {course}.fullname != 'Resourcecourse'");
+               
+               $data = $DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual' AND {course}.category != $resourse_category_id->id");
             }
          }
 
@@ -287,6 +289,9 @@ $html='';
    </body>
 </html>';
 echo $html;
+
+// Create a course_in_list object to use the get_course_overviewfiles() method.
+// var_dump($CFG->libdir . '/coursecatlib.php');
 
 
 echo $OUTPUT->footer();
