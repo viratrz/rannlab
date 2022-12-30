@@ -248,7 +248,7 @@ function createresource($id,$schoolid,$user){
     $newcourse->maxbytes=0;
     $newcourse->legacyfiles=0;
     $newcourse->showreports=0;
-    $newcourse->visible=0;
+    $newcourse->visible=1;
     $newcourse->visibleold=0;
     $newcourse->groupmode=0;
     $newcourse->groupmodeforce=0;
@@ -303,8 +303,7 @@ function createresource($id,$schoolid,$user){
         $enrol->timemodified=time();
         $enrolid=$DB->insert_record('enrol', $enrol);
         purge_caches();
-        // purge_caches();
-        // enrol_try_internal_enrol($courseid, $user, 12, time());
+        enrol_try_internal_enrol($courseid, $user, 12);
         $courseresource = new stdClass();
         $courseresource->university_id=$schoolid;
         $courseresource->course_id=$id;

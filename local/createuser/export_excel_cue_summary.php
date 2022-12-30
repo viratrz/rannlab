@@ -78,43 +78,46 @@ $uni_id =$_SESSION['university_id'];
             <?php 
                foreach ($all_enrolled_courses as $enrolled_course) 
                {
-                  $start_date = date('d/m/Y',$enrolled_course->startdate);
-                  $end_date = date('d/m/Y',$enrolled_course->enddate);
+                  if (strpos($enrolled_course->fullname, "General_Block") === false) 
+                  {
+                     $start_date = date('d/m/Y',$enrolled_course->startdate);
+                     $end_date = date('d/m/Y',$enrolled_course->enddate);
 
-                  $context = context_course::instance($enrolled_course->id);
-                  $all_enrolled_users = get_enrolled_users($context);
-                  // var_dump($all_enrolled_users);
-                  // echo"<br>";
-                  
-                  $table_row ="<tr>
-                     <td class='px-1'>$enrolled_course->idnumber</td>
-                     <td class='px-1'>$enrolled_course->fullname</td>
-                     <td class='px-1'>$start_date</td>
-                     <td class='px-1'>$end_date</td>
-                     <td class='px-1'>";
-                     $teacher_count = 1;
-                        foreach ($all_enrolled_users as $all_enrolled_user) 
-                        {
-                           $role = $DB->get_record("role_assignments", ["userid"=>$all_enrolled_user->id]);
-                           $role_name = $DB->get_record("role", ["id"=>$role->roleid]);
-                           $get_teacher_university_id = $DB->get_record_sql("SELECT uu.* FROM {university_user} uu WHERE uu.university_id=$uni_id AND uu.userid=$all_enrolled_user->id UNION SELECT ua.* FROM  {universityadmin} ua  WHERE ua.university_id=$uni_id AND ua.userid=$all_enrolled_user->id");
-                           // var_dump($get_teacher_university_id );
-                           // echo "<br>";
-                           if ($role_name->shortname === "teacher" && $uni_id == $get_teacher_university_id->university_id) 
+                     $context = context_course::instance($enrolled_course->id);
+                     $all_enrolled_users = get_enrolled_users($context);
+                     // var_dump($all_enrolled_users);
+                     // echo"<br>";
+                     
+                     $table_row ="<tr>
+                        <td class='px-1'>$enrolled_course->idnumber</td>
+                        <td class='px-1'>$enrolled_course->fullname</td>
+                        <td class='px-1'>$start_date</td>
+                        <td class='px-1'>$end_date</td>
+                        <td class='px-1'>";
+                        $teacher_count = 1;
+                           foreach ($all_enrolled_users as $all_enrolled_user) 
                            {
-                              $table_row .="<span style='display: block;'>$teacher_count. $all_enrolled_user->firstname $all_enrolled_user->lastname</span>";
-                              $teacher_count++;
+                              $role = $DB->get_record("role_assignments", ["userid"=>$all_enrolled_user->id]);
+                              $role_name = $DB->get_record("role", ["id"=>$role->roleid]);
+                              $get_teacher_university_id = $DB->get_record_sql("SELECT uu.* FROM {university_user} uu WHERE uu.university_id=$uni_id AND uu.userid=$all_enrolled_user->id UNION SELECT ua.* FROM  {universityadmin} ua  WHERE ua.university_id=$uni_id AND ua.userid=$all_enrolled_user->id");
+                              // var_dump($get_teacher_university_id );
+                              // echo "<br>";
+                              if ($role_name->shortname === "teacher" && $uni_id == $get_teacher_university_id->university_id) 
+                              {
+                                 $table_row .="<span style='display: block;'>$teacher_count. $all_enrolled_user->firstname $all_enrolled_user->lastname</span>";
+                                 $teacher_count++;
+                              }
                            }
-                        }
-                     $table_row .="
-                     </td>
-                     <td class='px-1'></td>
-                     <td class='px-1'></td>
-                     <td class='px-1'></td>
-                     <td class='px-1'></td>
-                     <td class='px-1'>No Comment</td>
-                  </tr>";
-                  echo $table_row;
+                        $table_row .="
+                        </td>
+                        <td class='px-1'></td>
+                        <td class='px-1'></td>
+                        <td class='px-1'></td>
+                        <td class='px-1'></td>
+                        <td class='px-1'>No Comment</td>
+                     </tr>";
+                     echo $table_row;
+                  }
                }
             ?>
          </tbody>

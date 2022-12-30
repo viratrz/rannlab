@@ -36,6 +36,9 @@
     <tbody>';
     $count=1;
     foreach ($courses as $course) {
+      $check_course = $DB->record_exists("course", ['id'=>$course->course_id]);
+      if ($check_course) 
+      {  
         $course_info = $DB->get_record("course", ['id'=>$course->course_id]);
         $context = context_course::instance($course->course_id);
         $all_enrolled_users = get_enrolled_users($context);
@@ -64,14 +67,15 @@
         #End
         $table.=
         '<tr>
-        <th scope="row">'.$count.'</th>
-        <td>'.$course_info->id.'</td>
-        <td>'.$course_info->fullname.'</td>
-        <td>'.$count_enrolled.'</td>
-        <td>'.$count_failed.'</td>
-        <td>'.$count_pending.'</td>
-      </tr>';
-      $count++;
+          <th scope="row">'.$count.'</th>
+          <td>'.$course_info->id.'</td>
+          <td>'.$course_info->fullname.'</td>
+          <td>'.$count_enrolled.'</td>
+          <td>'.$count_failed.'</td>
+          <td>'.$count_pending.'</td>
+        </tr>';
+        $count++;
+      }
     }
       
 $table.=

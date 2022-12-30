@@ -188,7 +188,9 @@ if ($_GET['msg']) {
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
-                  <td><a  href="http://<?php echo $sch->domain.".".$maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.'.'.$maindomain; ?></a></td>
+                  <td>
+                    <a  href="http://<?php echo $sch->domain.".".$maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.'.'.$maindomain; ?></a>
+                  </td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
                   <!-- <td>Nov</td> -->
