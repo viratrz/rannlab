@@ -251,7 +251,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Phone Number <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeyup="numberOnly(this.value)" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeydown="numberOnly(this.value)" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
@@ -350,6 +350,17 @@ function allLetter(inputtxt)
 }
 
 
+// function numberOnly(inputvalue) 
+// {
+   
+//    var smallletter = /^[0-9]+$/;
+//    if (inputvalue.length > 0 && inputvalue.match(smallletter))
+//    {
+//       phone.value = inputvalue;
+//       console.log(inputvalue);
+//    }
+// }
+
 function smallOnly(inputvalue) {
    var smallletter = /^[a-z0-9 ]+$/;
    var erroeClass = document.getElementsByClassName('error1');
@@ -358,39 +369,21 @@ function smallOnly(inputvalue) {
       if(inputvalue.match(smallletter))
      {
       erroeClass[0].innerHTML = " ";
+      // longname.style.border = "1px solid rgba(0,0,0,.1)";
      }
    else
      {
       erroeClass[0].innerHTML = "Capital letter and special character not allow";
+      // longname.style.border = "1px solid red";
      }
    }
    else
    {
       erroeClass[0].innerHTML = " ";
+      // longname.style.border = "1px solid rgba(0,0,0,.1)";
    }
 }
-function numberOnly(inputvalue) {
-   var all_number = /^[0-9]+$/;
-   var erroeClass = document.getElementsByClassName('error1');
-   if (inputvalue.length > 0)
-   {
-      if(inputvalue.match(all_number))
-     {
-      erroeClass[12].innerHTML = " ";
-      num_value =true;
-     }
-   else
-     {
-      erroeClass[12].innerHTML = "This field accepted number only";
-      num_value =false;
-     }
-   }
-   else
-   {
-      erroeClass[12].innerHTML = " ";
-   }
-}
-
+      
 $(document).ready(function() 
 {
    $(".eye").click(function() 
@@ -427,7 +420,6 @@ function validateEmail(email)
 // *****************validateEmail End******************
 function adduniversity() 
 { 
-   // alert(num_value);
    var form = $('#addnewuniversity');
    var formData = new FormData($('#addnewuniversity')[0]);
    var select_courses = $("#courses").val();
@@ -455,15 +447,13 @@ function adduniversity()
       // console.log(typeof(courses));
       // console.log(typeof(university_logo));
    var arr = [schoolname, shortname, client, rto, address, country, city, domain, package, username, firstname, lastname, phone, email, confirm_email, password, confirm_password];
-   var arr_ids = ['longname', 'shortname', 'client', 'rto', 'address', 'country', 'city', 'domain', 'package', 'username', 'firstname', 'lastname', 'phone', 'email', 'confirmemail', 'password', 'confirmpassword'];
    var error1 = document.getElementsByClassName('error1');
    var check_true=true;
    var focusError = document.getElementsByClassName('focusError');
-   
    for(let i=0; i<arr.length; i++)
    {
-      var without_space = arr[i].trim();
-      if (without_space !='') 
+      var wthout_space = arr[i].trim();
+      if (wthout_space !='') 
       {
          error1[i].innerHTML = "";
          error1[i].style.color = "none";
@@ -476,46 +466,19 @@ function adduniversity()
          else if(i == 8)
             error1[i].innerHTML = "Please Select One";
          else
-         {
             error1[i].innerHTML = "This Field Is Required";
-         }
          error1[i].style.color = "red";
          focusError[i].style.border = "1px solid red";
          check_true=false;
       }
    }
 
-   for(let f=0; f<arr.length; f++)
-   {
-      var remove_space = arr[f].trim();
-      if (remove_space =='') 
-      {
-         document.getElementById(arr_ids[f]).focus();
-         break;
-      }
-   }
    // if(check_true)
    // {
    //    var d=$('#courses').val();
    //    console.log(d);
    //    alert("ok");
    // }
-   var all_number = /^[0-9]+$/;
-   if (phone.match(all_number)) {
-      if (phone.length == 10) {
-         error1[12].innerHTML = "";
-         check_true =true;
-      }
-      else
-      {
-         error1[12].innerHTML = "Number length should be 10";
-         check_true =false;
-      }
-   }
-   else{
-      error1[12].innerHTML = "This field accepted number only";
-      check_true =false;
-   }
 
    if (check_true) 
    {
@@ -528,15 +491,11 @@ function adduniversity()
             var pass= true;
          }
          else 
-         {
             error1[14].innerHTML="Confirm Email Not Match";
-            document.getElementById("confirmemail").focus();
-         }
       }
       else
       {
          error1[13].innerHTML="Invalid Email Format";
-         document.getElementById("email").focus();
       }
       if (pass) 
       {
@@ -546,10 +505,7 @@ function adduniversity()
             var all_true = true;
          } 
          else 
-         {
             error1[16].innerHTML="Confirm Password Not Match";
-            document.getElementById("confirmpassword").focus();
-         }
       } 
    }
    
