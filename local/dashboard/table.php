@@ -135,6 +135,15 @@ if ($_GET['msg']) {
     .modal-select {
       margin: 0px 15px !important;
     }
+::-webkit-scrollbar {
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: white; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: blue; 
+}
   </style>
 </head>
 
@@ -178,7 +187,7 @@ if ($_GET['msg']) {
                 <th>Domain Name</th>
                 <th>Country</th>
                 <th>City/Town</th>
-                <th>Subcription & Payment Details</th>
+                <th>Subscription & Payment Details</th>
                 <!-- <th>Current Month Bill</th> -->
                 <th style="width:150px;">Action</th>
                 
@@ -188,13 +197,13 @@ if ($_GET['msg']) {
               <?php foreach ($school as $sch) { ?>
                 <tr>
                   <td><?php echo $sch->name; ?></td>
-                  <td>
-                    <a  href="http://<?php echo $sch->domain.".".$maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.'.'.$maindomain; ?></a>
+                  <td style="overflow-x: auto; max-width: 300px; ">
+                    <a  href="https://<?php echo $sch->domain.".".$maindomain; ?>" target="_blank" class="p-0"><?php echo $sch->domain.'.'.$maindomain; ?></a>
                   </td>
                   <td><?php echo $sch->country; ?></td>
                   <td><?php echo $sch->city; ?></td>
                   <!-- <td>Nov</td> -->
-                  <td style="text-align: center;"><a href="<?php echo $CFG->wwwroot.'/local/dashboard/subcription_payment.php?un_id='.$sch->id.'';?>" class="btn btn-info py-0 px-1">View</a></td>
+                  <td style="text-align: center; "><a href="<?php echo $CFG->wwwroot.'/local/dashboard/subcription_payment.php?un_id='.$sch->id.'';?>" class="btn btn-info py-0 px-1">View</a></td>
                   <td class="px-0">
                     <a href="#" class="p-2" onclick="editschool(<?php echo $sch->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
                     <a href="#" class="p-2" onclick="assigncourse(<?php echo $sch->id; ?>);"><i class="fa fa-book" title="Assign Course" aria-hidden="true" style="color:#000;"></i></a>

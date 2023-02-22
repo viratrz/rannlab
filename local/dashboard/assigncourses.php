@@ -17,8 +17,9 @@ $idcat=get_child_cat(2);
 $lang = $DB->get_records_sql("SELECT * FROM {course_categories} WHERE depth=3 and parent IN ($idcat)");
 
 $Schooldata=$DB->get_record_sql("SELECT * FROM {school} WHERE id=$id");
+$resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
 
-$course = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname !='Resourcecourse'");
+$course = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND  category !=$resource_course_id->id");
 
 $coursearray = (array) $course;
 

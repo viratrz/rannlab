@@ -7,8 +7,7 @@ function local_createuser_extend_navigation(global_navigation $nav)
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
     $icon = new pix_icon('cuser', '', 'local_createuser', array('class' => 'icon pluginicon'));
     $icon2 = new pix_icon('luser', '', 'local_createuser', array('class' => 'icon pluginicon'));
-    $icon3 = new pix_icon('report', '', 'local_createuser', array('class' => 'icon pluginicon'));
-    $icon4 = new pix_icon('summary', '', 'local_createuser', array('class' => 'icon pluginicon'));
+    $icon3 = new pix_icon('eye', '', 'local_createuser', array('class' => 'icon pluginicon'));
 
     if(user_has_role_assignment($USER->id, 9) || user_has_role_assignment($USER->id, 10))
     {
@@ -45,7 +44,7 @@ function local_createuser_extend_navigation(global_navigation $nav)
             navigation_node::TYPE_SYSTEM,
             null,
             'local_createuser',
-            $icon4,
+            $icon3,
         )->showinflatnavigation = true;
     }
 
