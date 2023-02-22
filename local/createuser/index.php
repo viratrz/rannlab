@@ -197,10 +197,10 @@ $PAGE->set_pagelayout('standard');
                      <?php 
                         foreach($all_role as $role)
                         { 
-                           if ($role->shortname === 'teacher' || $role->shortname === 'student'  || $role->shortname === 'subuniversityadmin') 
+                           if ($role->shortname === 'universityeditingteacher' || $role->shortname === 'student'  || $role->shortname === 'subuniversityadmin') 
                            {                          
                      ?>
-                        <option value="<?php echo $role->id; ?>"><?php echo ucwords($role->shortname); ?></option>
+                        <option value="<?php echo $role->id; ?>"><?php echo ucwords($role->name); ?></option>
                      <?php  } } ?>
                      </select>
                      <span class="errormsg2" id="roleid">   </span>                  

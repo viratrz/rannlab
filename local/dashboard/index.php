@@ -213,7 +213,8 @@ $PAGE->set_pagelayout('standard');
 
                <?php 
                   $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
-                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE fullname != 'Resourcecourse'");
+                  $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
+                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND category !=$resource_course_id->id");
                ?>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Select Package <span class="err">*</span> </label>

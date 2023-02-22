@@ -1,7 +1,3 @@
-<style>
-    .add-left{
-        text-align: left !important;    }
-</style>
 <?php
 
 //  Display the course home page.
@@ -333,11 +329,6 @@ $school_id= (int)$_SESSION['university_id'];
             if ($role_shortname->shortname === "student") 
             {
                 echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More</a>";
-                echo '<script>
-                    $(document).ready(function(){
-                        $("span:contains(\'My courses\')").parents(".item-mycourses").hide();
-                    });
-                    </script>';
             }
             else 
             {

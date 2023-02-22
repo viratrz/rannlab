@@ -27,7 +27,7 @@
         $table.='
         <tr>
             <td>'.$university->name.'</td>
-            <td>
+            <td style="overflow-x: auto; max-width: 300px;">
                 <a  href="http://'.$university->domain.'.'.$maindomain.'" target="_blank" class="p-0">'.$university->domain.'.'.$maindomain.'</a>
             </td>
             <td>'.$university->country.'</td>
