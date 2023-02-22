@@ -184,6 +184,18 @@ $thingnode->make_active();
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
+                  <label for="label" class="col-md-3">Client ID <span class="err"> *</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="client" placeholder="Enter Client ID" name="client_id" value="<?php echo $Scooldata->client_id ?>" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0"></span>
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">RTO Code <span class="err"> *</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="rto" placeholder="Enter RTO Code" name="rto_code" value="<?php echo $Scooldata->rto_code ?>" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0"></span>
+               </div>
+               <div class="form-group row">
                   <label for="label" class="col-md-3">Address<span class="err4"> *</span></label>
                   <textarea class="form-control col-md-9" rows="5" id="address" name="address" value="<?php echo $Scooldata->address ?>"><?php echo $Scooldata->address ?></textarea>
                   <div class="col-md-3"></div>
@@ -227,6 +239,12 @@ $thingnode->make_active();
                   <input type="text" class="form-control col-md-9" id="lastname" placeholder="Enter Last Name" name="lastname" value="<?php echo $admindata->lastname ?>" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
+               </div>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Phone Number <span class="err">*</span></label>
+                  <input type="text" class="form-control col-md-9 focusError" id="phone" value="<?php echo $admindata->phone1 ?>" placeholder="Enter Phone Number" name="phone_no" onkeyup="numberOnly(this.value)" required>
+                  <div class="col-md-3"></div>
+                     <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err4">*</span></label>

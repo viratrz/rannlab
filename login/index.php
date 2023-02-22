@@ -162,8 +162,8 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         if (empty($errormsg)) {
             // var_dump($frm->username,$frm->password);
             // die;
-            setcookie('uname', $frm->username, time()+60*60*24*90);
-            setcookie('pass', $frm->password, time()+60*60*24*90);
+           setcookie('uname', $frm->username, time()+60*60*24*90);
+           setcookie('pass', $frm->password, time()+60*60*24*90);
             $logintoken = isset($frm->logintoken) ? $frm->logintoken : '';
             $user = authenticate_user_login($frm->username, $frm->password, false, $errorcode, $logintoken);
         }
@@ -232,7 +232,7 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         $_SESSION["university_id"] = $universityadmin->university_id;
         
         \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
-        
+        redirect($CFG->wwwroot.'/my');
         // sets the username cookie
         if (!empty($CFG->nolastloggedin)) {
             // do not store last logged in user in cookie

@@ -103,12 +103,10 @@ else
 <?php 
 echo '
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-<script>	
+<script>
 $(document).ready(function(){
-    $("[title=\'General_Block\']").parents("p").hide();
+    $("[title=\'Resourcecourse\']").parents("p").hide();
 	$("#main-content > .container-fluid > .row:first").addClass("d-flex flex-row-reverse");
-	$("span:contains(\'My courses\')").parents(".item-mycourses").hide();
-	
 });
 </script>
 ';
@@ -117,11 +115,8 @@ if (!is_siteadmin()) {
 		  <script>
 		  $(document).ready(function(){
 			$("a:contains(\'Courses\')").parents("p").hide();
-			$("a:contains(\'My courses\')").parents(".type_system").hide();
-			$("span:contains(\'My courses\')").parents("p").hide();
 			});
 		  </script>';
-		  
 	}
 ?>
 <?php echo $OUTPUT->theme_part('footer', array('sidebar'=>$sidebar)); ?>
