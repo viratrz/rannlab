@@ -6,10 +6,10 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = 'localhost';
-$CFG->dbname    = 'moodlelms_db';
-$CFG->dbuser    = 'monty';
-$CFG->dbpass    = 'Manohar@123';
+$CFG->dbhost    = 'localhost:3306';
+$CFG->dbname    = 'elearngroup_vetmoodle';
+$CFG->dbuser    = 'elearngroup_vetmoodle';
+$CFG->dbpass    = 'YfQqb4)-=xcv';
 $CFG->prefix    = 'mdl_';
 $CFG->dboptions = array (
   'dbpersist' => 0,
@@ -42,7 +42,7 @@ if (!$con) {
 $query="SELECT * FROM mdl_school where domain='".$tenantdomain."'";
 
 $tenantdata = mysqli_query($con, $query);
-$maindomain="moodle.elearngroup.com.au/MoodleLMS";
+$maindomain="uat.elearngroup.com.au";
 if(@mysqli_num_rows($tenantdata)>0)
 {
   while ($obj = $tenantdata->fetch_object())
@@ -62,9 +62,9 @@ else
 {
 
   // $CFG->wwwroot   = 'http://rationalmind.in/MoodleLMS6';
-  $CFG->wwwroot   = 'https://moodle.elearngroup.com.au/MoodleLMS';
+  $CFG->wwwroot   = 'https://uat.elearngroup.com.au';
   session_start();
- $_SESSION["logo_path"] ="https://moodle.elearngroup.com.au/MoodleLMS/theme/image.php/mb2nl/theme/1664522056/logo-default";
+ $_SESSION["logo_path"] ="https://uat.elearngroup.com.au/theme/image.php/mb2nl/theme/1664522056/logo-default";
 }
 
 
