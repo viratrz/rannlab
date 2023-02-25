@@ -6,8 +6,8 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = 'localhost:3306';
-$CFG->dbname    = 'elearngroup_vetmoodle';
+$CFG->dbhost    = 'localhost';
+$CFG->dbname    = 'elearngroup_moodlelms';
 $CFG->dbuser    = 'elearngroup_vetmoodle';
 $CFG->dbpass    = 'YfQqb4)-=xcv';
 $CFG->prefix    = 'mdl_';
@@ -71,7 +71,7 @@ else
 
 
 // $CFG->wwwroot   = 'https://moodle.elearngroup.com.au/MoodleLMS';
-$CFG->dataroot  = '/home/mira/moodledata2';
+$CFG->dataroot  = '/home/elearngroup/moodledata2';
 $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
 
