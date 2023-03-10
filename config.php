@@ -9,7 +9,7 @@ $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'localhost';
 $CFG->dbname    = 'elearngroup_moodlelms';
 $CFG->dbuser    = 'elearngroup_vetmoodle';
-$CFG->dbpass    = 'YfQqb4)-=xcv';
+$CFG->dbpass    = '=m2$jfM%mGrz';
 $CFG->prefix    = 'mdl_';
 $CFG->dbsessions='0';
 $CFG->dboptions = array (
@@ -19,9 +19,9 @@ $CFG->dboptions = array (
   'dbcollation' => 'utf8mb4_general_ci',
 );
 $db_host='localhost';
-$db_user='root';
-$db_pass='';
-$db_name='moodlelms';
+$db_user='elearngroup_vetmoodle';
+$db_pass='=m2$jfM%mGrz';
+$db_name='elearngroup_moodlelms';
 
 $currenturl=explode('.', @$_SERVER['HTTP_HOST']);
 if($currenturl){
