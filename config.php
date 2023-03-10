@@ -29,6 +29,8 @@ $tenantdomain=$currenturl[0];
 }
 
 $con = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+//Demo of the Git
+
 if (!$con) {
   echo "Error: " . mysqli_connect_error();
   exit();
