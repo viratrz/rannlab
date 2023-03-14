@@ -1,3 +1,8 @@
+<style>
+ *body {
+  font-family: "Nunito",sans-serif !important;
+ }
+</style>
 <?php
     require_once('../../config.php');
     require_once($CFG->dirroot .'/completion/classes/progress.php');
@@ -29,11 +34,11 @@
     <!-- CSS only -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <div class="border-end border-start border-dark">
-    <table class="table m-0" id="data">
-    <thead class="">
+    <div class="border-end border-start border-dark" style="font-family: Nunito,sans-serif;">
+    <table class="table m-0" id="data" style="font-family: Nunito,sans-serif;">
+    <thead class="" >
     <tr style="height: 20px;">
-        <th scope="col" colspan="6" class="p-0"><h4 class="text-center text-uppercase bg-dark text-white m-0 py-2">RTO Unit Allocation Summary</h4></th>
+        <th scope="col" colspan="6" class="p-0"><h4 class="text-center text-uppercase text-white m-0 py-2" style="background-color: #1f35d3!important; border: 2px solid #0a1c98;">RTO Unit Allocation Summary</h4></th>
     </tr>
     <tr style="height: 50px;" class="university_name_logo">
         <td scope="col" class="text-center h5 pt-3 text-uppercase" colspan="3">'.$university->name.'</td>
@@ -52,13 +57,13 @@
             text-decoration: none;
             margin-right: '.$margin.';">Export to XLS</a></td>
       </tr>
-      <tr class="bg-secondary text-white">
-        <th class="py-2 h6"scope="col">No</th>
-        <th class="py-2 h6"scope="col">Unit Code</th>
-        <th class="py-2 h6"scope="col">Unit name</th>
-        <th class="py-2 h6"scope="col">Total User assigned</th>
-        <th class="py-2 h6"scope="col">Total user failed</th>
-        <th class="py-2 h6"scope="col">Total User pending</th>
+      <tr class="bg-secondary text-white" >
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">No</th>
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">Unit Code</th>
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">Unit name</th>
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">Total User assigned</th>
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">Total user failed</th>
+        <th class="py-2 h6"scope="col" style="font-size: 15px!important;">Total User pending</th>
       </tr>
     </thead>
     <tbody>';
@@ -132,3 +137,8 @@ echo $table;
 // header("Content-Transfer-Encoding: BINARY");
 echo $OUTPUT->footer();
 ?>
+<style>
+ .form-group{
+   font-family: "Nunito",sans-serif;
+   }
+  </style>

@@ -83,24 +83,52 @@ $thingnode->make_active();
       }
 
       .button {
-         background: #000;
-         padding: 10px 15px;
+         /*background: #000;
+         
          color: #fff;
          text-decoration: none !important;
          border-radius: 4px;
          border: 1px solid #ffe500;
-         font-weight: 600;
-         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+         font-weight: 600;*/
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); 
 
+         background-color: #6c757d;
+         border-width: 2px;
+         border-color: #6c757d;
+         border-radius: 5px;
+         padding: 10px 15px;
+         color: #fff;
+         margin: 5px;
+         font-family: 'Nunito', sans-serif;
+      }
+      /*.button:hover {
+         color: #000;
+         background: #ffe500; 
+      background-color: transparent;
+      border-color: #6c757d;
+      color: #6c757d;
+      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      text-decoration: none;
+      BORDER: 2PX SOLID #6c757d;
+      }*/
+
+      .button:hover {
+      color: #6c757d !important;
+      background: #ffffff !important;
+      BORDER: 2PX SOLID #6c757d !important;
+      margin: 5px !important;
+      font-family: 'Nunito', sans-serif;
       }
 
       /* #page-local-dashboard-editschool #page-navbar{
            display:none;
-         }*/
+         }
       .button:hover {
          color: #000;
          background: #ffe500;
-      }
+      }*/
 
       .applyBtn,
       .cancelBtn {
@@ -128,12 +156,18 @@ $thingnode->make_active();
       }
 
       .heading-row {
-         background: #000;
+         /*background: #000;
          color: #fff;
          border: 2px solid #ffe500;
          padding: 8px 0px;
          border-radius: 8px;
-         margin: 0px -20px;
+         margin: 0px -20px; */
+         background: #1f34d1;
+         color: #fff;
+         border: 2px solid #98a2ef;
+         padding: 12px 2px;
+         border-radius: 8px;
+         margin: 0px -24px;
       }
 
       .eye {
@@ -153,6 +187,15 @@ $thingnode->make_active();
       body {
          background: #f7f7f7;
       }
+   /* css */
+   *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+      border-color: black !important;
+    }
+    .form-group {
+    margin-bottom: 1rem;
+    font-family: 'Nunito', sans-serif;
+}
+
    </style>
 </head>
 
@@ -255,14 +298,14 @@ $thingnode->make_active();
                <div class="form-group row">
                   <label for="label" class="col-md-3">New Password</label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" style="width: 112%;" class="form-control" placeholder="Enter New Password" id="password" name="password" value="">
+                     <input type="password" style="width: 100%;" class="form-control" placeholder="Enter New Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="myFunction2()"></i>
                   </div>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Upload Univerty Logo <span class="err"></span></label>
                   <div class="calendar col-md-5 p-0"> 
-                  <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)">
+                  <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)" style="padding: 4px; margin-bottom: 30px;">
                   </div>
                   <div class="calendar col-md-4 p-0">
                   <img id="output"/>

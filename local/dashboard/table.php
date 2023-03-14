@@ -94,11 +94,11 @@ if ($_GET['msg']) {
     }
 
     td a {
-      color: #fff;
+      color: #000;
     }
 
     td a:hover {
-      color: #fff;
+      color: #008196;
       text-decoration: none;
     }
 
@@ -119,8 +119,11 @@ if ($_GET['msg']) {
     }
 
     table {
-      border-left: 1px solid #f2f2f2;
-      border-right: 1px solid #f2f2f2;
+      /*border-left: 1px solid #f2f2f2;
+      border-right: 1px solid #f2f2f2; */
+      border: none !important;
+      font-family: "Nunito",sans-serif;
+
     }
 
     .heading-row {
@@ -144,6 +147,33 @@ if ($_GET['msg']) {
 ::-webkit-scrollbar-thumb:hover {
   background: blue; 
 }
+/* css  */
+.heading-row {
+  display: none !important;
+    background: #2441e7 !important;
+    color: #fff !important;
+    border: 2px solid #1d32ce !important;
+    padding: 15px 12px 15px 0px !important;
+    border-radius: 4px s!important;
+}
+.box-shadow {
+     box-shadow: none !important; 
+    padding: 0px 20px 20px;
+    border-radius: none !important; 
+}
+.pl-1, .px-1 {
+    padding-bottom: 20px !important;
+}
+.pl-1, .px-1 {
+  padding-right : 0px !important;
+  padding-left : 0px !important;
+}
+/* css */
+*:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+  border-color: black !important;
+  font-family: "Nunito",sans-serif;
+}
+
   </style>
 </head>
 
@@ -180,7 +210,7 @@ if ($_GET['msg']) {
             </div>
           </div>
 
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-bordered" style="border: none;">
             <thead>
               <tr class="bg-secondary">
                 <th>University Name</th>

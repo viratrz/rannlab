@@ -57,6 +57,7 @@ if (isset($_GET['un_id']))
         #table
         {
             *padding: 0 5% 0 5%;
+            font-family: "Nunito",sans-serif !important;
         }
         #del_package
         {
@@ -71,19 +72,35 @@ if (isset($_GET['un_id']))
         {
             display: none;
         }
+
+        /*css */
+        .bg-dark {
+        background-color: #1f34d1!important;
+        padding: 8px 6px 3px 5px !important;
+        margin-bottom: 35px !important;
+        margin-top: -34px !important;
+    }
+    /*.border {
+    border: none !important;
+    }*/
+    #user-notifications {
+        margin-bottom: 4rem !important;
+    }
+
     </style>
     </head>
 <body> 
 <span id="del_package" ></span>
-<div class="border rounded pb-0">
+<div class="rounded pb-0">
     <div class="bg-dark px-2 rounded">
         <h4 class="text-white py-2"><?php echo "<span> $university_name->name </span>"; ?> <span style="font-weight: normal;font-size: 18px;">-> Package and Payment Details</span></h4>
     </div>
+    
     <div></div>
-    <div id="table" class="shadow">
+    <div id="table" class="shadow1 border" style ="border-radius: 9px; border: 3px solid #c3cfdc!important;">
         <table class="table table-hover mb-0 rounded">
             <thead>
-            <tr>
+            <tr style= "background: #c3cfdc;">
                 <th scope="col">Package Name</th>
                 <th scope="col">Package Value</th>
                 <th scope="col">Number of Users</th>
@@ -104,10 +121,10 @@ if (isset($_GET['un_id']))
                     <!-- <td><?php echo $downgrade_to_plan->package_value-$left_money; ?></td> -->
                     <td></td>
                     <!-- <td><a class="btn bg-primary text-white px-1 py-0" href="<?php echo $downgrade_to_plan->id,',',$downgrade_to_plan->package_value-$left_money; ?>)">Upgrade</button></td> -->
-                    <td><a href="<?php echo $CFG->wwwroot.'/local/dashboard/upgrade_down_plan.php?id='.$downgrade_to_plan->id.'&amp;uni_id='.$uni_id.'';?>" class="btn text-white px-3 py-1" style="border:none; min-width: 105px; max-width: 105px; display:inline-block;">Down Plan</a></td>
+                    <td><a href="<?php echo $CFG->wwwroot.'/local/dashboard/upgrade_down_plan.php?id='.$downgrade_to_plan->id.'&amp;uni_id='.$uni_id.'';?>" class="btn text-white px-3 py-1" style="border:none; min-width: 110px; max-width: 105px; display:inline-block; background: #1f34d1; /*#e35a9a;*/">Down Plan</a></td>
                 </tr>
                 <?php } ?>
-            <tr id="del<?php echo $my_package->id; ?>" style="background: #00ffb84a">
+            <tr id="del<?php echo $my_package->id; ?>" style="background: #2938334a;">
                 <td><?php if($my_package){ echo "Current";} ?></td>
                 <td><?php echo $my_package->package_value; ?></td>
                 <td><?php echo $my_package->num_of_user; ?></td>
@@ -115,7 +132,7 @@ if (isset($_GET['un_id']))
                 <!-- <td><span><?php echo $my_package_id->date_of_sub; ?></span></td> -->
                 <!-- <td><span><?php echo $my_package_id->end_date; ?></span></td> -->
                 <td><span><?php echo $current_bill; ?></span></td>
-                <td ><?php if(!(is_string($current_bill))){ ?><button class="btn bg-info text-white px-2 py-1" style="border:none; min-width: 105px; max-width: 105px; display:inline-block;">Pay</button><?php }else{ echo "Current Plan";} ?></td>
+                <td ><?php if(!(is_string($current_bill))){ ?><button class="btn bg-info text-white px-2 py-1" style="border:none; min-width: 110px; max-width: 105px; display:inline-block;">Pay</button><?php }else{ echo "Current Plan";} ?></td>
             </tr>
             <?php foreach ($upgrade_plans as $upgrade_to_plan) {?>
             <tr id="upgrade<?php echo $upgrade_to_plan->id; ?>">
@@ -126,7 +143,7 @@ if (isset($_GET['un_id']))
                 <!-- <td><?php echo $upgrade_to_plan->package_value - $left_money; ?></td> -->
                 <td></td>
                 <!-- <td><a class="btn bg-primary text-white px-1 py-0" href="<?php echo $upgrade_to_plan->id,',',$upgrade_to_plan->package_value-$left_money; ?>)">Upgrade</button></td> -->
-                <td><a href="<?php echo $CFG->wwwroot.'/local/dashboard/upgrade_down_plan.php?id='.$upgrade_to_plan->id.'&amp;uni_id='.$uni_id.'';?>" class="btn bg-primary text-white px-0 py-1" style="border:none; min-width: 105px; max-width: 105px; display:inline-block;">Upgrade Plan</a></td>
+                <td><a href="<?php echo $CFG->wwwroot.'/local/dashboard/upgrade_down_plan.php?id='.$upgrade_to_plan->id.'&amp;uni_id='.$uni_id.'';?>" class="btn bg-primary text-white px-0 py-1" style="border:none; min-width: 110px; max-width: 105px; display:inline-block; background: #1f34d1 !important;">Upgrade Plan</a></td>
             </tr>
             <?php } ?>
             </tbody>
