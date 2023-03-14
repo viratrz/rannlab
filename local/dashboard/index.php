@@ -51,15 +51,24 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button {
-         background: #000;
-         padding: 10px 15px;
+         /*background: #000;
+         
          color: #fff;
          text-decoration: none !important;
          border-radius: 4px;
          border: 1px solid #ffe500;
-         font-weight: 600;
-         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+         font-weight: 600;*/
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); 
+
+         background-color: #6c757d;
+         border-width: 2px;
+         border-color: #6c757d;
+         border-radius: 5px;
+         padding: 10px 15px;
+         color: #fff;
       }
+
+      
       .eye {
             position: absolute;
             font: normal normal normal 14px/1 FontAwesome;
@@ -73,15 +82,23 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button:hover {
-         color: #000;
-         background: #ffe500;
+        /* color: #000;
+         background: #ffe500; */
+      background-color: transparent;
+      border-color: #6c757d;
+      color: #6c757d;
+      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      text-decoration: none;
+      BORDER: 2PX SOLID #6c757d;
       }
 
       .heading-row {
-         background: #000;
+         background: #1f34d1;
          color: #fff;
-         border: 2px solid #ffe500;
-         padding: 8px 0px;
+         border: 2px solid #04169d;
+         padding: 15px 6px;
          border-radius: 8px;
       }
 
@@ -141,6 +158,13 @@ $PAGE->set_pagelayout('standard');
       color: red;
       margin-left: 25%;
     }
+
+    *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+      border-color: #6c757d !important;
+    }
+    .form-group{
+   font-family: "Nunito",sans-serif;
+   }
    </style>
 </head>
 
@@ -230,7 +254,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                         
                <div class="heading mb-3">
-                  <h5 class="text-primary font-weight-bold">Enter University Super Admin Details</h5>
+                  <h5 class="text-primary font-weight-bold" style="padding: 10px; color: white !important; background-color: #2441e7; border-radius: 5px; margin: 0 -13px; margin-bottom: 30px;">Enter University Super Admin Details</h5>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
@@ -271,7 +295,7 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" style="width: 112%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
+                     <input type="password" style="width: 100%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
                      <span class="errormsg2" id="pasward"></span>
                      <span class="error1 col-md-8 pl-0 w-75"></span>
@@ -280,7 +304,7 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" class="form-control focusError" style="width: 112%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
+                     <input type="password" class="form-control focusError" style="width: 100%;" placeholder="Confirm Password" id="confirmpassword" name="confirmpassword" value="">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword()"></i>
                      <span class="error1 col-md-8 pl-0"></span>
                   </div>

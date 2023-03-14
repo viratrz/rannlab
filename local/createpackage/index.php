@@ -70,7 +70,7 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button:hover {
-         color: #000;
+         color: #fff;
          background: #ffe500;
       }
 
@@ -115,6 +115,17 @@ $PAGE->set_pagelayout('standard');
         min-height: 35px !important;
         max-height: 35px !important;
     }
+
+    *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus
+{
+	border-color: black !important;
+}
+.button:hover {
+    color: #fff !important;
+}
+.form-group{
+   font-family: "Nunito",sans-serif;
+}
    </style>
 </head>
 

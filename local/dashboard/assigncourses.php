@@ -69,27 +69,47 @@ echo $OUTPUT->header();
          outline: 1px solid #bab4b4;
            outline-offset: 3px;
          }
-         body{background: #f7f7f7;}
-         .heading-row{  background: #000;
-         color: #fff;
-         border: 2px solid #ffe500;
-         padding: 8px 0px;
-         border-radius: 8px;}
-         .button{
-         background: #000;
-         padding: 10px 15px;
+         body{
+            background: #f7f7f7;
+            font-family: "Nunito",sans-serif;
+         }
+         .heading-row{  
+            background: #1f34d2;
+            color: #fff;
+            border: 2px solid #192dbf;
+            padding: 16px 0px;
+            border-radius: 8px;
+         }
+         
+         .button {
+         /*background: #000;
+         
          color: #fff;
          text-decoration: none !important;
          border-radius: 4px;
          border: 1px solid #ffe500;
-         font-weight: 600;
-           box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
-         }
+         font-weight: 600;*/
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); 
 
-         .button:hover{
-         color: #000;
-         background: #ffe500;
-         }
+         background-color: #6c757d;
+         border-width: 2px;
+         border-color: #6c757d;
+         border-radius: 5px;
+         padding: 10px 15px;
+         color: #fff;
+      }
+      .button:hover {
+        /* color: #000;
+         background: #ffe500; */
+      background-color: transparent;
+      border-color: #6c757d;
+      color: #6c757d;
+      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      text-decoration: none;
+      BORDER: 2PX SOLID #6c757d;
+      }
          .box-1 h5{
          font-weight: 700;
          }
