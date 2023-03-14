@@ -116,7 +116,7 @@ $PAGE->set_pagelayout('standard');
         max-height: 35px !important;
     }
 
-    *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus
+*:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus
 {
 	border-color: black !important;
 }
@@ -124,7 +124,11 @@ $PAGE->set_pagelayout('standard');
     color: #fff !important;
 }
 .form-group{
-   font-family: "Nunito",sans-serif;
+   background: #1f34d2;
+    color: #fff;
+    border: 2px solid #192dbf;
+    padding: 16px 0px;
+    border-radius: 8px;
 }
    </style>
 </head>
