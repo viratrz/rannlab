@@ -3,7 +3,7 @@
 unset($CFG);
 global $CFG;
 $CFG = new stdClass();
-
+//Demo Push
 $CFG->dbtype    = 'mysqli';  //mysqli
 $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'localhost';
