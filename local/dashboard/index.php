@@ -11,7 +11,7 @@ if (!is_siteadmin()) {
    redirect(new moodle_url("/my"));
 }
 $countries = get_string_manager()->get_list_of_countries(true);
-$title = 'Create New University';
+$title = 'Create New RTO';
 $pagetitle = $title;
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
@@ -22,18 +22,34 @@ $PAGE->set_pagelayout('standard');
 
 <head>
    <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+   
+   
    <title>Create New University </title>
-   <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+   
 
    <style>
+        .bootstrap-select .dropdown-toggle .filter-option{
+        background-color: white !important;
+        border: 1px solid gray !important;
+        border-radius: 5px !important;
+        height: 34px !important;
+        }
+    .show>.btn-light.dropdown-toggle {
+         background-color: white !important;
+      }
+   
       .box-shadow {
          box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
          padding: 0px 20px 20px;
@@ -165,42 +181,61 @@ $PAGE->set_pagelayout('standard');
     .form-group{
    font-family: "Nunito",sans-serif;
    }
+    .iti--separate-dial-code .iti__selected-flag {
+    background-color: transparent !important;
+    }
+    
+    
+    .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+    background-color: transparent !important;
+    }
+   
    </style>
 </head>
 
 <body>
    <?php echo $OUTPUT->header(); ?>
    
+   
    <div class="container">
       <div class="row">
          <div class="col-md-12 px-0">
             <div class="heading mb-3 heading-row">
-               <h5 style="color: red;" class="px-2 mb-0" ><b style="color: white;">Create New University</b></h5>
+               <h5 style="color: red;" class="px-2 mb-0" ><b style="color: white;">Create New RTO</b></h5>
             </div>
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white p-4">
             <form action="<?php echo $CFG->wwwroot ?>/local/dashboard/logo_courses.php" id="addnewuniversity" method="post" enctype='multipart/form-data'>
-               <div class="form-group row">
+               <!--<div class="form-group row">
                   <label for="label" class="col-md-3">Long Name <span class="err"> *</span> </label>
                   <input type="text" class="form-control col-md-9 err focusError" id="longname" placeholder="Enter Long Name" name="longname" onkeyup="smallOnly(this.value)" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
+               </div> -->
+
+              <div class="form-group row">
+                  <label for="label" class="col-md-3">Long Name<span class="err"> *</span></label> 
+                  <input type="text" class="form-control col-md-9 focusError" id="longname" placeholder="Enter Name" name="longname" onblur="allLetter1(this)" required>
+                  <div class="col-md-3"></div>
+                  <span class="error1 col-md-8 pl-0" id="longname_msg"></span>
                </div>
+
                <div class="form-group row">
                   <label for="label" class="col-md-3">Short Name <span class="err"> *</span></label>
-                  <input type="text" class="form-control col-md-9 focusError" id="shortname" placeholder="Enter Short Name" name="shortname" required>
+                  <input type="text" class="form-control col-md-9 focusError" id="shortname" placeholder="Enter Short Name" name="shortname" onblur="allLetter1(this)" required>
                   <div class="col-md-3"></div>
-                  <span class="error1 col-md-8 pl-0"></span>
+                  <span class="error1 col-md-8 pl-0" id="shortname_msg"></span>
                </div>
+               
                <div class="form-group row">
                   <label for="label" class="col-md-3">Client ID <span class="err"> *</span></label>
                   <input type="text" class="form-control col-md-9 focusError" id="client" placeholder="Enter Client ID" name="client_id" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
-               <div class="form-group row">
+              <div class="form-group row">
                   <label for="label" class="col-md-3">RTO Code <span class="err"> *</span></label>
-                  <input type="text" class="form-control col-md-9 focusError" id="rto" placeholder="Enter RTO Code" name="rto_code" required>
+                  <input type="text" class="form-control col-md-9 focusError" maxlength="15" id="rto" placeholder="Enter RTO Code" name="rto_code" onkeyup="numberOnly8(this.value)"  required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
@@ -222,24 +257,31 @@ $PAGE->set_pagelayout('standard');
                   <div class="col-md-4"><span class="error1 pl-0"></span> </div>
                        
                </div>
-               <div class="form-group row">
+                <div class="form-group row">
                   <label for="label" class="col-md-3">City/Town <span class="err">*</span> </label>
                   <input type="text" class="form-control col-md-9 focusError" id="city" placeholder="Enter City/Town" onblur="allLetter(this)" title="Minimum Three letter Require In City/Town" name="city" required>
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0" id="city_msg"></span>
                </div>
+               
+
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Enter Domain<span class="err"> *</span></label> 
-                  <input type="text" class="form-control col-md-9 focusError" id="domain" placeholder="Enter Domain" name="domain" required>
+                  <label for="label" class="col-md-3">Enter Domain<span class="err"> *</span> </label>
+                  <input type="text" class="form-control col-md-4 err focusError" id="domain" placeholder="Enter domain" name="domain" onkeyup="smallOnly(this.value)" required>  &nbsp;.uat.elearngroup.com.au
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
 
                <?php 
                   $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
+                  $category11 = $DB->get_records_sql("SELECT * FROM {course_categories}");
                   $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
-                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND category !=$resource_course_id->id");
+                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND category !=$resource_course_id->id LIMIT 5 ");
+               
+
+
                ?>
+
                <div class="form-group row">
                   <label for="label" class="col-md-3">Select Package <span class="err">*</span> </label>
                   <select name="package" class="col-md-4 focusError" id="package" onchange="selectPackage(this.value)">
@@ -254,7 +296,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                         
                <div class="heading mb-3">
-                  <h5 class="text-primary font-weight-bold" style="padding: 10px; color: white !important; background-color: #2441e7; border-radius: 5px; margin: 0 -13px; margin-bottom: 30px;">Enter University Super Admin Details</h5>
+                  <h5 class="text-primary font-weight-bold" style="padding: 10px; color: white !important; background-color: #2441e7; border-radius: 5px; margin: 0 -13px; margin-bottom: 30px;">Enter RTO Super Admin Details</h5>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
@@ -276,7 +318,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Phone Number <span class="err">*</span></label>
-                  <input type="text" class="form-control col-md-9 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeyup="numberOnly(this.value)" required>
+                  <input type="text" class="form-control col-md-12 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeyup="numberOnly(this.value)" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
@@ -295,9 +337,10 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                     <input type="password" style="width: 100%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
+                  <input type="text" style="width: 100%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="" onkeyup="checksPassword(this.value)"/>
+                     <!-- <span id="msg" style="margin-left: -540px;"></span> -->
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
-                     <span class="errormsg2" id="pasward"></span>
+                     <span class="error_message spassword_error" style="display: none; color: red;" id="pasward">Enter minimum 8 chars with atleast 1 number, lower, upper &amp; special(@#$%&!-_&amp;) char.</span>
                      <span class="error1 col-md-8 pl-0 w-75"></span>
                   </div>
                </div>
@@ -309,18 +352,35 @@ $PAGE->set_pagelayout('standard');
                      <span class="error1 col-md-8 pl-0"></span>
                   </div>
                </div>
+               
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Select Category <span class="err"></span> </label>
+                  <select class=" col-md-4 pl-0 " id="category" name="category"  style="BACKGROUND-COLOR: white !important; border: 1px solid #8f959e !important; border-radius: 5px !important;" onchange="selectedCategory(this.value)">
+                     <option value="0">Select Category</option>  
+                     <?php foreach($category11 as $category1){?>
+                        <option value="<?php echo $category1->id; ?>"><?php echo $category1->name; ?></option>
+                     <?php } ?>
+                     
+                    
+                     
+                  </select>
+                  <span id="category_msg"> </span>
+               </div>
+
                <div class="form-group row">
                <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
-               <select class="selectpicker col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">
+               <!--<select class="selectpicker col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">-->
+                   <select class="col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">
                   <?php foreach($all_courses as $course){?>
                      <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
+                      <!--<option value="<?php echo $course->id; ?>" class="course-option" data-category="<?php echo $course->category; ?>"><?php echo $course->fullname; ?></option>-->
                   <?php } ?>
                </select>
                <span id="courses_msg"> </span>
 
                </div>
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Upload Univerty Logo <span class="err"></span></label>
+                  <label for="label" class="col-md-3">Upload RTO Logo <span class="err"></span></label>
                   <div class="calendar col-md-5 p-0"> 
                   <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)">
                   </div>
@@ -330,7 +390,7 @@ $PAGE->set_pagelayout('standard');
                </div>
                <div class="form-group row">
                   <div class="d-flex col-md-6">
-                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New University</a>&nbsp;
+                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New RTO</a>&nbsp;
                      <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
                   </div>
                   <div class="justify-content-center col-md-1" id="loader">
@@ -354,9 +414,72 @@ $PAGE->set_pagelayout('standard');
       URL.revokeObjectURL(output.src) // free memory
     }
   };
-function allLetter(inputtxt)
+  
+  
+function checksPassword(password){
+var pattern = /^.*(?=.{8,20})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&!-_]).*$/;
+if(!pattern.test(password)) {
+$(".spassword_error").show();
+}else
+{
+$(".spassword_error").hide();
+}
+
+}
+
+
+  
+function validatePassword(password) {
+                
+    // Do not show anything when the length of password is zero.
+    if (password.length === 0) {
+        document.getElementById("msg").innerHTML = "";
+        return;
+    }
+    // Create an array and push all possible values that you want in password
+    var matchedCase = new Array();
+    matchedCase.push("[$@$!%*#?&]"); // Special Charector
+    matchedCase.push("[A-Z]");      // Uppercase Alpabates
+    matchedCase.push("[0-9]");      // Numbers
+    matchedCase.push("[a-z]");     // Lowercase Alphabates
+
+    // Check the conditions
+    var ctr = 0;
+    for (var i = 0; i < matchedCase.length; i++) {
+        if (new RegExp(matchedCase[i]).test(password)) {
+            ctr++;
+        }
+    }
+    // Display it
+    var color = "";
+    var strength = "";
+    switch (ctr) {
+        case 0:
+        case 1:
+        case 2:
+            strength = "Very Weak";
+            color = "red";
+            break;
+        case 3:
+            strength = "Medium";
+            color = "orange";
+            break;
+        case 4:
+            strength = "Strong";
+            color = "green";
+            break;
+    }
+    document.getElementById("msg").innerHTML = strength;
+    document.getElementById("msg").style.color = color;
+}
+
+  
+
+
+
+function allLetter1(inputtxt)
 { 
-   var letters = /^[A-Za-z]+$/;
+   var letters = /^[A-Za-z\s]*$/;      //    /^[A-Za-z]+$/;
    var msg_id = inputtxt.name;
    msg_id = msg_id+"_msg";
    if(inputtxt.value.length > 0)
@@ -375,23 +498,66 @@ function allLetter(inputtxt)
 }
 
 
+
+function allLetter(inputtxt)
+{ 
+   var letters = /^[A-Za-z\s]*$/;                      //     /^[A-Za-z]+$/;
+   var msg_id = inputtxt.name;
+   msg_id = msg_id+"_msg";
+   if(inputtxt.value.length > 0)
+   {
+      if(inputtxt.value.match(letters))
+      {
+         $("#"+msg_id).html("");
+         return true;
+      }
+      else
+      {
+         $("#"+msg_id).html("Please input alphabet characters only");
+         return false;
+      }
+   }
+}
+
+
+function numberOnly8(inputvalue) {
+   var all_number1 = /^[0-9]+$/;   // /^[0-9]+$/;
+   //var smallletter = /^[a-z]+$/;           // /^[a-z0-9 ]+$/;
+   var erroeClass = document.getElementsByClassName('error1');
+   if (inputvalue.length > 0)
+   {
+      if(inputvalue.match(all_number1))
+     {
+      erroeClass[3].innerHTML = " ";
+     }
+   else
+     {
+      erroeClass[3].innerHTML = "Only numbers allowed";
+     }
+   }
+   else
+   {
+      erroeClass[3].innerHTML = " ";
+   }
+}
+
 function smallOnly(inputvalue) {
-   var smallletter = /^[a-z0-9 ]+$/;
+   var smallletter = /^[a-z]+$/;           // /^[a-z0-9 ]+$/;
    var erroeClass = document.getElementsByClassName('error1');
    if (inputvalue.length > 0)
    {
       if(inputvalue.match(smallletter))
      {
-      erroeClass[0].innerHTML = " ";
+      erroeClass[7].innerHTML = " ";
      }
    else
      {
-      erroeClass[0].innerHTML = "Capital letter and special character not allow";
+      erroeClass[7].innerHTML = "Capital letter and special character not allow";
      }
    }
    else
    {
-      erroeClass[0].innerHTML = " ";
+      erroeClass[7].innerHTML = " ";
    }
 }
 function numberOnly(inputvalue) {
@@ -415,6 +581,8 @@ function numberOnly(inputvalue) {
       erroeClass[12].innerHTML = " ";
    }
 }
+
+
 
 $(document).ready(function() 
 {
@@ -542,6 +710,26 @@ function adduniversity()
       check_true =false;
    }
 
+   /* var all_number1 = /^[0-9]+$/;
+   if (rto.match(all_number1)) {
+      if (rto.length == 8) {
+         error1[3].innerHTML = "";
+         check_true =true;
+      }
+      else
+      {
+         error1[3].innerHTML = "Number length should be 8";
+         check_true =false;
+      }
+   }
+   else{
+      error1[3].innerHTML = "This field accepted number only";
+      check_true =false;
+   }
+*/
+
+
+
    if (check_true) 
    {
       if(validateEmail(email))
@@ -649,9 +837,62 @@ function selectPackage(package_id)
       }
 });
 }
+function selectedCategory(categoryid) 
+{
+    $('#selectedcategoryid').val(categoryid);
+    $.ajax({
+      type: "POST",
+      url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/getcoursesbycategory.php",
+      data: {id:categoryid},
+      dataType: "json",
+      success: function(json) 
+      {
+         $("#courses").empty();
+         console.log(json['courses']);
+         var select = document.getElementById("courses");
+         for(key in json['courses'] ){
+             console.log(json['courses'][key].fullname);
+             $('#courses').append('<option value="'+key+'">'+json['courses'][key].fullname+'</option>');
+
+             //var option = document.createElement("option");
+             //option.value = key;
+             //option.text = json['courses'][key].fullname;
+             //select.appendChild(option);
+             
+         }
+         $("#courses").selectpicker("refresh");
+         
+         //$("#package_info").html(json['html']);
+      }
+});
+}
    </script>
+<script>
+     
+     var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+  separateDialCode: true,
+  preferredCountries:["au"],
+  hiddenInput: "full",
+  utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+});
+
+$("form").submit(function() {
+  var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+$("input[name='phone_number[full]'").val(full_number);
+  alert(full_number)
+  
+});
+ </script>
+
+   
+   
+   
    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
 </body>
 
 </html>
