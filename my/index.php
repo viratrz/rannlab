@@ -38,13 +38,34 @@
  
 
 require_once('../config.php');
+define('NO_OUTPUT_BUFFERING', true);
+require_once(__DIR__ . '/../config.php');
+require_once($CFG->dirroot . '/my/lib.php');
+require_once($CFG->libdir.'/adminlib.php');
+
+$resetall = optional_param('resetall', false, PARAM_BOOL);
+
+$pagetitle = get_string('mypage', 'admin');
 global $DB,$USER,$OUTPUT;
 $title = 'Dashboard';
 
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagelayout('standard');
+$PAGE->set_secondary_active_tab('appearance');
+$PAGE->set_blocks_editing_capability('moodle/my:configsyspages');
+$PAGE->set_url(new moodle_url('/my/index.php'));
+$roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
+$role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
+admin_externalpage_setup('mypage', '', null, '', array('pagelayout' => 'mydashboard'));
 
+$PAGE->add_body_class('limitedwidth');
+$PAGE->set_pagetype('my-index');
+$PAGE->blocks->add_region('content');
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($pagetitle);
+$PAGE->set_secondary_navigation(false);
+$PAGE->set_primary_active_tab('myhome');
 
 
 function get_course_image($courseid)
@@ -127,6 +148,11 @@ $header.='<!DOCTYPE html>
         }
         .card2:hover .overlay{
          left: 0;
+        }
+        //custom colour code for all text area
+        .custom-bg-alltextarea
+        {
+            background-color:#ACA9A9;
         }
 
 .btn {
@@ -221,6 +247,88 @@ $header.='<!DOCTYPE html>
 .maincalendar .calendarmonth th {
     padding-left: 3px !important;
 }
+.dashbord .ccn_breadcrumb_widgets.container {
+    display: none !important;
+}
+
+  .ccn-calendar-header{
+    display: none !important;
+  }
+  .dashboard_sidebar:before{
+   background-color: #17263C !important;
+  }
+  #inst192{
+          background-color: #17263C;
+  }
+  #instance-192-header{
+      color: #fff;
+  }
+  
+  nav.breadcrumb_widgets.ccn-clip-l {
+    display: none;
+    }
+    
+    .custom-type4-dashboard{
+        background: #17263C;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+        width:32%;
+    }
+    
+    .cutom-heading-box{
+        text-align: center;
+    }
+    .custom-heading-p-box{
+            padding-top: 15%;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+    }
+    .custom-faicon{
+        text-align: center;
+    font-size: 45px;
+    margin-top: -35px;
+    background-color: #8E30FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 80px;
+    width: 80px;
+    border-radius: 49%;
+    display: inline-block;
+    margin-left: 25%;
+    color: white;
+    }
+    .custom-numbers-dashboard-cards{
+        float: right;
+    font-size: 17px;
+    background-color: #C6FAD6;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 30px;
+    width: 30px;
+    border-radius: 49%;
+    display: inline-block;
+    }
+    #inst200{
+    background: #17263C;
+    color: white;
+    }
+    #inst205{
+    background: #17263C;
+    color: white;
+    }
+    h4#inst205{
+        color: white;
+    }
+    h3#inst205{
+        color: white;
+    }
+    .custom-heading-p-box-type2{
+        padding-top: 5%;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+    }
 </style>
 </head>';
 echo $header;
@@ -251,7 +359,6 @@ if(!is_siteadmin())
     
     if ($role_shortname->shortname === "student") 
     {
-        echo "<h3>Hi " . "$USER->firstname" . ",<h3> <br>";
         $complete_course = $DB->count_records("course_completions", ['userid'=>$USER->id]);
         $overdue_courses = $coursecount - $complete_course;
             $module_course_completed = $DB->count_records("course_modules_completion",  array( 'userid'=> "$USER->id", 'completionstate' => '1' ));
@@ -264,92 +371,55 @@ if(!is_siteadmin())
       
       ?>
       <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $USER->firstname . " " . $USER->lastname; ?></h3>
-
-                <p style ="font-weight:900;">Student Name</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-            </div>
-          </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $coursecount; ?></h3>
-
-                <p style ="font-weight:900;">Enrolled Units</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px;  padding: 20px 5px 0 0;">
-                  <i class='fas fa-chalkboard-teacher'></i>
-              </div>
-              <!--<hr>
-              <a href="#" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-            </div>
-          </div>
+          <div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Units Enrolled</p>
+                              <?php echo $coursecount; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-book"></span></div>
+                          </a>
+                        </div>
+                        
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $complete_course; ?></h3>
-
-                <p style ="font-weight:900;">Units Completed</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class='fas fa-award'></i>
-              </div>
-              <!--<hr>
-              <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>  -->
-            </div>
-          </div>
+          <div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Units Completed</p>
+                              <?php echo $complete_course; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-book"></span></div>
+                          </a>
+                        </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $overdue_courses; ?></h3>
-
-                <p style ="font-weight:900;">Units Pending </p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-                  <i class='fas fa-laptop-code'></i>
-              </div>
-              <!--<hr>
-              <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-            </div>
-          </div>
+          <div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Units Pending</p>
+                              <?php echo $overdue_courses; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-book"></span></div>
+                          </a>
+                        </div>
           <!-- ./col -->
         </div>
-    <br><br>
 
-
-        
-    <div class="row">
+    <!--<div class="row">
      <div class="col-lg-12 col-12">
       <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
         <div id="piechart1" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
-    </div>
+    </div>-->
     
-    <div class="row">
+    <!--<div class="row">
      <div class="col-lg-12 col-12">
       <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
-    </div>
+    </div>-->
     
     
     
@@ -357,7 +427,6 @@ if(!is_siteadmin())
     }
     else if ($role_shortname->shortname === "trainer") 
     {
-      echo "<h3> Hi ".$USER->firstname . " " . $USER->lastname . ",</h3><br>";
       $coursecount = $DB->count_records("user_enrolments", ['userid'=>$USER->id]);
       $getuniversityid = $DB->get_record("university_user", ['userid'=>$USER->id]);
       $studentsontechercourse = $DB->get_records_sql("SELECT {enrol}.courseid, {user_enrolments}.userid, {enrol}.roleid FROM {user_enrolments} inner join {enrol} on {user_enrolments}.enrolid = {enrol}.id inner join {university_user} on {university_user}.userid = {user_enrolments}.userid where {university_user}.university_id = '$getuniversityid->university_id' and {university_user}.userid = '$USER->id' and {enrol}.roleid = '5' ");
@@ -377,174 +446,141 @@ if(!is_siteadmin())
       
       ?>
 
-      <div class="row">
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo $USER->username; ?></h3>
-
-            <p style ="font-weight:900;">Trainer Name</p>
-          </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
-          <i class="fa fa-user"></i>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div> 
-      </div>
+      <div class="row" style="justify-content: space-between;">
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($studentsontechercourse); ?></h3>
-
-            <p style ="font-weight:900;">Learners Assigned</p>
-          </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
+      <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Learners Assigned</p>
+                              <?php echo count($studentsontechercourse); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-user"></span></div>
+                          </a>
+                        </div>-->
+                        
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
               <i class='fas fa-user'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Learners Assigned</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($studentsontechercourse); ?></p></div>
+              </div>
+              
           </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($groups); ?></h3>
-
-            <p style ="font-weight:900;">Total Groups</p>
-          </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
-              <i class='fas fa-user'></i>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($totalactivities); ?></h3>
-
-            <p style ="font-weight:900;">Total Activities</p>
-          </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
-              <i class='fas fa-user'></i>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-      <!--./col-->
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo $coursecount; ?></h3>
-
-            <p style ="font-weight:900;">Enrolled Units</p>
-          </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
-              <i class='fas fa-chalkboard-teacher'></i>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
+      
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo "34" .$uni_user_count; ?></h3>
-
-            <p style ="font-weight:900;">Attendance</p>
+      <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Total Groups</p>
+                              <?php echo count($groups); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-users"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-users'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Groups</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($groups); ?></p></div>
+              </div>
+              
           </div>
-          <div class="faicon" style = "text-align: right; font-size: 45px; margin-top: -50px; padding: 6px 5px 0 0;">
-          <i class='fas fa-award'></i>
+                        <!-- ./col -->
+      <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Total Activities</p>
+                              <?php echo count($totalactivities); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-bolt"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-bolt'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Activities</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($totalactivities); ?></p></div>
+              </div>
+              
           </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
       </div>
-    </div>
-    <br><br>
-    <div class="row">
+
+    <!--<div class="row">
      <div class="col-lg-12 col-12">
       <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
         <div id="piechart" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
     <div class="col-lg-12 col-12">
       <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
+         <div id="piechart" ></div>   style="width: 100%; height: 800px;" >
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
-    </div>
-    <br><br>
-    <div class="row">
-        <h3>Total Inactive Users</h3><br><br>
-        <div class="col-lg-2 col-4">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($last24week) ?></h3>
-
-            <p style ="font-weight:900;">2-4 Week</p>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-      <div class="col-lg-2 col-4">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($last48week) ?></h3>
-
-            <p style ="font-weight:900;">4-8 Week</p>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-      <div class="col-lg-2 col-4">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3 style = "color: white;"><?php echo count($more8week) ?></h3>
-
-            <p style ="font-weight:900;">8 or more</p>
-          </div>
-          <!--<hr>
-          <a href="#" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-        </div>
-      </div>
-        </div>
-    
-    
- 
-    
+    </div>-->
+    <!--<div class="row">
+        <div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one">
+                            <div class="inner text-center detais">
+                              <p>Total Inactive Users</p>
+                              <?php echo count($last24week)+count($last48week)+count($more8week); ?>
+                              <p>2-4 Week : <?php echo count($last24week); ?></p>
+                              <p>4-8 Week : <?php echo count($last48week); ?></p>
+                              <p>8 or more : <?php echo count($more8week); ?></p>
+                            </div>
+                          </a>
+                        </div>
+        </div>-->
     
     
       <?php
     }
-    else if($role_shortname->shortname === "rtoadmin")
+    
+
+    
+    
+    else if($role_shortname->shortname === "rtoadmin" || $role_shortname->shortname === "subrtoadmin")
     { 
-         echo "<h3> Hai " . $USER->firstname . ",</h3><br>";
        /* echo $USER->id;
         echo $id;  */
         $rto_count = $DB->count_records("school", ['id'=>$USER->id]);
         $university_id = $_SESSION['university_id'];
         /*echo '<br>' . $university_id; */
         $uni_user_count = $DB->count_records("university_user", ['university_id'=>$university_id]);
-        
+        $coursecount = $DB->count_records("assign_course", ['university_id'=>$university_id]);
         $present = $DB->count_records("autoattend_students", ['status'=>'P']);
         //echo $present;
         $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
@@ -567,198 +603,311 @@ WHERE studentid IN (SELECT userid FROM mdl_university_user WHERE university_id =
         $module_course_completed = ($module_course_completed_count/$coursecount)*100;
         $module_course_incompleted = (100-$module_course_completed)*-1;
         
+        $unassignedticket = $DB->count_records("block_helpdesk_ticket",['assigned_refs'=>'0']);
+        $openticket = $DB->get_records_sql("SELECT * FROM {block_helpdesk_ticket} where status = '1' OR status = '6'");
+        $unresolvedticket = $DB->count_records("block_helpdesk_ticket",['status'=>'2']);
+        
         //var_dump($module_course_completed_count);
         //die;
 
 
         ?>
 
-      <div class="row">
-          <div class="col-lg-3 col-6">
+      <div class="row" style="justify-content: space-between;">
+          <!-- ./col -->
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Total Units</p>
+                              <?php echo $coursecount; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-book"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-book'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $USER->username; ?></h3>
-
-                <p style ="font-weight:900;">RTO Admin Name</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Units</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $coursecount; ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+              
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Total Groups</p>
+                              <?php echo count($groups); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-users"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-users'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $coursecount; ?></h3>
-
-                <p style ="font-weight:900;">Enrolled Units</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Groups</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px;  padding: 20px 5px 0 0;">
-                  <i class='fas fa-chalkboard-teacher'></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($groups); ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+              
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
+                        <!-- ./col -->
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Total Activities</p>
+                              <?php echo count($totalactivities); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-tasks"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-tasks'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $uni_user_count; ?></h3>
-
-                <p style ="font-weight:900;">RTO User Count</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Activities</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class='fas fa-award'></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($totalactivities); ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo "7"; ?></h3>
-
-                <p style ="font-weight:900;"> Current Package</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-                  <i class='fas fa-laptop-code'></i>
-              </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/local/mypackage/my_package.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-    <br><br>
-    <!-- 2nd Row-->
-    <div class="row">
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($groups); ?></h3>
-
-                <p style ="font-weight:900;">Total Groups</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>-->
-            </div>
-          </div>
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($totalactivities); ?></h3>
-
-                <p style ="font-weight:900;">Total Activities</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>-->
-            </div>
-          </div>
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($totalstudents); ?></h3>
-
-                <p style ="font-weight:900;">Total Students</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>-->
-            </div>
-          </div>
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($totaltrainer); ?></h3>
-
-                <p style ="font-weight:900;">Total Trainer</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>-->
-            </div>
+              
           </div>
         </div>
         <br><br>
-        <!--Row3-->
-        <div class="row">
-            <div class="col-lg-3 col-6">
+    <!-- 2nd Row-->
+    <div class="row" style="justify-content: space-between;">
+        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one">
+                            <div class="inner text-center detais">
+                              <p>Total Users</p>
+                              <?php echo count($totalstudents)+count($totaltrainer)+count($totaladmin); ?>
+                              <p>Students : <?php echo count($totalstudents); ?></p>
+                              <p>Trainers : <?php echo count($totaltrainer); ?></p>
+                              <p>Admin : <?php echo count($totaladmin); ?></p>
+                            </div>
+                          </a>
+                        </div>-->
+                        
+                        <div class="custom-type4-dashboard">
             <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($totaladmin); ?></h3>
-
-                <p style ="font-weight:900;">Total Admin</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box-type2" >Total Users</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 32px; margin-top: -65px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
-              </div>
-              <!--<hr>
-              <a href="<?php echo $CFG->wwwroot .'/user/profile.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>-->
-            </div>
+              <div style="padding-left: 40%;">
+                  <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($totalstudents)+count($totaltrainer)+count($totaladmin); ?></p>
+                  </div>
+                  <div style="padding-left: 30%; color: white;">
+                  <p>Students : <?php echo count($totalstudents); ?></p>
+                              <p>Trainers : <?php echo count($totaltrainer); ?></p>
+                              <p>Admin : <?php echo count($totaladmin); ?></p>
+                              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div ></div>
           </div>
-            </div>
-            <br><br>
+                        
+                        
+                        <!--./col-->
+                        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one style2">
+                            <div class="inner text-center detais">
+                              <p>Inactive Users</p>
+                              <?php echo count($last24week)+count($last48week)+count($more8week); ?>
+                              <p>2-4 Weeks : <?php echo count($last24week); ?></p>
+                              <p>4-8 Weeks : <?php echo count($last48week); ?></p>
+                              <p>8 Weeks or More : <?php echo count($more8week); ?></p>
+                            </div>
+                          </a>
+                        </div>-->
+                        
+                        <div class="custom-type4-dashboard">
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box-type2" >Inactive Users</p>
+              </div>
+              <div style="padding-left: 40%;">
+                  <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($last24week)+count($last48week)+count($more8week); ?></p>
+                  </div>
+                  <div style="padding-left: 30%; color: white;">
+                  <p>2-4 Weeks : <?php echo count($last24week); ?></p>
+                              <p>4-8 Weeks : <?php echo count($last48week); ?></p>
+                              <p>8 Weeks or More : <?php echo count($more8week); ?></p>
+                              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div ></div>
+          </div>
+                        
+                        <!--./col-->
+                        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/dashboard/resendinvite_user.php';?>" class="ff_one style3">
+                            <div class="inner text-center detais">
+                              <p>Invite Pending</p>
+                              <?php echo count($last24week)+count($last48week); ?>
+                              <p>Expired : <?php echo count($last24week); ?></p>
+                              <p>Not Signed In : <?php echo count($last48week); ?></p>
+                            </div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box-type2" >Invite Pending</p>
+              </div>
+              <div style="padding-left: 40%;">
+                  <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($last24week)+count($last48week); ?></p>
+                  </div>
+                  <div style="padding-left: 30%; color: white;">
+                              <p>Expired : <?php echo count($last24week); ?></p>
+                              <p>Not Signed In : <?php echo count($last48week); ?></p>
+                              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/dashboard/resendinvite_user.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div ></div>
+          </div>
+        </div>
+        <br><br>
+        <div class="row" style="justify-content: space-between;">
+        <div style="width: 100%;">
+            <H3 style="float: left;padding-left: 2%;">Tickets</H3> 
+            <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" style="float: right;padding-right: 2%;" class="small-box-footer" style = "color: white;">See All <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+                    <hr>
+        </div>
+        <!-- ./col -->
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Unassigned</p>
+                              <?php echo $unassignedticket; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-exclamation"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard" style="padding: 10px;">
+                            <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: left;"> <?php echo $unassignedticket; ?></p></div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" style="font-weight: unset;" >Unassigned</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              
+              </div>
+              
+          </div>
+                        <!-- ./col -->
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Open</p>
+                              <?php echo count($openticket ); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-exclamation-triangle"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard" style="padding: 10px;">
+                            <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: left;"> <?php echo count($openticket ); ?></p></div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" style="font-weight: unset;" >Open</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              
+              </div>
+              
+          </div>
+                        <!-- ./col -->
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Unresolved</p>
+                              <?php echo $unresolvedticket; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-exclamation-triangle"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard" style="padding: 10px;">
+                            <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: left;"> <?php echo $unresolvedticket; ?></p></div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" style="font-weight: unset;" >Unresolved</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              
+              </div>
+              
+          </div>
+        </div>
+        
+        <!--<div class="row">
+     <div class="col-lg-12 col-12">
+      <div class='container'> 
+        <div id="piechart" class="pie-chart" style="width: 100%; height: 320px; "></div>
+      </div>
+    </div>
+    </div>
+        
             <div class="col-lg-12 col-12">
       <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
-    </div><br><br>
-            <div class="row">
-                <h3>Total Inactive Users</h3><br><br>
-                <div class="col-lg-2 col-4">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($last24week); ?></h3>
-                <p style ="font-weight:900;">2-4 Weeks</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 col-4">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($last48week); ?></h3>
-                <p style ="font-weight:900;">4-8 Weeks</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 col-4">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo count($more8week); ?></h3>
-                <p style ="font-weight:900;">8 or More</p>
-              </div>
-            </div>
-          </div>
-                </div>
+    </div><br>-->
             
 
     
@@ -778,113 +927,314 @@ else {
         $package_count = $DB->count_records("package");
         
         $all_university= $DB->get_records_sql("SELECT * FROM {school} ORDER BY name DESC LIMIT 10 ");
+        $unassignedticket = $DB->count_records("block_helpdesk_ticket",['assigned_refs'=>'0']);
+        $openticket = $DB->get_records_sql("SELECT * FROM {block_helpdesk_ticket} where status = '1' OR status = '6'");
+        $unresolvedticket = $DB->count_records("block_helpdesk_ticket",['status'=>'2']);
+        //var_dump($unresolvedticket); die;
        
     ?>
     
-    <div class="row">
-          <div class="col-lg-3 col-6">
+    <br>
+    
+    <div class="row" style="justify-content: space-between;">
+        <!-- ./col -->
+          
+                        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/local/dashboard/table.php';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Total Client</p>
+                              <?php echo $rto_count; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-university"></span></div>
+                          </a>
+                        </div>-->
+                        
+                        
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-university'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $coursecount; ?></h3>
-
-                <p style ="font-weight:900;">Total Units</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Client</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 55px; margin-top: -89px; padding: 20px 5px 0 0;">
-               <i class='fas fa-book-open'></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/local/dashboard/table.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $rto_count; ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/course/management.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+              
           </div>
+                        
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/admin/user.php';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Total Users</p>
+                              <?php echo $user_count; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-users"></span></div>
+                          </a>
+                        </div>-->
+                        
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-users'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $user_count; ?></h3>
-
-                <p style ="font-weight:900;">Total Users</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Users</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 55px; margin-top: -89px; padding: 20px 5px 0 0;">
-              <i class="fa fa-user"></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/admin/user.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $user_count; ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/admin/user.php';?>" class="small-box-footer"  style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+              
           </div>
+          
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/course/management.php';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Total Units</p>
+                              <?php echo $coursecount; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-book"></span></div>
+                          </a>
+                        </div>--->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-book'></i>
+              </div>
             <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $rto_count; ?></h3>
-
-                <p style ="font-weight:900;">Total RTO</p>
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Total Units</p>
               </div>
-              <div class="faicon" style = "text-align: right; font-size: 55px; margin-top: -89px; padding: 20px 5px 0 0;">
-              <i class="fa fa-university"></i>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/course/management.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $coursecount; ?></p></div>
               </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/local/dashboard/table.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+              
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3 style = "color: white;"><?php echo $package_count; ?></h3>
-
-                <p style ="font-weight:900;">Package Count</p>
-              </div>
-              <div class="faicon" style = "text-align: right; font-size: 55px; margin-top: -89px; padding: 20px 5px 0 0;">
-              <i class="fa fa-dollar"></i>
-              </div>
-              <hr>
-              <a href="<?php echo $CFG->wwwroot .'/local/createpackage/package_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
+                        
+        </div><br>
+    <div class="row" style="justify-content: space-between;">
+        <div style="width: 100%;">
+            <H3 class="title float-left" style="float: left;padding-left: 2%;">Tickets</H3> 
+            <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" style="float: right;padding-right: 2%;" class="small-box-footer" style = "color: white;">See All <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+                    <hr>
         </div>
-    <br><br>
+        <br>
+        
+        <!--./col-->
+        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Unassigned</p>
+                              <?php echo $unassignedticket; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-exclamation"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-exclamation'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Unassigned</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $unassignedticket; ?></p></div>
+              </div>
+              
+          </div>
+                        
+                        <!--./col-->
+                        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Open</p>
+                              <?php echo count($openticket ); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-pencil-square-o"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-pencil-square-o'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Open</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($openticket ); ?></p></div>
+              </div>
+              
+          </div>
+                        <!--./col-->
+                        <!--<div class="col-sm-4">
+                          <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="ff_one style3">
+                            <div class="detais">
+                              <p>Unresolved</p>
+                              <?php echo $unresolvedticket; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-exclamation-triangle"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard">
+                            <div class="custom-faicon" style = "text-align: center;">
+              <i class='fas fa-exclamation-triangle'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Unresolved</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $unresolvedticket; ?></p></div>
+              </div>
+              
+          </div>
+                        
+        
+        </div>
+        <br><br>
     <div class="row">
 
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-12 col-12">
         <div class='container'> 
-          <table id="tblUser"  class="table table-striped table-bordered" style="width:100%; font-size:12px;">
+          <table id="tblUser"  class="table table-striped table-bordered" style="width:100%; font-size:12px;background: #17263C;    color: white;">
+              <tr>
+                <th colspan="4" align="center" class="text-center"><h3 style="color: white;">Current Package Information</h3></th>
+            </tr>
             <tr>
-                <th>S. No</th>
-                <th>Package Value (In Rupees)</th>
-                <th>Number of Users </th>
-                <th>Number of units</th>
+                <th>#</th>
+                <th>Users</th>
+                <th>Units </th>
+                <th>Package Value ($)</th>
             </tr>
                   <?php 
                   $i = 1;
                   foreach($all_packages as $package){?>
             <tr>
-                <td><?php echo $i; ?></td>
-                <td><?php echo $package->package_value; ?></td>
+                <td>Package <?php echo $i; ?></td>
                 <td><?php echo $package->num_of_user; ?></td>
                 <td><?php echo $package->num_of_course; ?></td>
+                <td>$<?php echo $package->package_value; ?> Monthly</td>
             </tr>
                   <?php $i++; } ?>
+            <tr>
+                <th colspan="4" align="center" class="text-center"><a href="<?php echo $CFG->wwwroot .'/local/createpackage/index.php';?>" class="small-box-footer">Customise <i class="fas fa-arrow-circle-right"></i></a></th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center" class="text-center"><a href="<?php echo $CFG->wwwroot .'/local/createpackage/package_list.php';?>" class="small-box-footer">See All <i class="fas fa-arrow-circle-right"></i></a></th>
+            </tr>
           </table>
         </div>
         </div>
-        
-        
-    
-    <div class="col-lg-6 col-12">
-        <!-- <div style="width:50%;hieght:20%;text-align:center"> -->
-        <h2 class="page-header" style= "height: auto; width:100%;">Analytics Reports </h2>
-        <div> </div>
-        <canvas  id="chartjs_bar"></canvas> 
-        <!-- </div>  Product -->
-       
-       <!--<canvas  id="chartjs_bar"></canvas> -->
     </div>
-    </div>
+    <br>
+    <div class="row" style="justify-content: space-between;">
+        <div style="width: 100%;">
+            <H3 class="title float-left" style="float: left;padding-left: 2%;">Finances</H3> 
+            <a href="<?php echo $CFG->wwwroot .'#';?>" style="float: right;padding-right: 2%;" class="small-box-footer" style = "color: white;">See All <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+                    <hr>
+        </div>
+        
+        <!--./col-->
+        <!--<div class="col-sm-6">
+                          <a href="<?php echo $CFG->wwwroot .'#';?>" class="ff_one">
+                            <div class="detais">
+                              <p>Unpaid Invoices</p>
+                              <?php echo $unassignedticket; ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-file-text"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard" style="width:48%">
+                            <div class="custom-faicon" style = "text-align: center;margin-left: 33%;">
+              <i class='fas fa-file-text'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Unpaid Invoices</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'#';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo $unassignedticket; ?></p></div>
+              </div>
+              
+          </div>
+                        <!--./col-->
+                        <!--<div class="col-sm-6">
+                          <a href="<?php echo $CFG->wwwroot .'#';?>" class="ff_one style2">
+                            <div class="detais">
+                              <p>Invoice Due Soon</p>
+                              <?php echo count($openticket ); ?>
+                            </div>
+                            <div class="ff_icon"><span class="fa fa-usd"></span></div>
+                          </a>
+                        </div>-->
+                        <div class="custom-type4-dashboard" style="width:48%">
+                            <div class="custom-faicon"  style = "text-align: center;margin-left: 33%;">
+              <i class='fas fa-usd'></i>
+              </div>
+            <!-- small box -->
+              <div class="cutom-heading-box">
+                <p class="custom-heading-p-box" >Invoice Due Soon</p>
+              </div>
+              
+              <hr style="background-color: white;">
+              <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
+              <div style="width:50%; float: left;" >
+                  <a href="<?php echo $CFG->wwwroot .'#';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div >
+              <div style="width:50%; float: left;">
+                  <p class="custom-numbers-dashboard-cards" style = "float: right;"> <?php echo count($openticket ); ?></p></div>
+              </div>
+              
+          </div>
+        </div>
     
         
     <?php 
@@ -952,109 +1302,6 @@ else {
 
 <?php
 }
-
-$html='';
-
-     $html .= '<body> <div class="container-fluid">
-         <div class="row mt-4">';
-         $resourse_category_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
-         if(is_siteadmin()){
-            $data=$DB->get_records_sql("SELECT mc.* FROM {course} mc where mc.visible=1 AND id != 1 AND mc.category != $resourse_category_id->id");
-         }
-         else{
-            $id = $USER->id;
-            $check = $DB->get_records_sql("SELECT * from {universityadmin} where userid = '$id'");
-            $check1 = count($check);
-            if($check1 == 1){
-               // $data=$DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual'");
-               $data1 =$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {assign_course} assc on mc.id = assc.course_id inner join {school} ms on ms.id = assc.university_id inner join {universityadmin} ua on ua.university_id = ms.id WHERE ua.university_id= $_SESSION[university_id]  AND mc.category != $resourse_category_id->id");
-            }
-            else{
-               
-               $data = $DB->get_records_sql("SELECT {course}.* from {course} left join {enrol} on {course}.id = {enrol}.courseid left join {user_enrolments} on {enrol}.id = {user_enrolments}.enrolid  where {user_enrolments}.userid=$id and {enrol}.enrol ='manual' AND {course}.category != $resourse_category_id->id");
-            }
-         }
-
-            
-         $course_exsit=array();   
-            foreach($data as $datavalue)
-            {
-               $courseid = $datavalue->id;
-               $course_exsit[]= $datavalue->id;
-			      $url = get_course_image($courseid);
-
-            // var_dump($url);
-               if(!$url){ $url ='image/courses.jpg'; }
-                $html.='<div class="col-md-4">
-                <div class="card2">
-                   <div class="img">
-                     <img class="card2-img-top" src="'.$url.'" alt="card2 image">
-                      <div class="overlay">
-                         <p class=""> <a class="btn btn-border-5 text-white" href="'.$CFG->wwwroot.'/course/view.php?id='.$datavalue->id.'" style="margin:70px;">View Unit</a></p>
-                      </div>
-                   </div>
-                  
-                   <div class="card2-body">
-                      <h4 class="card2-title">'.$datavalue->fullname.'</h4>
-                   </div>
-                </div>
-             </div>';
-            }
-            if (isset($data1) )
-            {
-               foreach($data1 as $datavalue)
-            {
-               $courseid = $datavalue->id;
-			   if(in_array($courseid,$course_exsit)) continue;
-               $url = get_course_image($courseid);
-               // var_dump($url);
-               if(!$url){ $url ='image/courses.jpg'; }
-                $html.='<div class="col-md-4">
-                <div class="card2">
-                   <div class="img">
-                     <img class="card2-img-top" src="'.$url.'" alt="card2 image">
-                      <div class="overlay">
-                         <p class=""> <a class="btn btn-border-5" href="'.$CFG->wwwroot.'/course/view.php?id='.$datavalue->id.'" style="margin:70px;">View Unit</a></p>
-                      </div>
-                   </div>
-                  
-                   <div class="card2-body">
-                      <h4 class="card2-title">'.$datavalue->fullname.'</h4>
-                   </div>
-                </div>
-             </div>';
-            }
-            }
-            
-
-         $html.='</div>
-      </div>
-
-      
-      
-   </body>
-</html>';
-echo $html;
-
-
-       if($role_shortname->shortname === "rtoadmin")
-    { 
-        ?>        
-        <div class="row">
-     <div class="col-lg-12 col-12">
-      <div class='container'> 
-        <!-- <div id="piechart" ></div>   style="width: 100%; height: 800px;" > -->
-        <div id="piechart" class="pie-chart" style="width: 100%; height: 320px; "></div>
-      </div>
-    </div>
-    </div>
-    
-    
-    
-    <?php
-    }
-
-
 // Create a course_in_list object to use the get_course_overviewfiles() method.
 // var_dump($CFG->libdir . '/coursecatlib.php');
 
@@ -1159,30 +1406,6 @@ background-image: none !important
             chart.draw(data, options);
         }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

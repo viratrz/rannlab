@@ -1,4 +1,4 @@
-username,firstname,lastname,email
-student1,Student,One,s1@example.com
-student2,Student,Two,s2@example.com
-student3,Student,Three,s3@example.com
+username,password,firstname,lastname,email,sysrole1
+student00100,Student001,Student01,One001,student001@example.com,teacher
+student00200,Student002,Student02,Two002,student002@example.com,teacher
+student00300,Student003,Student03,Three003,student003@example.com,student

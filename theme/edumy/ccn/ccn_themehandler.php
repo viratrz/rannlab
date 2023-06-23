@@ -35,16 +35,28 @@ $ccnMdlVersion = $ccnMdlHandler->ccnGetCoreVersion();
 // }
 
 /* @ccnBreak */
+//$_SESSION["logo_path"];
+
+//echo $_SESSION["logo_path"];
+
+
 if (is_siteadmin()) {$user_status = 'role-supreme';} else {$user_status = 'role-standard';}
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo1') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_headerlogo1') && !empty($OUTPUT->get_theme_image_headerlogo1())){
-  $headerlogo1 = $OUTPUT->get_theme_image_headerlogo1(null, 100);
+  //$headerlogo1 = $OUTPUT->get_theme_image_headerlogo1(null, 100);
+  $headerlogo1 =$_SESSION["logo_path"];
 } else {
-  $headerlogo1 = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
+  //$headerlogo1 = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
+  $headerlogo1 =$_SESSION["logo_path"];
+
+  //echo $headerlogo1;
 }
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo2') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_headerlogo2') && !empty($OUTPUT->get_theme_image_headerlogo2())){
-  $headerlogo2 = $OUTPUT->get_theme_image_headerlogo2(null, 100);
+  $headerlogo2 =$_SESSION["logo_path"];
+  //$headerlogo2 = $OUTPUT->get_theme_image_headerlogo2(null, 100);
 } else {
-  $headerlogo2 = $CFG->wwwroot . '/theme/edumy/images/header-logo2.png';
+  //$headerlogo2 = $CFG->wwwroot . '/theme/edumy/images/header-logo2.png';
+  $headerlogo2 =$_SESSION["logo_path"];
+
 }
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo3') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_headerlogo3') && !empty($OUTPUT->get_theme_image_headerlogo3())){
   $headerlogo3 = $OUTPUT->get_theme_image_headerlogo3(null, 100);
@@ -62,9 +74,11 @@ if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo
   $headerlogo_mobile = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
 }
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_footerlogo1') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_footerlogo1') && !empty($OUTPUT->get_theme_image_footerlogo1())){
-  $footerlogo1 = $OUTPUT->get_theme_image_footerlogo1(null, 100);
+  //$footerlogo1 = $OUTPUT->get_theme_image_footerlogo1(null, 100);
+  $footerlogo1 =$_SESSION["logo_path"];
 } else {
-  $footerlogo1 = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
+  //$footerlogo1 = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
+  $footerlogo1 =$_SESSION["logo_path"];
 }
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_heading_bg') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_heading_bg') && !empty($OUTPUT->get_theme_image_heading_bg())){
   $heading_bg = $OUTPUT->get_theme_image_heading_bg(null, 100);
@@ -74,7 +88,9 @@ if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_heading_bg
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_favicon') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_favicon') && !empty($OUTPUT->get_theme_image_favicon())){
   $favicon = $OUTPUT->get_theme_image_favicon(null, 100);
 } else {
-  $favicon = $CFG->wwwroot . '/theme/edumy/pix/favicon.ico';
+  //$favicon = $CFG->wwwroot . '/theme/edumy/pix/favicon.ico';
+
+  $favicon =$_SESSION["logo_path"];
 }
 $langMenu = $OUTPUT->ccn_render_lang_menu();
 $headertype = get_config('theme_edumy', 'headertype');

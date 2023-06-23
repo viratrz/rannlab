@@ -25,6 +25,22 @@
 
 require_once(__DIR__ . '/../config.php');
 
+//require(dirname(__FILE__).'/../../config.php');
+require_once($CFG->dirroot . '/mod/assign/locallib.php');
+
+// Parameters.
+$id = required_param('courseid', PARAM_INT);
+$assignid = optional_param('assign', 0, PARAM_INT);
+$export = optional_param('export', 0, PARAM_INT);
+$offline = optional_param('offline', 0, PARAM_INT);
+$exportall = optional_param('exportall', 0, PARAM_INT);
+$group = optional_param('group', 0, PARAM_INT);
+$dump = optional_param('dump', 0, PARAM_INT);
+
+
+
+
+
 // Course id.
 $courseid = required_param('courseid', PARAM_INT);
 

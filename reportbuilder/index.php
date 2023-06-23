@@ -52,9 +52,42 @@ if (permission::can_create_report()) {
     echo $renderer->render_new_report_button();
 }
 
+
+
+
+// HTML code for the button
+echo '<button onclick="redirectToPage(\'/local/dashboard/rto_summary.php\');">RTO Summary</button>';
+echo '<button onclick="redirectToPage(\'/local/createuser/cue_summary.php\');">CUE Summary</button>';
+echo '<button onclick="redirectToPage(\'/local/dashboard/student_progress_report.php\');">Student Report</button>';
+
+
+
+
+
+
 echo html_writer::end_div();
 
 $report = system_report_factory::create(reports_list::class, context_system::instance());
 echo $report->output();
 
 echo $OUTPUT->footer();
+
+
+
+
+
+
+?>
+
+<!-- JavaScript code -->
+<script>
+function redirectToPage(url) {
+  window.location.href = url;
+}
+</script>
+
+
+
+
+
+

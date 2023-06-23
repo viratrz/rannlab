@@ -186,13 +186,13 @@ if ($_GET['msg']) {
         <div class=" p-0 box-shadow">
           <div class="mb-3 heading-row">
             <div class="col-md-12">
-              <h5 class="mb-0 ml-0" style="color: white;">University List</h5>
+              <h5 class="mb-0 ml-0" style="color: white;">RTO List</h5>
             </div>
           </div>
           <div class="d-flex px-1">
             <div class="mr-3">
               <select id="filterselect" class="form-control">
-                <option value="1" id="schoolfilter">University Name</option>
+                <option value="1" id="schoolfilter">RTO Name</option>
                 <option value="2" id="countryfilter">Country</option>
                 <option value="3" id="cityfilter">City/Town</option>
               </select>
@@ -206,14 +206,14 @@ if ($_GET['msg']) {
             </div>
             <div style="text-align:end;" class="ml-auto">
               <a href="<?php echo $CFG->wwwroot ?>/local/dashboard/index.php" class="btn btn-info"><i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
-                Add New University</a>
+                Add New RTO</a>
             </div>
           </div>
 
           <table class="table table-hover table-bordered" style="border: none;">
             <thead>
               <tr class="bg-secondary">
-                <th>University Name</th>
+                <th>RTO Name</th>
                 <th>Domain Name</th>
                 <th>Country</th>
                 <th>City/Town</th>

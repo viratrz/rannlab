@@ -288,14 +288,14 @@ if($user_id)
                 $json = array();
                 $json['success'] = true;
                 // $json['msg'] = "Courses Assign Limit Exeed";
-                $json['msg'] = "University and University Admin Created Successfully, But only $count_add Course Addded";
+                $json['msg'] = "RTO and RTO Admin Created Successfully, But only $count_add Course Addded";
                 echo json_encode($json);
                 exit;
             }
         }
         $json = array();
         $json['success'] = true;
-        $json['msg'] = "University and University Admin Created Successfully!";
+        $json['msg'] = "RTO and RTO Admin Created Successfully!";
         echo json_encode($json);
     }
 }

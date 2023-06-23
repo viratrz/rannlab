@@ -60,6 +60,8 @@ echo $OUTPUT->header();
         if($success)
         {
             redirect("$CFG->wwwroot./my/", "Logo Changed Successfully");
+            //redirect("$CFG->wwwroot./my/courses.php", "Logo Changed Successfully");
+            //echo $set_logo->logo_path;
             // echo "<img src='$path' style='width:100px; height: 80px;'>";
             // echo "<h5 style='background: green; color: white; padding: 5px 4px; width: fit-content; margin: 5px 0 0 0;'>Logo Changed Successfully Done!</h5>";
             // echo "<script> 

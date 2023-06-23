@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -22,8 +21,6 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->libdir.'/coursecatlib.php');
 
 /**
  * Reports various users related charts and figures
@@ -98,14 +95,13 @@ class report_overviewstats_chart_courses extends report_overviewstats_chart {
             return;
         }
 
-        // Number of courses per category
-
-        $cats = coursecat::make_categories_list();
+        // Number of courses per category.
+        $cats = core_course_category::make_categories_list();
         $this->data['percategory'] = array();
         $total = 0;
 
         foreach ($cats as $catid => $catname) {
-            $cat = coursecat::get($catid);
+            $cat = core_course_category::get($catid);
             $coursesown = $cat->get_courses_count();
             $total += $coursesown;
             $this->data['percategory'][] = array(
@@ -121,8 +117,7 @@ class report_overviewstats_chart_courses extends report_overviewstats_chart {
             'coursesown' => html_writer::tag('strong', $total),
         );
 
-        // Distribution graph of number of activities per course
-
+        // Distribution graph of number of activities per course.
         $sql = "SELECT course, COUNT(id) AS modules
                   FROM {course_modules}
               GROUP BY course";

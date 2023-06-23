@@ -20,7 +20,7 @@ if (is_siteadmin()) {
 $preset_color = $DB->get_record("school", ['id'=>"$university_id"]);
 ?>
 <!-- CSS only -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
+ <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
 <div class="card">
   <?php if (is_siteadmin()) { if(!$preset_color->header_color){?>
   <div style="font-size:18px; height:50px; padding-top: 1%; background-color: gray; color:white; padding-left: 10px;">Theme Not Set Now</div>
@@ -42,7 +42,13 @@ $preset_color = $DB->get_record("school", ['id'=>"$university_id"]);
         <br>
         <input type="submit" value="Set Color" class="font-weight-bold">
     </form>
-  </div>
+    </div>
+
+
+</div>
+
+    
+  
   <?php if (is_siteadmin()) { if($preset_color->header_color){?>
 
   <div class="col col-md-6">

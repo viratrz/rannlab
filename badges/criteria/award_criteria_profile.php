@@ -117,7 +117,8 @@ class award_criteria_profile extends award_criteria {
                 if (in_array($field->id, $existing)) {
                     $checked = true;
                 }
-                $this->config_options($mform, array('id' => $field->id, 'checked' => $checked, 'name' => $field->name, 'error' => false));
+                $this->config_options($mform, array('id' => $field->id, 'checked' => $checked,
+                    'name' => format_string($field->name), 'error' => false));
                 $none = false;
             }
         }
@@ -214,3 +215,55 @@ class award_criteria_profile extends award_criteria {
         }
 
         $sqlparams['userid'] = $userid;
+
+        if ($whereparts) {
+            $where = " AND (" . implode($rule, $whereparts) . ")";
+        } else {
+            $where = '';
+        }
+        $sql = "SELECT 1 FROM {user} u " . $join . " WHERE u.id = :userid $where";
+        $overall = $DB->record_exists_sql($sql, $sqlparams);
+
+        return $overall;
+    }
+
+    /**
+     * Returns array with sql code and parameters returning all ids
+     * of users who meet this particular criterion.
+     *
+     * @return array list($join, $where, $params)
+     */
+    public function get_completed_criteria_sql() {
+        global $DB;
+
+        $join = '';
+        $whereparts = array();
+        $params = array();
+        $rule = ($this->method == BADGE_CRITERIA_AGGREGATION_ANY) ? ' OR ' : ' AND ';
+
+        foreach ($this->params as $param) {
+            if (is_numeric($param['field'])) {
+                // This is a custom field.
+                $idx = count($whereparts);
+                $join .= " LEFT JOIN {user_info_data} uid{$idx} ON uid{$idx}.userid = u.id AND uid{$idx}.fieldid = :fieldid{$idx} ";
+                $params["fieldid{$idx}"] = $param['field'];
+                $whereparts[] = "uid{$idx}.id IS NOT NULL";
+            } else if (in_array($param['field'], $this->allowed_default_fields)) {
+                // This is a valid field from {user} table.
+                if ($param['field'] == 'picture') {
+                    // The picture field is numeric and requires special handling.
+                    $whereparts[] = "u.{$param['field']} != 0";
+                } else {
+                    $whereparts[] = $DB->sql_isnotempty('u', "u.{$param['field']}", false, true);
+                }
+            }
+        }
+
+        if ($whereparts) {
+            $where = " AND (" . implode($rule, $whereparts) . ")";
+        } else {
+            $where = '';
+        }
+        return array($join, $where, $params);
+    }
+}

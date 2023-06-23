@@ -48,14 +48,22 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button {
-         background: #000;
+         /*background: #000;
          padding: 10px 15px;
          color: #fff;
          text-decoration: none !important;
          border-radius: 4px;
          border: 1px solid #ffe500;
          font-weight: 600;
-         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); */
+         
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); 
+         background-color: #6c757d;
+         border-width: 2px;
+         border-color: #6c757d;
+         border-radius: 5px;
+         padding: 10px 15px;
+         color: #fff;
       }
       .eye {
             position: absolute;
@@ -71,8 +79,17 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button:hover {
-         color: #000;
-         background: #ffe500;
+         /*color: #000;
+         background: #ffe500; */
+         
+      background-color: transparent;
+      border-color: #6c757d;
+      color: #6c757d;
+      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      text-decoration: none;
+      BORDER: 2PX SOLID #6c757d;
       }
 
       .heading-row {
@@ -115,6 +132,13 @@ $PAGE->set_pagelayout('standard');
          display: none;
          text-align: center;
       }
+      
+      *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+      border-color: #6c757d !important;
+        }
+        .form-group{
+       font-family: "Nunito",sans-serif;
+       }
    </style>
 </head>
 
@@ -163,8 +187,9 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="col-md-9 p-0">
-                     <input type="password"  class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="">
+                     <input type="password"  class="form-control focusError" placeholder="Enter Password" id="password" name="password" value=""  onkeyup="checksPassword(this.value)"/>
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i></div>
+                      <span class="error_message spassword_error" style="display: none; color: red;  margin-left:290px;" id="pasward">Enter minimum 8 chars with atleast 1 number, lower, upper &amp; special(@#$%&!-_&amp;) char.</span>
                      <div class="col-md-3"></div>
                      <span class="errormsg2" id="pasward"></span>
                      <span class="error1 col-md-8 pl-0"></span>
@@ -193,6 +218,17 @@ $PAGE->set_pagelayout('standard');
    </div>
 
 <script>
+function checksPassword(password){
+var pattern = /^.*(?=.{8,20})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&!-_]).*$/;
+if(!pattern.test(password)) {
+$(".spassword_error").show();
+}else
+{
+$(".spassword_error").hide();
+}
+}
+
+
 $(document).ready(function() 
 {
    $(".eye").click(function() {
@@ -223,7 +259,7 @@ function showPassword(obj)
 }
 
 function smallOnly(inputvalue) {
-   var smallletter = /^[a-z0-9@_.]+$/;
+   var smallletter = /^[A-Za-z0-9]+$/;                   // /^[a-z0-9@_.]+$/;
    var erroeClass = document.getElementsByClassName('error1');
    if (inputvalue.length > 0)
    {
@@ -231,7 +267,7 @@ function smallOnly(inputvalue) {
       erroeClass[0].innerHTML = " ";
      }
    else{
-      erroeClass[0].innerHTML = "Username contains only [samll letter,Number ,@,_,.]";
+      erroeClass[0].innerHTML = "Username contains only [Uppercase, Lowercase and numbers]";
      }
    }
    else{

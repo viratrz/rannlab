@@ -5,18 +5,17 @@ require_once('../../config.php');
 require_once('lib.php');
 GLOBAL $USER,$DB;
 $uni_id = $_GET['uni_id'];
-$course_id = $_GET['course_id'];
-$user_id = $DB->get_record_sql("SELECT userid FROM {universityadmin} WHERE university_id=$uni_id");
-
+$course_id = $_POST['course_id'];
+$user_id = $DB->get_record_sql("SELECT userid FROM mdl_universityadmin WHERE university_id=$uni_id");
 $package_id = $DB->get_record_sql("SELECT p.* FROM mdl_package p JOIN mdl_admin_subscription mas ON p.id = mas.package_id  WHERE mas.university_id= $uni_id ");
-
-
 $assign_course = new stdClass();
 $count_add = 0;
+$tomorrow = new DateTime("now", core_date::get_server_timezone_object());
+      
 foreach($course_id as $c_id)
 {
 	$total_course = $DB->count_records('assign_course', array('university_id'=>$uni_id));
-
+    
 	if ($package_id->num_of_course > $total_course) 
 	{
 		$count_add = $count_add+1;
@@ -28,7 +27,14 @@ foreach($course_id as $c_id)
 			$inserted = $DB->insert_record('assign_course', $assign_course);
 			purge_caches();
 			// $role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
-			createresource($c_id,$uni_id,$user_id->userid);
+						
+			$iscourcecreated = createresource($c_id,$uni_id,$user_id->userid);
+			$json = array();
+		$json['success'] = false;
+		$json['add'] = $iscourcecreated;
+		$json['msg'] = "NON";
+		echo json_encode($json);
+		exit;
 		}
 
 		if($inserted)
@@ -57,7 +63,7 @@ foreach($course_id as $c_id)
 		$json['success'] = false;
 		if ($count_add > 0 ) 
 		{
-			$json['add'] = "Only $count_add Course Addded ";
+			$json['add'] = "Only $count_add Course Added";
 		}
 		$json['msg'] = "Courses Assign Limit Exeed";
 		echo json_encode($json);
@@ -65,11 +71,18 @@ foreach($course_id as $c_id)
 	}
 }
 
+
 if($inserted_count || $updated)
 {
 	$json = array();
 	$json['success'] = true;
 	$json['msg'] = "Courses Added Successfully!";
+	echo json_encode($json);
+}
+else{
+    $json = array();
+	$json['success'] = false;
+	$json['msg'] = "Courses Not Added Successfully!";
 	echo json_encode($json);
 }
 

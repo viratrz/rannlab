@@ -17,10 +17,10 @@
     <table class="table m-0" id="data">
     <thead class="thead-dark">
     <tr style="height: 20px; margin-bottom: 25px;">
-        <th scope="col" colspan="6" class="p-0"><h3 class="text-center text-uppercase bg-dark text-white m-0 py-2" style="font-weight: bolder">RTO Unit Allocation Summary</h3></th>
+        <th scope="col" colspan="8" class="p-0"><h3 class="text-center text-uppercase bg-dark text-white m-0 py-2" style="font-weight: bolder">RTO Unit Allocation Summary</h3></th>
     </tr>
     <tr style="height: 50px;">
-        <th scope="col" class="pb-3 text-center text-uppercase h4" colspan="3">'.$university->name.'</th>
+        <th scope="col" class="pb-3 text-center text-uppercase h4" colspan="4">'.$university->name.'</th>
         <th scope="col"></th>
         <th scope="col" colspan="2" class="text-center"><img class="text-center" src="'.$CFG->wwwroot.$university->logo_path.'" alt="" width="50" height="40"></th>
       </tr>
@@ -31,6 +31,7 @@
         <th scope="col">Total User assigned</th>
         <th scope="col">Total user failed</th>
         <th scope="col">Total User pending</th>
+        <th scope="col">Total User Passed</th>
       </tr>
     </thead>
     <tbody>';
@@ -47,15 +48,19 @@
         $count_enrolled =0;
         $count_failed=0;
         $count_pending =0;
+        $count_passed=0;
         foreach ($all_enrolled_users as $all_enrolled_user) 
         {
           if (in_array($all_enrolled_user->id, $all_uni_userid)) 
           {
             $course_obj = $DB->get_record("course", ['id'=>$course->course_id]);
             $report = core_completion\progress::get_course_progress_percentage($course_obj, $all_enrolled_user->id);
-            if ($report) 
+            if ($report<100.00) 
             {
               $count_failed++;
+            }
+            else if($report = 100.00){
+                $count_passed++;
             }
             else
             {
@@ -73,6 +78,7 @@
           <td>'.$count_enrolled.'</td>
           <td>'.$count_failed.'</td>
           <td>'.$count_pending.'</td>
+          <td>'.$count_passed.'</td>
         </tr>';
         $count++;
       }

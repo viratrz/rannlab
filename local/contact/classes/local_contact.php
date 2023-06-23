@@ -18,16 +18,13 @@
  * This plugin for Moodle is used to send emails through a web form.
  *
  * @package    local_contact
- * @copyright  2016-2019 TNG Consulting Inc. - www.tngconsulting.ca
+ * @copyright  2016-2022 TNG Consulting Inc. - www.tngconsulting.ca
  * @author     Michael Milette
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * local_contact class. Handles processing of information submitted from a web form.
- * @copyright  2016-2019 TNG Consulting Inc. - www.tngconsulting.ca
+ * @copyright  2016-2022 TNG Consulting Inc. - www.tngconsulting.ca
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class local_contact {
@@ -44,15 +41,24 @@ class local_contact {
         if (isloggedin() && !isguestuser()) {
             // If logged-in as non guest, use their registered fullname and email address.
             global $USER;
-            $this->fromname = $USER->firstname.' '.$USER->lastname;
+            $this->fromname = get_string('fullnamedisplay', null, $USER);
             $this->fromemail = $USER->email;
+             // Insert name and email address at first position in $_POST array.
+            if (!empty($_POST['email'])) {
+                unset($_POST['email']);
+            }
+            if (!empty($_POST['name'])) {
+                unset($_POST['name']);
+            }
+            $_POST = array_merge(array('email' => $this->fromemail), $_POST);
+            $_POST = array_merge(array('name' => $this->fromname), $_POST);
         } else {
             // If not logged-in as a user or logged in a guest, the name and email fields are required.
             if (empty($this->fromname  = trim(optional_param(get_string('field-name', 'local_contact'), '', PARAM_TEXT)))) {
-                $this->fromname  = required_param('name', PARAM_TEXT);
+                $this->fromname = required_param('name', PARAM_TEXT);
             }
             if (empty($this->fromemail = trim(optional_param(get_string('field-email', 'local_contact'), '', PARAM_EMAIL)))) {
-                $this->fromemail  = required_param('email', PARAM_TEXT);
+                $this->fromemail = required_param('email', PARAM_TEXT);
             }
         }
         $this->fromname = trim($this->fromname);
@@ -148,10 +154,10 @@ class local_contact {
         // Validate against email address whitelist and blacklist.
         $skipdomaintest = false;
         // TODO: Create a plugin setting for this list.
-        $whitelist = ''; // $config->whitelistemails .
+        $whitelist = ''; // Future code: $config->whitelistemails .
         $whitelist = ',' . $whitelist . ',';
         // TODO: Create a plugin blacklistemails setting.
-        $blacklist = ''; // $config->blacklistemails .
+        $blacklist = ''; // Future code: $config->blacklistemails .
         $blacklist = ',' . $blacklist . ',';
         if (!$this->isspambot && stripos($whitelist, ',' . $this->fromemail . ',') != false) {
             $skipdomaintest = true; // Skip the upcoming domain test.
@@ -166,7 +172,7 @@ class local_contact {
         // Validate against domain whitelist and blacklist... except for the nice people.
         if (!$skipdomaintest && !$this->isspambot) {
             // TODO: Create a plugin whitelistdomains setting.
-            $whitelist = ''; // $config->whitelistdomains .
+            $whitelist = ''; // Future code: $config->whitelistdomains .
             $whitelist = ',' . $whitelist . ',';
             $domain = substr(strrchr($this->fromemail, '@'), 1);
 
@@ -175,7 +181,7 @@ class local_contact {
                 $blacklist = '';
             } else {
                  // TODO: Create a plugin blacklistdomains setting.
-                $blacklist = 'example.com,example.net,sample.com,test.com,specified.com'; // $config->blacklistdomains .
+                $blacklist = 'example.com,example.net,sample.com,test.com,specified.com'; // Future code:$config->blacklistdomains .
                 $blacklist = ',' . $blacklist . ',';
                 if ($blacklist != ',,'
                         && $this->isspambot = ($blacklist == '*' || stripos($blacklist, ',' . $domain . ',') != false)) {
@@ -214,6 +220,7 @@ class local_contact {
         $emailuser->lastnamephonetic = '';
         $emailuser->middlename = '';
         $emailuser->alternatename = '';
+        $emailuser->username = '';
         return $emailuser;
     }
 
@@ -239,7 +246,8 @@ class local_contact {
         $subject = '';
         if (empty(get_config('local_contact', 'nosubjectsitename'))) { // Not checked.
             // Include site name in subject field.
-            $subject .= '[' . $SITE->shortname . '] ';
+            $systemcontext = context_system::instance();
+            $subject .= '[' . format_text($SITE->shortname, FORMAT_HTML, ['context' => $systemcontext]) . '] ';
         }
         $subject .= optional_param(get_string('field-subject', 'local_contact'),
                 get_string('defaultsubject', 'local_contact'), PARAM_TEXT);
@@ -250,11 +258,30 @@ class local_contact {
         $fieldmessage = get_string('field-message', 'local_contact');
 
         $htmlmessage = '';
+
+        /**
+         * Callback function for array_filter.
+         *
+         * @param string $string Text to be chekced.
+         * @return boolean true if string is not empty, otherwise false.
+         */
+        function filterempty($string) {
+            $string = trim($string);
+            return ($string !== null && $string !== false && $string !== '');
+        }
+
         foreach ($_POST as $key => $value) {
 
             // Only process key conforming to valid form field ID/Name token specifications.
             if (preg_match('/^[A-Za-z][A-Za-z0-9_:\.-]*/', $key)) {
 
+                if (is_array($value)) {
+                    // Join array of values. Example: <select multiple>.
+                    $value = array_filter($value, "filterempty");
+                    $value = join(', ', $value);
+                } else {
+                    $value = trim($value);
+                }
                 // Exclude fields we don't want in the message and empty fields.
                 if (!in_array($key, array('sesskey', 'submit')) && trim($value) != '') {
 
@@ -264,6 +291,7 @@ class local_contact {
                         // Make custom alterations.
                         case 'message': // Message field - use translated value from language file.
                             $key = $fieldmessage;
+                        case strpos($value, "\n") !== false: // Field contains linefeeds.
                         case $fieldmessage: // Message field.
                             // Strip out excessive empty lines.
                             $value = preg_replace('/\n(\s*\n){2,}/', "\n\n", $value);
@@ -284,18 +312,22 @@ class local_contact {
                         case 'subject':     // Subject field.
                             $key = get_string('field-' . $key, 'local_contact');
                         default:            // All other fields.
-                            // Join array of values. Example: <select multiple>.
-                            if (is_array($value)) {
-                                $value = join($value, ", ");
-                            }
                             // Sanitize the text.
                             $value = format_text($value, FORMAT_PLAIN, array('trusted' => false));
+                            if (filter_var($value, FILTER_VALIDATE_URL)) {
+                                // Convert URL into clickable link.
+                                $value = '<a href="' . $value . '">' . $value . '</a>';
+                            }
                             // Add to email message.
                             $htmlmessage .= '<strong>'.ucfirst($key) . ' :</strong> ' . $value . '<br>' . PHP_EOL;
                     }
                 }
             }
         }
+
+        // Sanitize user agent and referer.
+        $httpuseragent = format_text($_SERVER['HTTP_USER_AGENT'], FORMAT_PLAIN, array('trusted' => false));
+        $httpreferer = format_text($_SERVER['HTTP_REFERER'], FORMAT_PLAIN, array('trusted' => false));
 
         // Prepare arrays to handle substitution of embedded tags in the footer.
         $tags = array('[fromname]', '[fromemail]', '[supportname]', '[supportemail]',
@@ -305,8 +337,8 @@ class local_contact {
         );
         $info = array($from->firstname, $from->email, $CFG->supportname, $CFG->supportemail,
                 current_language(), getremoteaddr(), $this->moodleuserstatus($from->email),
-                $SITE->fullname, $SITE->shortname, $CFG->wwwroot,
-                $_SERVER['HTTP_USER_AGENT'], $_SERVER['HTTP_REFERER']
+                $SITE->fullname . ': ', $SITE->shortname, $CFG->wwwroot,
+                $httpuseragent, $httpreferer
         );
 
         // Create the footer - Add some system information.
@@ -314,9 +346,20 @@ class local_contact {
         $footmessage = format_text($footmessage, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'para' => false));
         $htmlmessage .= str_replace($tags, $info, $footmessage);
 
+        // Override "from" email address if one was specified in the plugin's settings.
+        $noreplyaddress = $CFG->noreplyaddress;
+        if (!empty($customfrom = get_config('local_contact', 'senderaddress'))) {
+            $CFG->noreplyaddress = $customfrom;
+        }
+
         // Send email message to recipient and set replyto to the sender's email address and name.
-        $status = email_to_user($to, $from, $subject, html_to_text($htmlmessage), $htmlmessage, '', '', true,
-                $from->email, $from->firstname);
+        if (empty(get_config('local_contact', 'noreplyto'))) { // Not checked.
+            $status = email_to_user($to, $from, $subject, html_to_text($htmlmessage), $htmlmessage, '', '', true,
+                    $from->email, $from->firstname);
+        } else { // Checked.
+            $status = email_to_user($to, $from, $subject, html_to_text($htmlmessage), $htmlmessage, '', '', true);
+        }
+        $CFG->noreplyaddress = $noreplyaddress;
 
         // If successful and a confirmation email is desired, send it the original sender.
         if ($status && $sendconfirmationemail) {
@@ -344,13 +387,13 @@ class local_contact {
      * @return     string  Contains what we know about the Moodle user including whether they are logged in or out.
      */
     private function moodleuserstatus($emailaddress) {
-        if (isloggedin()) {
+        if (isloggedin() && !isguestuser()) {
             global $USER;
-            $info = $USER->firstname . ' ' . $USER->lastname . ' / ' . $USER->email . ' (' . $USER->username .
+            $info = get_string('fullnamedisplay', null, $USER) . ' / ' . $USER->email . ' (' . $USER->username .
                     ' / ' . get_string('eventuserloggedin', 'auth') . ')';
         } else {
             global $DB;
-            $usercount = $DB->count_records('user', array('email' => $emailaddress));
+            $usercount = $DB->count_records('user', ['email' => $emailaddress, 'deleted' => 0]);
             switch ($usercount) {
                 case 0:  // We don't know this email address.
                     $info = get_string('emailnotfound');
@@ -369,7 +412,7 @@ class local_contact {
                         $extrainfo .= ' / ' . get_string('notconfirmed', 'local_contact');
                     }
 
-                    $info = $user->firstname . ' ' . $user->lastname . ' / ' . $user->email . ' (' . $user->username .
+                    $info = get_string('fullnamedisplay', null, $user) . ' / ' . $user->email . ' (' . $user->username .
                             ' / ' . get_string('eventuserloggedout') . $extrainfo . ')';
                     break;
                 default: // We found multiple users with this email address.

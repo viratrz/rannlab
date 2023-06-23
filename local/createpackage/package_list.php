@@ -45,7 +45,8 @@
             <table class="table table-hover mb-0 rounded">
                 <thead>
                 <tr>
-                    <th scope="col">Rate In Rupees</th>
+                    <th scope="col">Package Name</th>
+                    <th scope="col">Rate In USD</th>
                     <th scope="col">Number of Users</th>
                     <th scope="col">Number of Course</th>
                     <th scope="col">Action</th>
@@ -54,6 +55,7 @@
                 <tbody>
                 <?php foreach($all_packages as $package){?>
                 <tr id="del<?php echo $package->id; ?>">
+                    <td><?php echo $package->package_name; ?></td>
                     <td><?php echo $package->package_value; ?></td>
                     <td><?php echo $package->num_of_user; ?></td>
                     <td><?php echo $package->num_of_course; ?></td>

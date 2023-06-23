@@ -42,7 +42,7 @@ if ($sid) {
    $startdate = date("m/d/Y", $Scooldata->sessionstart);
    $enddate = date("m/d/Y", $Scooldata->sessionend);
 }
-$title = 'Edit School Details';
+$title = 'Edit RTO Details';
 $pagetitle = $title;
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
@@ -210,10 +210,12 @@ $thingnode->make_active();
                   <h5 style="font-weight:600; color: white;" class="mb-1 pl-3"><?php echo $Scooldata->name ?></h5>
                </div>
                <div class="heading mb-3">
-                  <h5 style="color: #000"><b>Edit University</b></h5>
+                  <h5 style="color: #000"><b>Edit RTO</b></h5>
                </div>
                <input type="hidden" name="editid" value="<?php echo $Scooldata->id ?>" id="editid">
                <input type="hidden" name="adminid" value="<?php echo $admindata->id ?>" id="adminid">
+               
+               <?php echo $admindata->id ?>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Long Name <span class="err4"> *</span></label>
                   <input type="text" class="form-control col-md-9" id="longname" placeholder="Enter Long Name" name="longname" value="<?php echo $Scooldata->name ?>" required>
@@ -271,6 +273,7 @@ $thingnode->make_active();
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
+
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err4">*</span></label>
                   <input type="text" class="form-control col-md-9" id="firstname" placeholder="Enter First Name" name="firstname" value="<?php echo $admindata->firstname ?>" required>
@@ -303,7 +306,7 @@ $thingnode->make_active();
                   </div>
                </div>
                <div class="form-group row">
-                  <label for="label" class="col-md-3">Upload Univerty Logo <span class="err"></span></label>
+                  <label for="label" class="col-md-3">Upload RTO Logo <span class="err"></span></label>
                   <div class="calendar col-md-5 p-0"> 
                   <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)" style="padding: 4px; margin-bottom: 30px;">
                   </div>
@@ -312,7 +315,7 @@ $thingnode->make_active();
                   </div>
                </div>
                <a href="#" class="button mb-1 text-center" onclick="edituniversity();">
-                  Update University Details
+                  Update RTO Details
                </a>
                <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button mt-1 text-center">Cancel
                </a>

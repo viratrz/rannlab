@@ -27,10 +27,16 @@
         $params = array('idnumber' => $idnumber);
     } else if (!empty($id)) {
         $params = array('id' => $id);
-    }else {
+    }
+    
+    
+   else 
+    {
         print_error('unspecifycourseid', 'error');
     }
-
+  
+   
+   
     $course = $DB->get_record('course', $params, '*', MUST_EXIST);
 
     $urlparams = array('id' => $course->id);
@@ -71,7 +77,7 @@
             require_login($course);
         }
         // reset course page state - this prevents some weird problems ;-)
-        $USER->activitycopy = false;
+        $USER->activitycopy = false;      //false
         $USER->activitycopycourse = NULL;
         unset($USER->activitycopyname);
         unset($SESSION->modform);
@@ -156,7 +162,7 @@
             } else if (!empty($return)) {
                 redirect($CFG->wwwroot . $return);
             } else {
-                $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1));
+                $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1, 'id'=>$course->id));
                 redirect($url);
             }
         } else if (($edit == 0) and confirm_sesskey()) {
@@ -171,7 +177,8 @@
             } else if (!empty($return)) {
                 redirect($CFG->wwwroot . $return);
             } else {
-                redirect($PAGE->url);
+                $url = new moodle_url($PAGE->url, array('id'=>$course->id));
+                redirect($url);
             }
         }
 

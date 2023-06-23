@@ -369,8 +369,8 @@ $PAGE->set_pagelayout('standard');
 
                <div class="form-group row">
                <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
-               <!--<select class="selectpicker col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">-->
-                   <select class="col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true">
+               <select class="col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true" size="30" style="height: 100%;">
+                   
                   <?php foreach($all_courses as $course){?>
                      <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
                       <!--<option value="<?php echo $course->id; ?>" class="course-option" data-category="<?php echo $course->category; ?>"><?php echo $course->fullname; ?></option>-->

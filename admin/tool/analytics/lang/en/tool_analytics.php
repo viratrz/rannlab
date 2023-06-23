@@ -150,5 +150,5 @@ $string['trainmodels'] = 'Train models';
 $string['versionnotsame'] = 'Imported file was from a different version ({$a->importedversion}) than the current one ({$a->version})';
 $string['viewlog'] = 'Evaluation log';
 $string['weeksenddateautomaticallyset'] = 'End date automatically set based on start date and the number of sections';
-$string['weeksenddatedefault'] = 'End date automatically calculated from the course start date.';
+$string['weeksenddatedefault'] = 'End date automatically calculated from the unit start date.';
 $string['privacy:metadata'] = 'The Analytic models plugin does not store any personal data.';

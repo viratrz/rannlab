@@ -1,11 +1,4 @@
 <?php
-/*043e4*/
-
-#Raju__
-
-/*043e4*/
-
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -60,11 +53,11 @@ if ($page < 0) {
 require_login();
 
 if (empty($CFG->enablebadges)) {
-    print_error('badgesdisabled', 'badges');
+    throw new \moodle_exception('badgesdisabled', 'badges');
 }
 
 if (empty($CFG->badges_allowcoursebadges) && ($type == BADGE_TYPE_COURSE)) {
-    print_error('coursebadgesdisabled', 'badges');
+    throw new \moodle_exception('coursebadgesdisabled', 'badges');
 }
 
 $err = '';

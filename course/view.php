@@ -314,11 +314,10 @@ $school_id= (int)$_SESSION['university_id'];
         $ajaxcontrol .= html_writer::end_tag('div');
 
         // Load the JS for the modal.
-		$roleassignments = $DB->get_record_sql("SELECT * FROM {role_assignments} WHERE roleid IN(4,9,10,11) AND userid= $USER->id");
+		$roleassignments = $DB->get_record_sql("SELECT * FROM {role_assignments} WHERE roleid IN(3,4,5,10,9) AND userid= $USER->id");  //(4,9,10,11) 
 		$roleidc=(int)$roleassignments->id; 
-		$resource_id = $DB->get_record("courseresource",['course_id'=>$course->id, 'university_id'=>$_SESSION['university_id']]);
-        // var_dump($resource_id->resourcecourseid);
-        // die;
+		$resource_id = $DB->get_record("courseresource",['resourcecourseid'=>$course->id, 'university_id'=>$_SESSION['university_id']]);
+        //var_dump($resource_id);die;
         $obj = new core_course_renderer($PAGE,'General');
         $obj->course_activitychooser($course->id);
         if(!is_siteadmin())
@@ -328,11 +327,15 @@ $school_id= (int)$_SESSION['university_id'];
             $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
             if ($role_shortname->shortname === "student") 
             {
-                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More</a>";
+                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; width:fit-content; margin: 0% auto;'>View More</a>";
             }
-            else 
+            else if ($role_shortname->shortname === "trainer") 
             {
-                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; display:block; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
+                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase; width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
+            }
+            else
+            {
+                echo "<a href='$CFG->wwwroot/course/view_resources.php?id=$resource_id->resourcecourseid' style='text-transform: uppercase;  width:fit-content; margin: 0% auto;'>View More and Add Resources</a>";
             }
         }
     echo $OUTPUT->footer();

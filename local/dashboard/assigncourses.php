@@ -19,8 +19,8 @@ $lang = $DB->get_records_sql("SELECT * FROM {course_categories} WHERE depth=3 an
 $Schooldata=$DB->get_record_sql("SELECT * FROM {school} WHERE id=$id");
 $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
 
-$course = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND  category !=$resource_course_id->id");
-
+$course = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND  category !=$resource_course_id->id AND cb_userid = 2" );
+//var_dump($course); die;
 $coursearray = (array) $course;
 
 $schoolcoursedata = $DB->get_records_sql("SELECT c.* FROM {course} c INNER JOIN {assign_course} ac on c.id=ac.course_id WHERE ac.university_id=$id");
@@ -241,6 +241,20 @@ width: 158px !important;
                <div class="row">
                   <div class="col-md-4">
                      <div class="box-1">
+                        <h6 class="box-heading">Potential Courses</h6>
+                           <select id="user_list" name="categorylist[]" multiple="multiple">
+                           <?php foreach($course as $cou){ ?>                      
+                              <option value="<?php echo $cou->id; ?>"> <?php echo $cou->fullname; ?> </option>
+                           <?php } ?>
+                           </select>
+                     </div>
+                  </div>
+                  <div class="col-md-4 align-self-center">
+                     <a href="#" class="button d-block w-100 mb-1 text-center" onclick="add()">Add <i class="fa fa-arrow-right  mr-3" aria-hidden="true" ></i></a>
+                     <a href="#" class="button d-block w-100 mt-1 text-center" onclick="remove()"><i class="fa fa-arrow-left ml-3" aria-hidden="true"></i> Remove</a>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="box-1">
                         <input type="hidden" name="schoolid" value="<?php echo $id; ?>">
                         <h6 class="box-heading">Assigned Courses</h6>
                            <select id="item" name="courselist[]" multiple>
@@ -252,20 +266,6 @@ width: 158px !important;
                            <?php } ?>            
                            <?php } ?>          
                            </select> 
-                     </div>
-                  </div>
-                  <div class="col-md-4 align-self-center">
-                     <a href="#" class="button d-block w-100 mb-1 text-center" onclick="add()"><i class="fa fa-arrow-left mr-3" aria-hidden="true" ></i>Add</a>
-                     <a href="#" class="button d-block w-100 mt-1 text-center" onclick="remove()">Remove<i class="fa fa-arrow-right ml-3" aria-hidden="true"></i></a>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="box-1">
-                        <h6 class="box-heading">Potential Courses</h6>
-                           <select id="user_list" name="categorylist[]" multiple="multiple">
-                           <?php foreach($course as $cou){ ?>                      
-                              <option value="<?php echo $cou->id; ?>"> <?php echo $cou->fullname; ?> </option>
-                           <?php } ?>
-                           </select>
                      </div>
                   </div>
                </div>
@@ -411,7 +411,7 @@ function add()
             arr.push(selvalues);
       });
          $.ajax({
-               type: "GET",
+               type: "POST",
                url: "<?php echo $CFG->wwwroot?>" + "/local/dashboard/add_course.php?uni_id=<?php echo $id ?>",
                dataType: "json",
                data: {course_id:arr},
@@ -429,9 +429,10 @@ function add()
                      } 
                      else 
                      {
-                        alert("Courses Assign Limit Exeed");
+                        //alert("Courses Assign Limit Exeed");
+                        alert(json.add+" After "+json.msg);
                      }
-                     window.location.reload();
+                     //window.location.reload();
                   } 
                }
             });

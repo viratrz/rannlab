@@ -127,7 +127,7 @@ $string['updatemodedoessettonothing'] = 'Update mode does not allow anything to 
 $string['updateonly'] = 'Only update existing courses';
 $string['updatewithdataordefaults'] = 'Update with CSV data and defaults';
 $string['updatewithdataonly'] = 'Update with CSV data only';
-$string['uploadcourses'] = 'Upload courses';
+$string['uploadcourses'] = 'Upload Units';
 $string['uploadcourses_help'] = 'Courses may be uploaded via text file. The format of the file should be as follows:
 
 * Each line of the file contains one record

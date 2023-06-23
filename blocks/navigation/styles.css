@@ -74,3 +74,20 @@
 .block_navigation .block_tree [aria-hidden="true"]:not(.icon) {
     display: none;
 }
+
+
+.block_navigation .block_tree .tree_item {
+  /* Existing styles... */
+  width: 180px; /* Adjust this value to your preference */
+}
+.block_navigation .block_tree .tree_item {
+  /* Existing styles... */
+  margin-right: 10px; /* Adjust this value to your preference */
+}
+.block_navigation .block_tree .tree_item {
+  margin-right: 10px !important;
+}
+.sidebar-container {
+  width: 200px; /* Adjust this value */
+}
+

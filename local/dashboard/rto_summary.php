@@ -14,10 +14,14 @@
     $myxls->write_string(0,2,'RTO Name');
     $myxls->write_string(0,3,'LMS URL');
     $myxls->write_string(0,4,'Admin emailL');
-    $myxls->write_string(0,5,'Contact phone no');
-    $myxls->write_string(0,6,'Package Information');
-    $myxls->write_string(0,7,'Units  assigned');
-    $myxls->write_string(0,8,'Users number');
+    $myxls->write_string(0,5,'Contact person name');
+    $myxls->write_string(0,6,'Contact phone no');
+    $myxls->write_string(0,7,'Package Information');
+    $myxls->write_string(0,8,'Units  assigned');
+    $myxls->write_string(0,9,'Users number');
+    $myxls->write_string(0,10,'Support Ticket number');
+    $myxls->write_string(0,11,'Support ticket resolved');
+    $myxls->write_string(0,12,'Support ticket pending');
 
     $total_admin_records = count($all_university_admin);
     $increment = 1;

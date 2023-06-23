@@ -10,14 +10,14 @@ function local_mypackage_extend_navigation(global_navigation $nav)
     // die;
     if($role->roleid == 9)
     {
-        $package=$nav->add(
-            'My Package',
-            new moodle_url($CFG->wwwroot . '/local/mypackage/my_package.php'),
-            navigation_node::TYPE_SYSTEM,
-            null,
-            'local_mypackage',
-            $icon,
-        )->showinflatnavigation = true;
+        // $package=$nav->add(
+        //     'My Package',
+        //     new moodle_url($CFG->wwwroot . '/local/mypackage/my_package.php'),
+        //     navigation_node::TYPE_SYSTEM,
+        //     null,
+        //     'local_mypackage',
+        //     $icon,
+        // )->showinflatnavigation = true;
        
     }
 

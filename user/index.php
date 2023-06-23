@@ -37,6 +37,7 @@ require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->dirroot.'/enrol/locallib.php');
 
 
+
 use core_table\local\filter\filter;
 use core_table\local\filter\integer_filter;
 use core_table\local\filter\string_filter;
@@ -51,6 +52,7 @@ $courseid     = optional_param('id', 0, PARAM_INT); // This are required.
 $newcourse    = optional_param('newcourse', false, PARAM_BOOL);
 $roleid       = optional_param('roleid', 0, PARAM_INT);
 $urlgroupid   = optional_param('group', 0, PARAM_INT);
+$id = $_GET['id'];
 
 $PAGE->set_url('/user/index.php', array(
         'page' => $page,
@@ -130,6 +132,9 @@ echo $OUTPUT->heading(get_string('enrolledusers', 'enrol'));
 $filterset = new \core_user\table\participants_filterset();
 $filterset->add_filter(new integer_filter('courseid', filter::JOINTYPE_DEFAULT, [(int)$course->id]));
 
+echo "<a class='button' href= '$CFG->wwwroot/group/index.php?id=$id' >Group</a>";
+
+
 $canaccessallgroups = has_capability('moodle/site:accessallgroups', $context);
 $filtergroupids = $urlgroupid ? [$urlgroupid] : [];
 
@@ -183,6 +188,13 @@ $userrenderer = $PAGE->get_renderer('core_user');
 echo $userrenderer->participants_filter($context, $participanttable->uniqueid);
 
 echo '<div class="userlist">';
+
+//echo("<b>without using htmlspecialchars() function</b><br>");
+
+
+
+//echo $CFG->wwwroot. '/group/index.php?id='. $id; 
+
 
 // Do this so we can get the total number of rows.
 ob_start();

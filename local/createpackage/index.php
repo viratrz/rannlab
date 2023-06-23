@@ -125,6 +125,7 @@ $PAGE->set_pagelayout('standard');
 }
 .form-group{
    background: #1f34d2;
+    /*background: #d4d6ea;*/
     color: #fff;
     border: 2px solid #192dbf;
     padding: 16px 0px;
@@ -145,9 +146,16 @@ $PAGE->set_pagelayout('standard');
          </div>
          <div class="col-md-12 m-auto box-shadow bg-white px-4 py-2">
             <form action="package_save.php" method="post" name="package">
+                
+                <div class="form-group row">
+                  <label for="label" class="col-md-4">Package Name<span class="err">*</span></label>
+                  <input type="text" class="form-control col-md-8" placeholder="Enter Package Name" name="p_name" required>
+                  <div class="col-md-3"></div>
+                     <span class="error1 col-md-8 pl-0"></span>
+               </div>
                      
                <div class="form-group row">
-                  <label for="label" class="col-md-4">Package Value(Rs./Month)<span class="err">*</span></label>
+                  <label for="label" class="col-md-4">Package Value(USD/Month)<span class="err">*</span></label>
                   <input type="number" class="form-control col-md-8" placeholder="Enter Package Value" name="p_value" required>
                   <div class="col-md-3"></div>
                      <span class="error1 col-md-8 pl-0"></span>

@@ -7,6 +7,10 @@ global $USER, $DB;
 
 $user_id = (int)$_GET['edit_id'];
 $user_info = $DB->get_record('user', ['id'=>$user_id]);
+$user_role = $DB->get_record('role', ['id'=>$user_id]);
+$user_role1 = $DB->get_record('role_assignments', ['userid'=>$user_id]);
+
+
 
 $title = 'Update User';
 $pagetitle = $title;
@@ -45,14 +49,22 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button {
-         background: #000;
+        /* background: #000;
          padding: 10px 15px;
          color: #fff;
          text-decoration: none !important;
          border-radius: 4px;
          border: 1px solid #ffe500;
          font-weight: 600;
-         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); */
+         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%); 
+         background-color: #6c757d;
+         border-width: 2px;
+         border-color: #6c757d;
+         border-radius: 5px;
+         padding: 10px 15px;
+         color: #fff;
+
       }
       .eye {
             position: absolute;
@@ -68,8 +80,16 @@ $PAGE->set_pagelayout('standard');
       }
 
       .button:hover {
-         color: #000;
-         background: #ffe500;
+        /* color: #000;
+         background: #ffe500; */
+      background-color: transparent;
+      border-color: #6c757d;
+      color: #6c757d;
+      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+      text-decoration: none;
+      BORDER: 2PX SOLID #6c757d;
       }
 
       .heading-row {
@@ -107,11 +127,20 @@ $PAGE->set_pagelayout('standard');
          min-height: 35px !important;
          max-height: 35px !important;
       }
+      *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+      border-color: #6c757d !important;
+    }
+    .form-group{
+   font-family: "Nunito",sans-serif;
+   }
    </style>
 </head>
 
 <body>
-   <?php echo $OUTPUT->header(); ?>
+   <?php echo $OUTPUT->header(); 
+   
+   ?>
+   <input type="hidden" id="userid" name="userid" value="<?php echo $user_id; ?>">
    <div class="container">
       <div class="row">
          <div class="col-md-12 px-0">
@@ -150,12 +179,44 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3 text-info">New Password <span class="err"></span></label>
                   <div class="col-md-9 p-0">
-                     <input type="password"  class="form-control" placeholder="Enter New Password" id="password" name="password" value="">
+                     <input type="password"  class="form-control" placeholder="Enter New Password" id="password" name="password" value="<?php $user_info->password ; ?>">
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i></div>
                      <div class="col-md-3"></div>
                      <span class="errormsg2" id="pasward"></span>
                      <span class="error1 col-md-8 pl-0"></span>
                </div>
+
+               <?php 
+               $all_role = $DB->get_records_sql("SELECT * FROM {role}");
+               $all_role_assign = $DB->get_records_sql("SELECT * FROM {role_assignments}");
+                              
+                ?>
+               <div class="form-group row">
+                  <label for="label" class="col-md-3">Role Of User<span class="err">*</span></label>
+                  <div class="calendar col-md-3 p-0">
+                     <select name="role" id="role" style="width: 100%;" class="form-control focusError">
+                        <option value="">Select Role</option>
+                     <?php 
+                     
+                        foreach($all_role as $role)
+                        { 
+                           if ($role->shortname === 'trainer' || $role->shortname === 'student'  || $role->shortname === 'leadtrainer'  || $role->shortname === 'subrtoadmin' || $role->shortname === '	
+rtoadmin') 
+                           {                          
+                     ?>
+                        <option value="<?php echo $role->id; ?>"><?php echo ucwords($role->name); ?></option>
+                     <?php  } } ?>
+                     </select>
+                     <span class="errormsg2" id="roleid">   </span>                  
+                  </div>
+                  <div class="col-md-6 pl-2"><span class="error1 pl-0 "></span></div>
+
+                  <div  >
+                        
+                     </div>
+
+               </div>
+               
                
                   <div class="d-flex">
                      <a href="#" class="button d-block  text-center" onclick="addAdmin();">Update</a> &nbsp;
@@ -203,12 +264,13 @@ $PAGE->set_pagelayout('standard');
       var firstname = $("#firstname").val();
       var lastname = $("#lastname").val();
       var email = $("#email").val();
+      var password = $("#password").val();
+      var role = $("#role").val();
 
-
-      var arr_val=[username, firstname, lastname, email];
+      var arr_val=[username, firstname, lastname, email, role];
       var err =document.getElementsByClassName("error1");
       var tiktok =true;
-      for (let i = 0; i < 4; i++) 
+      for (let i = 0; i < 5; i++) 
       {
          var ws_val = arr_val[i];
          ws_val = arr_val[i].trim();

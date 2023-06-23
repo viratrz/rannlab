@@ -62,7 +62,16 @@ class course_edit_form extends moodleform {
             $mform->hardFreeze('fullname');
             $mform->setConstant('fullname', $course->fullname);
         }
-
+        
+         $mform->addElement('text','idnumber', get_string('idnumbercourse'),'maxlength="100"  size="10"');
+        $mform->addHelpButton('idnumber', 'idnumbercourse');
+        $mform->addRule('idnumber', get_string('idnumbercourse'), 'required', null, 'client');
+        $mform->setType('idnumber', PARAM_RAW);
+        if (!empty($course->id) and !has_capability('moodle/course:changeidnumber', $coursecontext)) {
+            $mform->hardFreeze('idnumber');
+            $mform->setConstants('idnumber', $course->idnumber);
+        }
+        /*
         $mform->addElement('text', 'shortname', get_string('shortnamecourse'), 'maxlength="100" size="20"');
         $mform->addHelpButton('shortname', 'shortnamecourse');
         $mform->addRule('shortname', get_string('missingshortname'), 'required', null, 'client');
@@ -70,7 +79,7 @@ class course_edit_form extends moodleform {
         if (!empty($course->id) and !has_capability('moodle/course:changeshortname', $coursecontext)) {
             $mform->hardFreeze('shortname');
             $mform->setConstant('shortname', $course->shortname);
-        }
+        } */
 
         // Verify permissions to change course category or keep current.
         if (empty($course->id)) {
@@ -173,13 +182,7 @@ class course_edit_form extends moodleform {
             $mform->addHelpButton('relativedatesmodegroup', 'relativedatesmode');
         }
 
-        $mform->addElement('text','idnumber', get_string('idnumbercourse'),'maxlength="100"  size="10"');
-        $mform->addHelpButton('idnumber', 'idnumbercourse');
-        $mform->setType('idnumber', PARAM_RAW);
-        if (!empty($course->id) and !has_capability('moodle/course:changeidnumber', $coursecontext)) {
-            $mform->hardFreeze('idnumber');
-            $mform->setConstants('idnumber', $course->idnumber);
-        }
+       
 
         // Description.
         $mform->addElement('header', 'descriptionhdr', get_string('description'));

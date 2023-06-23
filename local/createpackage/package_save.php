@@ -4,6 +4,7 @@
     require_login();
 
     global $USER, $DB;
+    $name=$_POST['p_name'];
     $value=$_POST['p_value'];
     $user=$_POST['num_of_user'];
     $course=$_POST['num_of_course'];
@@ -11,6 +12,7 @@
     if (isset($_POST['submit'])) 
     {
         $package_in= new stdClass();
+        $package_in->package_name=$name;
         $package_in->package_value=$value;
         $package_in->num_of_user= $user;
         $package_in->num_of_course=$course;

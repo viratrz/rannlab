@@ -160,11 +160,11 @@ if ($_GET['msg']) {
                 ?>
                 <tr>
                   
-                  <td><?php echo $user->username; ?></td>
+                  <td><a style="color: black;" href="#" class="p-2" onclick="UserProfile(<?php echo $user->id; ?>);"><?php echo $user->username; ?></a></td>
                   <td><?php echo $user->firstname; ?></td>
                   <td><?php echo $user->lastname; ?></td>
                   <td><?php echo $user->email; ?></td>
-                  <td><?php if($role_name->shortname == 'ua')echo "University Admin";else echo ucfirst($role_name->shortname); ?></td>
+                  <td><?php if($role_name->shortname == 'ua')echo "University Admin";else echo ucfirst($role_name->name); ?></td>
                   <td><a href="#" class="p-2" onclick="editUser(<?php echo $user->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
                     <a href="#" onclick="deleteUser(<?php echo $user->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash text-danger" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
                     <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
@@ -197,6 +197,11 @@ if ($_GET['msg']) {
   {
     window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/createuser/edit_user.php?edit_id=" + id;
   }
+  function UserProfile(id) 
+  {
+    window.location.href = "<?php echo $CFG->wwwroot ?>" + "/user/profile.php?id=" + id;
+  }
+  
 </script>
 
 <?php echo $OUTPUT->footer(); ?>
