@@ -49,7 +49,7 @@ if(isset($_POST['longname']))
         $json['msg1'] = "University already exist";
         echo json_encode($json);
         exit;
-        }
+    }
 }
 
 if(isset($_POST['shortname']))
@@ -139,9 +139,10 @@ if(isset($_POST['email']))
 }
 $package_id = $_POST['package'];
 
+
 if ($package_id ) 
 {
-   
+
     $data = new stdClass();
     $data->name = $_POST['longname'];
     $data->shortname = $_POST['shortname'];
@@ -153,30 +154,48 @@ if ($package_id )
     $data->domain = $_POST['domain'];
     $inserted = $DB->insert_record('school', $data, true);
 
-        if (basename($_FILES["university_logo"]["name"]) && $inserted) 
+    if (basename($_FILES["university_logo"]["name"]) && $inserted) 
+    {
+        $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
+        $target_file = $CFG->dirroot.$path_filename;
+        $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
+        if ($uploaed ) 
         {
-            $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
-            $target_file = $CFG->dirroot.$path_filename;
-            $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
-            if ($uploaed ) 
-            {
-                $set_logo = new stdclass();
-                $set_logo->id = $inserted;
-                $set_logo->logo_path = $path_filename;
-                $DB->update_record('school', $set_logo);
-            }
+            $set_logo = new stdclass();
+            $set_logo->id = $inserted;
+            $set_logo->logo_path = $path_filename;
+            $DB->update_record('school', $set_logo);
         }
-        
+    }
+
 }
+$category = null;
 if ($inserted) 
 {
-    $date = date('Y-m-d', strtotime('+1 month'));
-    $package_sub = new stdClass();
-    $package_sub->package_id=$package_id;	
-    $package_sub->university_id= $inserted;
-    $package_sub->sub_date = date('Y/m/d H:i:s');
-    $package_sub->end_date= $date;
-    $pack = $DB->insert_record('admin_subscription', $package_sub, true);
+    // create a category with same name as RTO and link it with RTO
+    $category_details = new \stdClass();
+    $category_details->parent = \core_course_category::top()->id;
+    $category_details->name = $_POST['longname'];
+    //$category_details->idnumber = $rto_code;
+    try {
+        $category = \core_course_category::create($category_details);
+        $school_update_obj = new stdclass();
+        $school_update_obj->id = $inserted;
+        $school_update_obj->coursecategory = $category;
+        $DB->update_record('school', $school_update_obj);
+    } catch (Exception $e) {
+     $school_update_obj = new stdclass();
+     $school_update_obj->id = $inserted;
+     $school_update_obj->coursecategory = core_course_category::top()->id;
+     $DB->update_record('school', $school_update_obj);
+ }
+ $date = date('Y-m-d', strtotime('+1 month'));
+ $package_sub = new stdClass();
+ $package_sub->package_id=$package_id;	
+ $package_sub->university_id= $inserted;
+ $package_sub->sub_date = date('Y/m/d H:i:s');
+ $package_sub->end_date= $date;
+ $pack = $DB->insert_record('admin_subscription', $package_sub, true);
 }
 if ($pack) 
 {
@@ -213,7 +232,11 @@ if ($pack)
     {
         $roleid = 9;
         $contextid = 1;
-        role_assign($roleid, $user_id ,$contextid);
+        if ($category) {
+            $category_context = context_coursecat::instance();
+            $contextid = $category_context->id;
+        }
+        //role_assign($roleid, $user_id ,$contextid);
     } 
     
     if ($user_id) {
@@ -233,6 +256,7 @@ if ($pack)
 
 if($user_id)
 {
+
     $admininfo = new stdClass();
     $admininfo->userid = $user_id;
     $admininfo->university_id = $inserted;
@@ -247,7 +271,7 @@ if($user_id)
         $count_add = 0;
         foreach($course_id as $c_id)
         {
-            $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
+            $total_course = $DB->count_records('pending_assign_course', array('university_id'=>$inserted));
 
             if ($package_id->num_of_course > $total_course) 
             {
@@ -256,32 +280,31 @@ if($user_id)
                 {
                     $assign_course->university_id = $inserted;
                     $assign_course->course_id = $c_id;
-                    purge_caches();
-                    $assign_id = $DB->insert_record('assign_course', $assign_course);
-                    purge_caches();
-                    // $role = enrol_try_internal_enrol($c_id, $user_id->userid, 9, time());
-                    createresource($c_id,$inserted,$user_id->userid);
+                    $assign_course->is_pending = 1;
+                    $assign_course->timecreated = time();
+                    $assign_id = $DB->insert_record('pending_assign_course', $assign_course);
+                    //createresource($c_id,$inserted,$user_id->userid);
                 }
 
-                if($inserted)
-                {
-                    $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $inserted");
-                    $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
+                // if($inserted)
+                // {
+                //     $check_uni_id = $DB->get_record_sql("SELECT id,university_id FROM {university_user_course_count} WHERE university_id = $inserted");
+                //     $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
 
-                    $user_course =  new stdClass();
-                    if ($check_uni_id) 
-                    {
-                        $user_course->id = $check_uni_id->id;
-                        $user_course->course_count = $total_course;
-                        $updated = $DB->update_record("university_user_course_count", $user_course, false);
-                    } 
-                    else 
-                    {
-                        $user_course->university_id = $inserted;
-                        $user_course->course_count = $total_course;
-                        $inserted_count = $DB->insert_record("university_user_course_count", $user_course, false);
-                    }
-                }
+                //     $user_course =  new stdClass();
+                //     if ($check_uni_id) 
+                //     {
+                //         $user_course->id = $check_uni_id->id;
+                //         $user_course->course_count = $total_course;
+                //         $updated = $DB->update_record("university_user_course_count", $user_course, false);
+                //     } 
+                //     else 
+                //     {
+                //         $user_course->university_id = $inserted;
+                //         $user_course->course_count = $total_course;
+                //         $inserted_count = $DB->insert_record("university_user_course_count", $user_course, false);
+                //     }
+                // }
             }
             else 
             {
