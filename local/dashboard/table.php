@@ -23,7 +23,8 @@
  * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+use core\task\manager;
+use local_dashboard\task\assign_courses;
 require_once('../../config.php');
 require_once('lib.php');
 $perpage      = optional_param('perpage', 10, PARAM_INT);
@@ -35,6 +36,14 @@ if (user_has_role_assignment($USER->id, 11)) {
 } else {
   $school = $DB->get_records_sql("SELECT * FROM {school} order by id desc");
 }
+
+// $adhoc_assign_courses = new assign_courses();
+// manager::queue_adhoc_task($adhoc_assign_courses, true);
+// $adhoctasks = \core\task\manager::get_adhoc_tasks('\\local_dashboard\\task\\assign_courses');
+// foreach ($adhoctasks as $key => $adhoctask) {
+//   $adhoctask->execute();
+// }
+// print_object($adhoctasks);die;
 
 // var_dump($maindomain);
 // die;
@@ -138,31 +147,31 @@ if ($_GET['msg']) {
     .modal-select {
       margin: 0px 15px !important;
     }
-::-webkit-scrollbar {
-  height: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background: white; 
-}
-::-webkit-scrollbar-thumb:hover {
-  background: blue; 
-}
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: white; 
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: blue; 
+    }
 /* css  */
 .heading-row {
   display: none !important;
-    background: #2441e7 !important;
-    color: #fff !important;
-    border: 2px solid #1d32ce !important;
-    padding: 15px 12px 15px 0px !important;
-    border-radius: 4px s!important;
+  background: #2441e7 !important;
+  color: #fff !important;
+  border: 2px solid #1d32ce !important;
+  padding: 15px 12px 15px 0px !important;
+  border-radius: 4px s!important;
 }
 .box-shadow {
-     box-shadow: none !important; 
-    padding: 0px 20px 20px;
-    border-radius: none !important; 
+ box-shadow: none !important; 
+ padding: 0px 20px 20px;
+ border-radius: none !important; 
 }
 .pl-1, .px-1 {
-    padding-bottom: 20px !important;
+  padding-bottom: 20px !important;
 }
 .pl-1, .px-1 {
   padding-right : 0px !important;
@@ -174,7 +183,7 @@ if ($_GET['msg']) {
   font-family: "Nunito",sans-serif;
 }
 
-  </style>
+</style>
 </head>
 
 <body>
@@ -206,7 +215,7 @@ if ($_GET['msg']) {
             </div>
             <div style="text-align:end;" class="ml-auto">
               <a href="<?php echo $CFG->wwwroot ?>/local/dashboard/index.php" class="btn btn-info"><i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
-                Add New RTO</a>
+              Add New RTO</a>
             </div>
           </div>
 
@@ -251,101 +260,101 @@ if ($_GET['msg']) {
   </div>
   <!-- <div class="pagination mt-3"> -->
     <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
-  <!-- </div> -->
-  <script>
-    function adminlist(schoolid) {
-      var admin = 1;
-      $.ajax({
-        type: "GET",
-        url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/adminlist.php",
-        dataType: "json",
-        data: {
-          admin: admin,
-          schoolid: schoolid
-        },
-        async: false,
-        success: function(json) {
-          if (json.sucess) {
-            $("#adminlist").html(json.html);
+    <!-- </div> -->
+    <script>
+      function adminlist(schoolid) {
+        var admin = 1;
+        $.ajax({
+          type: "GET",
+          url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/adminlist.php",
+          dataType: "json",
+          data: {
+            admin: admin,
+            schoolid: schoolid
+          },
+          async: false,
+          success: function(json) {
+            if (json.sucess) {
+              $("#adminlist").html(json.html);
+            }
           }
-        }
-      });
-    }
+        });
+      }
 
-    function deleteUser(id)
-  {
-      
-      if(confirm("Are you sure you want to Delete this university?"))
+      function deleteUser(id)
       {
-        window.location.href="<?php echo $CFG->wwwroot?>"+"/local/dashboard/deleteuniversity.php?del_id="+id;   
-      }
-  }
 
-    function filtertable() {
-      var id = $("#filterselect").val();
-      var value = $("#myInput").val();
-      $.ajax({
-        type: "GET",
-        url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/filtertable.php",
-        dataType: "json",
-        data: {
-          id: id,
-          value: value
-        },
-        async: false,
-        success: function(json) {
-          if (json.success) {
-            $(".myTable").html(json.html);
-            $(".pagination").css("display", "none");
-
-          }
+        if(confirm("Are you sure you want to Delete this university?"))
+        {
+          window.location.href="<?php echo $CFG->wwwroot?>"+"/local/dashboard/deleteuniversity.php?del_id="+id;   
         }
-      });
-    }
-
-
-    $("#myInput").on("keyup", () => filtertable());
-
-
-    function editschool(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/editschool.php?edit=" + id;
-    }
-
-    function assignschool(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assignschool.php?id=" + id;
-    }
-
-    function assigncourse(id) {
-      window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assigncourses.php?id=" + id;
-    }
-
-    function schooladmin() {
-      var admin = $("#adminlist").val();
-      if (admin == "") {
-        alert("Please select a School admin First!");
-        return;
       }
-      var sess = $("#sessionkey").val();
-      var id = $("#adminlist [value='" + admin + "']").attr('data-attr');
-      if (confirm("Are you sure you want to log in as a School Admin?")) {
-        window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/loginadmin.php/?schoolid=" + id + "&adminid=" + admin + "&sesskey=" + sess;
 
-      }
-    }
+      function filtertable() {
+        var id = $("#filterselect").val();
+        var value = $("#myInput").val();
+        $.ajax({
+          type: "GET",
+          url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/filtertable.php",
+          dataType: "json",
+          data: {
+            id: id,
+            value: value
+          },
+          async: false,
+          success: function(json) {
+            if (json.success) {
+              $(".myTable").html(json.html);
+              $(".pagination").css("display", "none");
 
-    function suspend(id, suspend) {
-      if (suspend == 0) {
-        var sus = "Unsuspend";
-      } else {
-        var sus = "Suspend";
+            }
+          }
+        });
       }
-      if (confirm("Are you sure you want to " + sus + " the School?")) {
-        $(".fa-eye").toggleClass("fa-eye-slash");
-        window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/loginadmin.php/?suspend=" + id;
-      }
-    }
-  </script>
-</body>
 
-</html>
-<?php echo $OUTPUT->footer(); ?>
+
+      $("#myInput").on("keyup", () => filtertable());
+
+
+      function editschool(id) {
+        window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/editschool.php?edit=" + id;
+      }
+
+      function assignschool(id) {
+        window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assignschool.php?id=" + id;
+      }
+
+      function assigncourse(id) {
+        window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/assigncourses.php?id=" + id;
+      }
+
+      function schooladmin() {
+        var admin = $("#adminlist").val();
+        if (admin == "") {
+          alert("Please select a School admin First!");
+          return;
+        }
+        var sess = $("#sessionkey").val();
+        var id = $("#adminlist [value='" + admin + "']").attr('data-attr');
+        if (confirm("Are you sure you want to log in as a School Admin?")) {
+          window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/loginadmin.php/?schoolid=" + id + "&adminid=" + admin + "&sesskey=" + sess;
+
+        }
+      }
+
+      function suspend(id, suspend) {
+        if (suspend == 0) {
+          var sus = "Unsuspend";
+        } else {
+          var sus = "Suspend";
+        }
+        if (confirm("Are you sure you want to " + sus + " the School?")) {
+          $(".fa-eye").toggleClass("fa-eye-slash");
+          window.location.href = "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/loginadmin.php/?suspend=" + id;
+        }
+      }
+    </script>
+  </body>
+
+  </html>
+  <?php echo $OUTPUT->footer(); ?>

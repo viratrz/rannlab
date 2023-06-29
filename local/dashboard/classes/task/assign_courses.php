@@ -20,6 +20,8 @@ use core_php_time_limit;
 use core_user;
 use stdClass;
 use function raise_memory_limit;
+use core\task\manager;
+use core\task\asynchronous_copy_task;
 
 /**
  *adhoc task to send random mails to users that were uploaded using csv
@@ -44,7 +46,7 @@ class assign_courses extends adhoc_task
         raise_memory_limit(MEMORY_UNLIMITED);
         // get the pending courses assignment
         
-        $pending_courses = $DB->get_records('pending_assign_course', ['is_pending' => 1]);
+        $pending_courses = $DB->get_records('assign_course', ['is_pending' => 1]);
         foreach ($pending_courses as $key => $pcourse) {
             // get the university
             try {
@@ -59,7 +61,7 @@ class assign_courses extends adhoc_task
                 continue;
             }
             // get the university admin
-            $university_admin_userid = $DB->get_record('universityadmin', [], 'userid', IGNORE_MISSING);
+            $university_admin_userid = $DB->get_record('universityadmin', ['university_id' => $pcourse->university_id], 'userid', IGNORE_MISSING);
             $mdata = new stdClass();
             $mdata->courseid = $pcourse->course_id;
             $mdata->fullname = $course->fullname;
@@ -71,27 +73,26 @@ class assign_courses extends adhoc_task
             $mdata->idnumber = $course->shortname.$university->rto_code;
             $mdata->userdata = 0;
             // Create the copy task.
-            $backupcopy = new \core_backup\copy\copy($mdata);
+            $backupcopy = new \local_dashboard\copy\copy($mdata);
             $copyids = $backupcopy->create_copy();
 
             $backupid = $copyids['backupid'];
             $restoreid = $copyids['restoreid'];
 
-            $adhoctask = \core\task\manager::get_adhoc_tasks('\\core\\task\\asynchronous_copy_task');
-            // $adhoctask->set_blocking(true);
+            $asynctask = new \core\task\asynchronous_copy_task();
+            $asynctask->set_blocking(false);
+            $asynctask->set_custom_data($copyids);
+
+            $asynctask->execute();
+
             $restorerecord = $DB->get_record('backup_controllers', array('backupid' => $restoreid), 'id, itemid', MUST_EXIST);
-            $adhoctask->execute();
+            
             // we expect that task executed successfully
             $pcourse->is_pending = 0;
-            $DB->update_record('pending_assign_course', $pcourse);
-            $assigned_course = new stdClass();
-            $assigned_course->university_id = $pcourse->university_id;
-            $assigned_course->course_id = $restorerecord->itemid;
-            $assigned_course->created_from_course = $pcourse->course_id;
-            $insertid = $DB->insert_record('assign_course', $assigned_course, true);
+            $DB->update_record('assign_course', $pcourse);
             $universityadmin = \core_user::get_user($university_admin_userid->userid);
-            enrol_try_internal_enrol($restorerecord->itemid, $universityadmin, 12);
-            enrol_try_internal_enrol($restorerecord->itemid, $universityadmin, 1);
+            enrol_try_internal_enrol($restorerecord->itemid, $universityadmin->id, 12);
+            enrol_try_internal_enrol($restorerecord->itemid, $universityadmin->id, 1);
             $courseresource = new stdClass();
             $courseresource->university_id=$pcourse->university_id;
             $courseresource->course_id=$pcourse->course_id;

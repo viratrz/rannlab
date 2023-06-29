@@ -1,5 +1,6 @@
 <?php
-
+use core\task\manager;
+use local_dashboard\task\assign_courses;
 require_once('../../config.php');
 require_once('lib.php');
 require_once('../../user/lib.php');
@@ -139,66 +140,67 @@ if(isset($_POST['email']))
 }
 $package_id = $_POST['package'];
 
-
-if ($package_id ) 
-{
-
-    $data = new stdClass();
-    $data->name = $_POST['longname'];
-    $data->shortname = $_POST['shortname'];
-    $data->client_id = $client_id;
-    $data->rto_code = $rto_code;
-    $data->address = $_POST['address'];
-    $data->city = $_POST['city'];
-    $data->country = $_POST['country'];
-    $data->domain = $_POST['domain'];
-    $inserted = $DB->insert_record('school', $data, true);
-
-    if (basename($_FILES["university_logo"]["name"]) && $inserted) 
+try {
+    $transaction = $DB->start_delegated_transaction();
+    if ($package_id ) 
     {
-        $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
-        $target_file = $CFG->dirroot.$path_filename;
-        $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
-        if ($uploaed ) 
-        {
-            $set_logo = new stdclass();
-            $set_logo->id = $inserted;
-            $set_logo->logo_path = $path_filename;
-            $DB->update_record('school', $set_logo);
-        }
-    }
 
-}
-$category = null;
-if ($inserted) 
-{
+        $data = new stdClass();
+        $data->name = $_POST['longname'];
+        $data->shortname = $_POST['shortname'];
+        $data->client_id = $client_id;
+        $data->rto_code = $rto_code;
+        $data->address = $_POST['address'];
+        $data->city = $_POST['city'];
+        $data->country = $_POST['country'];
+        $data->domain = $_POST['domain'];
+        $inserted = $DB->insert_record('school', $data, true);
+
+        if (basename($_FILES["university_logo"]["name"]) && $inserted) 
+        {
+            $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
+            $target_file = $CFG->dirroot.$path_filename;
+            $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
+            if ($uploaed ) 
+            {
+                $set_logo = new stdclass();
+                $set_logo->id = $inserted;
+                $set_logo->logo_path = $path_filename;
+                $DB->update_record('school', $set_logo);
+            }
+        }
+
+    }
+    $category = null;
+    if ($inserted) 
+    {
     // create a category with same name as RTO and link it with RTO
-    $category_details = new \stdClass();
-    $category_details->parent = \core_course_category::top()->id;
-    $category_details->name = $_POST['longname'];
+        $category_details = new \stdClass();
+        $category_details->parent = \core_course_category::top()->id;
+        $category_details->name = $_POST['longname'];
     //$category_details->idnumber = $rto_code;
-    try {
-        $category = \core_course_category::create($category_details);
-        $school_update_obj = new stdclass();
-        $school_update_obj->id = $inserted;
-        $school_update_obj->coursecategory = $category;
-        $DB->update_record('school', $school_update_obj);
-    } catch (Exception $e) {
-     $school_update_obj = new stdclass();
-     $school_update_obj->id = $inserted;
-     $school_update_obj->coursecategory = core_course_category::top()->id;
-     $DB->update_record('school', $school_update_obj);
- }
- $date = date('Y-m-d', strtotime('+1 month'));
- $package_sub = new stdClass();
- $package_sub->package_id=$package_id;	
- $package_sub->university_id= $inserted;
- $package_sub->sub_date = date('Y/m/d H:i:s');
- $package_sub->end_date= $date;
- $pack = $DB->insert_record('admin_subscription', $package_sub, true);
-}
-if ($pack) 
-{
+        try {
+            $category = \core_course_category::create($category_details);
+            $school_update_obj = new stdclass();
+            $school_update_obj->id = $inserted;
+            $school_update_obj->coursecategory = $category;
+            $DB->update_record('school', $school_update_obj);
+        } catch (Exception $e) {
+           $school_update_obj = new stdclass();
+           $school_update_obj->id = $inserted;
+           $school_update_obj->coursecategory = core_course_category::top()->id;
+           $DB->update_record('school', $school_update_obj);
+       }
+       $date = date('Y-m-d', strtotime('+1 month'));
+       $package_sub = new stdClass();
+       $package_sub->package_id=$package_id;  
+       $package_sub->university_id= $inserted;
+       $package_sub->sub_date = date('Y/m/d H:i:s');
+       $package_sub->end_date= $date;
+       $pack = $DB->insert_record('admin_subscription', $package_sub, true);
+   }
+   if ($pack) 
+   {
     $userdata = new stdClass();
     $userdata->auth = 'manual';
     $userdata->confirmed = 1;
@@ -232,11 +234,11 @@ if ($pack)
     {
         $roleid = 9;
         $contextid = 1;
-        if ($category) {
-            $category_context = context_coursecat::instance();
-            $contextid = $category_context->id;
-        }
-        //role_assign($roleid, $user_id ,$contextid);
+        // if ($category) {
+        //     $category_context = context_coursecat::instance($category->id);
+        //     $contextid = $category_context->id;
+        // }
+        role_assign($roleid, $user_id ,$contextid);
     } 
     
     if ($user_id) {
@@ -269,9 +271,11 @@ if($user_id)
         $package_id = $DB->get_record_sql("SELECT p.* FROM mdl_package p JOIN mdl_admin_subscription mas ON p.id = mas.package_id  WHERE mas.university_id= $inserted ");
         $assign_course = new stdClass();
         $count_add = 0;
+        $adhoc_assign_courses = new assign_courses();
+        manager::queue_adhoc_task($adhoc_assign_courses, true);
         foreach($course_id as $c_id)
         {
-            $total_course = $DB->count_records('pending_assign_course', array('university_id'=>$inserted));
+            $total_course = $DB->count_records('assign_course', array('university_id'=>$inserted));
 
             if ($package_id->num_of_course > $total_course) 
             {
@@ -281,8 +285,7 @@ if($user_id)
                     $assign_course->university_id = $inserted;
                     $assign_course->course_id = $c_id;
                     $assign_course->is_pending = 1;
-                    $assign_course->timecreated = time();
-                    $assign_id = $DB->insert_record('pending_assign_course', $assign_course);
+                    $assign_id = $DB->insert_record('assign_course', $assign_course);
                     //createresource($c_id,$inserted,$user_id->userid);
                 }
 
@@ -308,6 +311,7 @@ if($user_id)
             }
             else 
             {
+                $transaction->allow_commit();
                 $json = array();
                 $json['success'] = true;
                 // $json['msg'] = "Courses Assign Limit Exeed";
@@ -316,10 +320,19 @@ if($user_id)
                 exit;
             }
         }
+        $transaction->allow_commit();
         $json = array();
         $json['success'] = true;
         $json['msg'] = "RTO and RTO Admin Created Successfully!";
         echo json_encode($json);
     }
 }
+} catch (Exception $e) {
+    $transaction->rollback($e);
+    $json = array();
+    $json['success'] = false;
+    $json['msg'] = $e->getMessage();
+    echo json_encode($json);
+}
+
 ?>

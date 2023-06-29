@@ -2119,18 +2119,18 @@ body.pagelayout-mydashboard {
   display: none !important;
 }
 /* .ccn_context_dashboard .ccnDashBlHd { */
-.ccnDashBlHd {
-  border-bottom: 1px solid #eee;
-  padding: 30px;
-}
+  .ccnDashBlHd {
+    border-bottom: 1px solid #eee;
+    padding: 30px;
+  }
 /* .ccn_context_dashboard .ccnDashBlHd h4 { */
-.ccnDashBlHd h4 {
-  margin: 0;
-}
+  .ccnDashBlHd h4 {
+    margin: 0;
+  }
 /* .ccn_context_dashboard .ccnDashBlCt { */
-.ccnDashBlCt {
-  padding: 20px 30px;
-}
+  .ccnDashBlCt {
+    padding: 20px 30px;
+  }
 /* CCN DASH FOCUS */
 .ccn_context_focus header h4 {
   max-width: 600px;
@@ -2152,10 +2152,10 @@ body.pagelayout-mydashboard {
   top: -88px;
 }
 /* @media (min-width: 1200px) { */
-.ccn_context_focus .dashboard_main_content:not(.no-sidebar) {
-  padding-left: calc(400px - -20px);
-  padding-left: calc(400px + 20px);
-}
+  .ccn_context_focus .dashboard_main_content:not(.no-sidebar) {
+    padding-left: calc(400px - -20px);
+    padding-left: calc(400px + 20px);
+  }
 /* } */
 .ccn_context_focus #ccnSettingsMenuContainer {
   left: auto;
@@ -3275,69 +3275,69 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
 }
 .ccn-control-visualize-block-title-tag:before {
   content: "[";
-  padding: 0 2px 0 0;
-  font-size: 13px;
-}
-.ccn-control-visualize-block-title-tag:after {
-  content: "]";
-  padding: 0 0 0 2px;
-  font-size: 13px;
-}
-.ccn-control-visualize-block-img {
-  width: 50%;
-  height: 70px;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  margin: 20px auto;
-  background-position: center center;
-  background-image: url([[cocoon:edumy]]/ccn/visualize/ccn_block/jpeg/thumb/mdl.png);
-}
-.ccn-control-visualize-block[data-ccn-name^="cocoon"] .ccn-control-visualize-block-img {
-  background-size: contain;
-}
-.modal-dialog,
-.modal-dialog .close {
-  outline: none !important;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-content {
-  border: 0 !important;
-  background-color: #f9fafc !important;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-content .modal-body {
-  padding-top: 20px;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-header {
-  background-image: -moz-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
-  background-image: -webkit-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
-  background-image: -ms-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
-  position: sticky;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  padding: 22px 25px;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-header .modal-title {
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 18px;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-header .close {
-  color: rgba(255, 255, 255, .6);
-  text-shadow: none;
-  opacity: 1;
-  font-size: 33px;
-  position: absolute;
-  right: 20px;
-  top: 18px;
-  transition: .2s all ease;
-}
-.modal:not(.sign_up_modal) .modal-dialog .modal-header .close:hover,
-.modal:not(.sign_up_modal) .modal-dialog .modal-header .close:active,
-.modal:not(.sign_up_modal) .modal-dialog .modal-header .close:focus {
-  color: #fff;
-}
+    padding: 0 2px 0 0;
+    font-size: 13px;
+  }
+  .ccn-control-visualize-block-title-tag:after {
+    content: "]";
+    padding: 0 0 0 2px;
+    font-size: 13px;
+  }
+  .ccn-control-visualize-block-img {
+    width: 50%;
+    height: 70px;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    margin: 20px auto;
+    background-position: center center;
+    background-image: url([[cocoon:edumy]]/ccn/visualize/ccn_block/jpeg/thumb/mdl.png);
+  }
+  .ccn-control-visualize-block[data-ccn-name^="cocoon"] .ccn-control-visualize-block-img {
+    background-size: contain;
+  }
+  .modal-dialog,
+  .modal-dialog .close {
+    outline: none !important;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-content {
+    border: 0 !important;
+    background-color: #f9fafc !important;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-content .modal-body {
+    padding-top: 20px;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header {
+    background-image: -moz-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
+    background-image: -webkit-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
+    background-image: -ms-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    position: sticky;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 22px 25px;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header .modal-title {
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header .close {
+    color: rgba(255, 255, 255, .6);
+    text-shadow: none;
+    opacity: 1;
+    font-size: 33px;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    transition: .2s all ease;
+  }
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header .close:hover,
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header .close:active,
+  .modal:not(.sign_up_modal) .modal-dialog .modal-header .close:focus {
+    color: #fff;
+  }
 /* .modal:not(.sign_up_modal):before {
   background-color: rgba(0, 0, 0, .9);
   bottom: 0;
@@ -3594,4 +3594,9 @@ a[data-key="cocoon_customizer"] .ccn--ico {
   height: 100%;
   line-height: 0;
   border-width: 1px;
+}
+
+
+#page-local-dashboard-index select#courses {
+  min-height: 200px !important;
 }
