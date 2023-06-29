@@ -267,8 +267,7 @@ $PAGE->set_pagelayout('standard');
 
                   <div class="d-flex">
                      <a href="##" class="button d-block  text-center" onclick="addAdmin();">Create User</a> &nbsp;
-                     <!--<a href="<?php echo $CFG->wwwroot; ?>/local/createuser/index.php" class="button d-block   text-center">Cancel</a>-->
-                        <a href="<?php echo $CFG->wwwroot; ?>/my" class="button d-block   text-center">Cancel</a>
+                     <a href="<?php echo $CFG->wwwroot; ?>" class="button d-block   text-center">Cancel</a>
 
                      <div id="loader" class="col-md-6">
                      <div class="spinner-border text-primary" role="status">
