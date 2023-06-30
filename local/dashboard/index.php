@@ -369,14 +369,18 @@ $PAGE->set_pagelayout('standard');
 
                <div class="form-group row">
                <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
-               <select class="col-md-4 pl-0 " id="courses" name="courses[]" multiple data-live-search="true" size="30" style="height: 100%;">
-                   
-                  <?php foreach($all_courses as $course){?>
-                     <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
-                      <!--<option value="<?php echo $course->id; ?>" class="course-option" data-category="<?php echo $course->category; ?>"><?php echo $course->fullname; ?></option>-->
-                  <?php } ?>
-               </select>
-               <span id="courses_msg"> </span>
+               <div class="col-md-4">
+                   <input type="text" placeholder="Search course.." class="col-md-12" id="coursesearch" onkeyup="filterFunction()">
+                   <select class="col-md-12 pl-0 " id="courses" name="courses[]" multiple data-live-search="true" size="30" style="height: 100%;">
+
+                      <?php foreach($all_courses as $course){?>
+                         <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
+                          <!--<option value="<?php echo $course->id; ?>" class="course-option" data-category="<?php echo $course->category; ?>"><?php echo $course->fullname; ?></option>-->
+                      <?php } ?>
+                   </select>
+                   <span id="courses_msg"> </span>
+               </div>
+
 
                </div>
                <div class="form-group row">
@@ -882,6 +886,22 @@ $("input[name='phone_number[full]'").val(full_number);
   alert(full_number)
   
 });
+
+     function filterFunction() {
+         var input, filter, ul, li, a, i;
+         input = document.getElementById("myInput");
+         filter = input.value.toUpperCase();
+         div = document.getElementById("courses");
+         a = div.getElementsByTagName("option");
+         for (i = 0; i < a.length; i++) {
+             txtValue = a[i].textContent || a[i].innerText;
+             if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                 a[i].style.display = "";
+             } else {
+                 a[i].style.display = "none";
+             }
+         }
+     }
  </script>
 
    
