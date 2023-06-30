@@ -329,7 +329,7 @@ function get_child_cat($id){
 
 function create_coursess($event)
 {
-    global $DB;
+    global $DB, $USER;
     purge_caches();
     $table="course";
     $dataobject=new stdClass();
@@ -337,6 +337,10 @@ function create_coursess($event)
     $dataobject->cb_userid=(int)$event->userid;
     $dataobject->tenent_id=(int)$_SESSION['university_id'];
     $DB->update_record($table, $dataobject);
+
+    if(!is_siteadmin()) {
+        enrol_try_internal_enrol($dataobject->id,$USER->id);
+    }
 }
 
 function module_create($evv)

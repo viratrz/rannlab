@@ -183,7 +183,7 @@ try {
             $category = \core_course_category::create($category_details);
             $school_update_obj = new stdclass();
             $school_update_obj->id = $inserted;
-            $school_update_obj->coursecategory = $category;
+            $school_update_obj->coursecategory = $category->id;
             $DB->update_record('school', $school_update_obj);
         } catch (Exception $e) {
            $school_update_obj = new stdclass();
