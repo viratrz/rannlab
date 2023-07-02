@@ -3,8 +3,9 @@
     require_once('lib.php');
     require_login();
 
+$uni_id =$_SESSION['university_id'];
     global $USER, $DB, $CFG;
-    $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$_SESSION[university_id]");
+    $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$uni_id");
     $my_package = $DB->get_record_sql("SELECT * FROM {package} WHERE id= $my_package_id->package_id");
     $upgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value > $my_package->package_value");
     $downgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value < $my_package->package_value");
@@ -183,7 +184,7 @@ require_login();
 // die;
 $uni_id =$_SESSION['university_id'];
 global $USER, $DB, $CFG;
-    $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$_SESSION[university_id]");
+    $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$uni_id");
     $my_package = $DB->get_record_sql("SELECT * FROM {package} WHERE id= $my_package_id->package_id");
     $upgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value > $my_package->package_value");
     $downgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value < $my_package->package_value");

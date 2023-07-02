@@ -115,13 +115,13 @@ class participants_search {
                        {$sort}";
 
                        if($schoolid=$_SESSION['university_id']){
-                        $outerwhere="WHERE scc.university_id=$_SESSION[university_id] OR sc.university_id=$_SESSION[university_id]" ;
+                        $outerwhere="WHERE scc.university_id=$schoolid OR sc.university_id=$schoolid" ;
                          $sql = "{$outerselect}
                                           FROM ({$innerselect}
                                                           FROM {$innerjoins}
                                                  {$innerwhere}
                                                ) {$subqueryalias}
-                                 {$outerjoins} LEFT join  {university_user} sc  on sc.userid = u.id and sc.university_id=$_SESSION[university_id] LEFT JOIN {universityadmin} scc  on scc.userid = u.id and scc.university_id=$_SESSION[university_id]
+                                 {$outerjoins} LEFT join  {university_user} sc  on sc.userid = u.id and sc.university_id=$schoolid LEFT JOIN {universityadmin} scc  on scc.userid = u.id and scc.university_id=$schoolid
                                  {$outerwhere} 
                                        {$sort}";  
                                     //   $DB->set_debug(true);

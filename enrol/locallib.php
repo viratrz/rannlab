@@ -528,11 +528,12 @@ class course_enrolment_manager {
         } 
         else 
         {
+            $universityid = $_SESSION["university_id"];
             $sql = " FROM {user} u
                       $joins
             LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
             LEFT JOIN {university_user} ua ON (ua.userid = u.id)
-                WHERE $wherecondition AND ua.university_id = $_SESSION[university_id]
+                WHERE $wherecondition AND ua.university_id = $universityid
                 
                       AND ue.id IS NULL";
         $params['enrolid'] = $enrolid;
