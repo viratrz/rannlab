@@ -510,7 +510,7 @@ class course_enrolment_manager {
      */
     public function get_potential_users($enrolid, $search = '', $searchanywhere = false, $page = 0, $perpage = 25,
             $addedenrollment = 0, $returnexactcount = false) {
-        global $DB;
+        global $DB,$SESSION;
 
         [$ufields, $joins, $params, $wherecondition] = $this->get_basic_search_conditions($search, $searchanywhere);
 
@@ -528,7 +528,7 @@ class course_enrolment_manager {
         } 
         else 
         {
-            $universityid = $_SESSION["university_id"];
+            $universityid = $SESSION->university_id;
             $sql = " FROM {user} u
                       $joins
             LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
