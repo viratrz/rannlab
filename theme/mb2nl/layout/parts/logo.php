@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Import File And Variables********
-global $USER, $DB, $CFG;
+global $USER, $DB, $CFG, $SESSION;
 
 $customlogin = theme_mb2nl_is_login( true );
 $logos = array('logo-light', 'logo-dark', 'logo-small', 'logo-dark-small');
@@ -37,11 +37,11 @@ $logos = array('logo-light', 'logo-dark', 'logo-small', 'logo-dark-small');
 		<a href="<?php echo new moodle_url('/'); ?>" title="<?php echo get_site()->fullname; ?>">
 			<?php
 				$university = $DB->get_record_sql("SELECT mu.university_id FROM mdl_universityadmin mu WHERE mu.userid = $USER->id UNION SELECT muu.university_id FROM mdl_university_user muu WHERE muu.userid =$USER->id");
-				if (isset($_SESSION['university_id'])) 
+				if (isset($SESSION->university_id))
 				{
-					if($_SESSION['university_id'])
+					if($SESSION->university_id)
 					{
-						$logo_path= $DB->get_record('school',array('id' => $_SESSION['university_id']));
+						$logo_path= $DB->get_record('school',array('id' => $SESSION->university_id));
 						if($logo_path->logo_path)
 						{
 							echo "<img src='$_SESSION[logo_path]' style='min-width: 110px; max-height: 60px;'>";

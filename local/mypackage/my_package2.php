@@ -3,8 +3,10 @@
     require_once('lib.php');
     require_login();
 
-$uni_id =$_SESSION['university_id'];
-    global $USER, $DB, $CFG;
+global $USER, $DB, $CFG, $SESSION;
+
+$uni_id =$SESSION->university_id;
+
     $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$uni_id");
     $my_package = $DB->get_record_sql("SELECT * FROM {package} WHERE id= $my_package_id->package_id");
     $upgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value > $my_package->package_value");
@@ -180,10 +182,12 @@ require_once('../../config.php');
 require_once('lib.php');
 date_default_timezone_set('Asia/Kolkata');
 require_login();
+
+global $USER, $DB, $CFG, $SESSION;
 // echo date("Y/m/d");
 // die;
-$uni_id =$_SESSION['university_id'];
-global $USER, $DB, $CFG;
+$uni_id =$SESSION->university_id;
+
     $my_package_id = $DB->get_record_sql("SELECT *, DATE(sub_date) AS date_of_sub FROM {admin_subscription} WHERE university_id=$uni_id");
     $my_package = $DB->get_record_sql("SELECT * FROM {package} WHERE id= $my_package_id->package_id");
     $upgrade_plans = $DB->get_records_sql("SELECT * FROM {package} WHERE package_value > $my_package->package_value");

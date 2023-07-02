@@ -224,7 +224,8 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         // setcookie('user', 1, time()+60*60*24*30);
         // setcookie('d', $user, time()+60*60*24*30);
         // unset(setcookie());
-        // $_SESSION['university_id'] = $universityadmin->university_id;
+        // $_SESSION["university_id"] = $universityadmin->university_id;
+        // $SESSION->university_id = $universityadmin->university_id;
     /// Let's get them all set up.
         complete_user_login($user);
 

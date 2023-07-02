@@ -5,6 +5,7 @@
     require_once('../config.php');
     require_once('lib.php');
     require_once($CFG->libdir.'/completionlib.php');
+    global $SESSION;
 
     $id          = optional_param('id', 0, PARAM_INT);
     $name        = optional_param('name', '', PARAM_TEXT);
@@ -18,7 +19,7 @@
     $marker      = optional_param('marker',-1 , PARAM_INT);
     $switchrole  = optional_param('switchrole',-1, PARAM_INT); // Deprecated, use course/switchrole.php instead.
     $return      = optional_param('return', 0, PARAM_LOCALURL);
-    $school_id= (int)$_SESSION['university_id'];
+    $school_id= (int)$SESSION->university_id;
 
     $params = array();
     if (!empty($name)) {
@@ -296,7 +297,7 @@
     if ($completion->is_enabled()) {
         $PAGE->requires->js_call_amd('core_course/view', 'init');
     }
-$school_id= (int)$_SESSION['university_id'];
+$school_id= (int)$SESSION->university_id;
 
 
 //This is additional resources button for another course which is inbuild in this courses

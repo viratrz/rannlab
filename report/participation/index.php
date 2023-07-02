@@ -35,6 +35,7 @@ require_once($CFG->dirroot.'/lib/tablelib.php');
 require_once($CFG->dirroot.'/notes/lib.php');
 require_once($CFG->dirroot.'/report/participation/locallib.php');
 
+global $SESSION;
 $participantsperpage = intval(get_config('moodlecourse', 'participantsperpage'));
 define('DEFAULT_PAGE_SIZE', (!empty($participantsperpage) ? $participantsperpage : 20));
 define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -201,7 +202,7 @@ if (!empty($instanceid) && !empty($roleid)) {
         $groupsql = "JOIN {groups_members} gm ON (gm.userid = u.id AND gm.groupid = :groupid)";
         $params['groupid'] = $currentgroup;
     }
-    $uni = $_SESSION['university_id'];
+    $uni = $SESSION->university_id;
 
     $countsql = "SELECT COUNT(DISTINCT(ra.userid))
                    FROM {role_assignments} ra
@@ -267,7 +268,7 @@ if (!empty($instanceid) && !empty($roleid)) {
 
     // Get record from sql_internal_table_reader and merge with records got from legacy log (if needed).
     if (!$onlyuselegacyreader) {
-        $univ=$_SESSION["university_id"];
+        $univ=$SESSION->university_id;;
         $sql = "SELECT ra.userid, $usernamefields, u.idnumber, COUNT(DISTINCT l.timecreated) AS count
                   FROM {user} u
                   JOIN {university_user} uu ON uu.userid =u.id 

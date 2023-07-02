@@ -5,6 +5,7 @@
     require_once('../config.php');
     require_once('lib.php');
     require_once($CFG->libdir.'/completionlib.php');
+    global $SESSION;
 
     $id          = optional_param('id', 0, PARAM_INT);
     $name        = optional_param('name', '', PARAM_TEXT);
@@ -18,7 +19,7 @@
     $marker      = optional_param('marker',-1 , PARAM_INT);
     $switchrole  = optional_param('switchrole',-1, PARAM_INT); // Deprecated, use course/switchrole.php instead.
     $return      = optional_param('return', 0, PARAM_LOCALURL);
-    $school_id= (int)$_SESSION['university_id'];
+    $school_id= (int)$SESSION->university_id;
 
 
     $params = array();
@@ -291,7 +292,7 @@
         $PAGE->requires->js_call_amd('core_course/view', 'init');
     }
  
-$school_id= (int)$_SESSION['university_id'];
+$school_id= (int)$SESSION->university_id;
 
 
 //This is additional resources button for another course which is inbuild in this courses
@@ -316,7 +317,7 @@ $school_id= (int)$_SESSION['university_id'];
         // Load the JS for the modal.
 		$roleassignments = $DB->get_record_sql("SELECT * FROM {role_assignments} WHERE roleid IN(3,4,5,10,9) AND userid= $USER->id");  //(4,9,10,11) 
 		$roleidc=(int)$roleassignments->id; 
-		$resource_id = $DB->get_record("courseresource",['course_id'=>$course->id, 'university_id'=>$_SESSION['university_id']]);
+		$resource_id = $DB->get_record("courseresource",['course_id'=>$course->id, 'university_id'=>$SESSION->university_id]);
         // var_dump($resource_id->resourcecourseid);
         // die;
         $obj = new core_course_renderer($PAGE,'General');
