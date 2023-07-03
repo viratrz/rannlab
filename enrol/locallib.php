@@ -528,12 +528,22 @@ class course_enrolment_manager {
         } 
         else 
         {
+            $universitycond = "";
             $universityid = $SESSION->university_id;
+            if (!isset($universityid)){
+                $universityadmin = $DB->get_record_sql("SELECT university_id FROM {universityadmin} WHERE userid= $USER->id UNION SELECT university_id FROM {university_user} WHERE userid= $USER->id");
+                if($universityadmin){
+                    $SESSION->university_id = $universityadmin->university_id;
+                    $universitycond = " AND ua.university_id = $universityadmin->university_id";
+                }
+            } else {
+                $universitycond = " AND ua.university_id = $universityid";
+            }
             $sql = " FROM {user} u
                       $joins
             LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
             LEFT JOIN {university_user} ua ON (ua.userid = u.id)
-                WHERE $wherecondition AND ua.university_id = $universityid
+                WHERE $wherecondition $universitycond
                 
                       AND ue.id IS NULL";
         $params['enrolid'] = $enrolid;
