@@ -535,7 +535,8 @@ class course_enrolment_manager {
                     $SESSION->university_id = $universityadmin->university_id;
                     $universitycond = " AND ua.university_id = $universityadmin->university_id";
                 }
-            } else {
+            }
+            if(isset($SESSION->university_id)) {
                 $universitycond = " AND ua.university_id = $SESSION->university_id";
             }
             $sql = " FROM {user} u
