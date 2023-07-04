@@ -339,9 +339,15 @@ function create_coursess($event)
     $dataobject->tenent_id=(int)$SESSION->university_id;
     $DB->update_record($table, $dataobject);
 
-    if(!is_siteadmin()) {
-        enrol_try_internal_enrol($dataobject->id,$USER->id);
-    }
+    $adhoc = new \local_dashboard\adhoc\enroluser_adhoc();
+    $adhoc->set_custom_data(array(
+        'courseid' => $dataobject->id,
+        'userid' => $USER->id,
+    ));
+    $adhoc->set_component('local_dashboard');
+    $adhoc->set_next_run_time(time());
+    \core\task\manager::queue_adhoc_task($adhoc);
+
 }
 
 function module_create($evv)
