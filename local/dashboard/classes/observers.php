@@ -23,6 +23,9 @@ class observers
         else
         {
             create_coursess($event2);
+            $course = get_course($event2->objectid);
+            $plugin = enrol_get_plugin('rto');
+            $plugin->add_instance($course, ['type'=>'rto']);
         }
     }
     public static function modulecreate(\core\event\course_module_created $event3){
