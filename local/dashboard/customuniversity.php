@@ -183,24 +183,24 @@ try {
             $category = \core_course_category::create($category_details);
             $school_update_obj = new stdclass();
             $school_update_obj->id = $inserted;
-            $school_update_obj->coursecategory = $category;
+            $school_update_obj->coursecategory = $category->id;
             $DB->update_record('school', $school_update_obj);
         } catch (Exception $e) {
-           $school_update_obj = new stdclass();
-           $school_update_obj->id = $inserted;
-           $school_update_obj->coursecategory = core_course_category::top()->id;
-           $DB->update_record('school', $school_update_obj);
-       }
-       $date = date('Y-m-d', strtotime('+1 month'));
-       $package_sub = new stdClass();
-       $package_sub->package_id=$package_id;  
-       $package_sub->university_id= $inserted;
-       $package_sub->sub_date = date('Y/m/d H:i:s');
-       $package_sub->end_date= $date;
-       $pack = $DB->insert_record('admin_subscription', $package_sub, true);
-   }
-   if ($pack) 
-   {
+         $school_update_obj = new stdclass();
+         $school_update_obj->id = $inserted;
+         $school_update_obj->coursecategory = core_course_category::top()->id;
+         $DB->update_record('school', $school_update_obj);
+     }
+     $date = date('Y-m-d', strtotime('+1 month'));
+     $package_sub = new stdClass();
+     $package_sub->package_id=$package_id;  
+     $package_sub->university_id= $inserted;
+     $package_sub->sub_date = date('Y/m/d H:i:s');
+     $package_sub->end_date= $date;
+     $pack = $DB->insert_record('admin_subscription', $package_sub, true);
+ }
+ if ($pack) 
+ {
     $userdata = new stdClass();
     $userdata->auth = 'manual';
     $userdata->confirmed = 1;
