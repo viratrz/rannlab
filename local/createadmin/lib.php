@@ -2,8 +2,8 @@
 function local_createadmin_extend_navigation(global_navigation $nav)
 {
 
-    global $CFG, $PAGE,$DB,$USER;
-    $uni_id = $_SESSION['university_id'];
+    global $CFG, $PAGE,$DB,$USER,$SESSION;
+    $uni_id = $SESSION->university_id;
     
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
       

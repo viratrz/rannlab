@@ -23,7 +23,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-global $CFG, $DB,$USER;
+global $CFG, $DB,$USER, $SESSION;
 $footerid = theme_mb2nl_footerid();
 $socilaTt = theme_mb2nl_theme_setting($PAGE, 'socialtt' ) == 1 ? 'top' : '';
 $footThemeContent =  theme_mb2nl_theme_setting($PAGE, 'foottext');
@@ -58,12 +58,12 @@ $footercss .= $isdark;
 	</div>
 </div>
 <?php endif; 
-$status=$DB->record_exists("school", array("id"=>$_SESSION['university_id']));
+$status=$DB->record_exists("school", array("id"=>$SESSION->university_id));
 if($status)
 {
-	$universe=$DB->get_record("school", array("id"=>$_SESSION['university_id']));
+	$universe=$DB->get_record("school", array("id"=>$SESSION->university_id));
 }
-// $universe=$DB->get_record("school", array("id"=>$_SESSION['university_id']));
+// $universe=$DB->get_record("school", array("id"=>$SESSION->university_id));
 
 
 ?>

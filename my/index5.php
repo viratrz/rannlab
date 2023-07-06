@@ -1,6 +1,6 @@
 <?php
 require_once('../config.php');
-global $DB,$USER,$OUTPUT;
+global $DB,$USER,$OUTPUT,$SESSION;
 $title = 'Dashboard';
 
 $PAGE->set_title($title);
@@ -181,7 +181,7 @@ echo $OUTPUT->header();
             // $data=$DB->get_records_sql("SELECT mc.* FROM {course} mc inner join {school_courses} mcs on mc.id = mcs.courseid where mc.visible=1");
          }
          else{
-            $unid=$_SESSION['university_id'];
+            $unid=$SESSION->university_id;
             $id = $USER->id;
             $check = $DB->get_records_sql("select * from {courseresource} where userid = '$id' AND university_id='$unid'");
             $check1 = count($check);

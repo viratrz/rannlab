@@ -1,6 +1,9 @@
 <?php
 include("../../config.php");
 require_once("$CFG->libdir/formslib.php");
+
+global $SESSION;
+
 $PAGE->set_url(new moodle_url('/local/changelogo/theme.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title('Change Theme');
@@ -14,7 +17,7 @@ echo $OUTPUT->header();
 if (is_siteadmin()) {
   $university_id = $_GET['uni_id'];
 } else {
-  $university_id = $_SESSION['university_id'];
+  $university_id = $SESSION->university_id;
 }
 
 $preset_color = $DB->get_record("school", ['id'=>"$university_id"]);

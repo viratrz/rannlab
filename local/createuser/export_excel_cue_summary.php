@@ -4,7 +4,7 @@ require_once('../../config.php');
 require_once('lib.php');
 require_login();
 
-global $USER, $DB;
+global $USER, $DB, $SESSION;
 $stu_id = $_GET['stu_id'];
 $user_info = $DB->get_record("user", ["id"=>$stu_id]);
 
@@ -17,7 +17,7 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagelayout('standard');
 
-$uni_id =$_SESSION['university_id'];
+$uni_id =$SESSION->university_id;
 
 ?>
 <!DOCTYPE html>

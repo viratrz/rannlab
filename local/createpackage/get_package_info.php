@@ -21,7 +21,7 @@ $html='<table class="table table-sm table-bordered">
                 <td id="name">'.$package_info->package_name.'</td>
                 <td id="price">'.$package_info->package_value.'</td>
                 <td id="users">'.$package_info->num_of_user.'</td>
-                <td id="courses">'.$package_info->num_of_course.'</td>
+                <td id="coursescount">'.$package_info->num_of_course.'</td>
             </tr>
             </tbody>
         </table>';

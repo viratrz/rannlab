@@ -224,13 +224,15 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         // setcookie('user', 1, time()+60*60*24*30);
         // setcookie('d', $user, time()+60*60*24*30);
         // unset(setcookie());
-        // $_SESSION['university_id'] = $universityadmin->university_id;
+        // $_SESSION["university_id"] = $universityadmin->university_id;
+        // $SESSION->university_id = $universityadmin->university_id;
     /// Let's get them all set up.
         complete_user_login($user);
 
         $universityadmin = $DB->get_record_sql("SELECT university_id FROM {universityadmin} WHERE userid= $USER->id UNION SELECT university_id FROM {university_user} WHERE userid= $USER->id");
         $_SESSION["university_id"] = $universityadmin->university_id;
-        
+        $SESSION->university_id = $universityadmin->university_id;
+
         \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
         redirect($CFG->wwwroot.'/my');
         // sets the username cookie

@@ -2,8 +2,8 @@
 function local_createuser_extend_navigation(global_navigation $nav)
 {
 
-    global $CFG, $PAGE,$DB,$USER;
-    $uni_id = $_SESSION['university_id'];
+    global $CFG, $PAGE,$DB,$USER, $SESSION;
+    $uni_id = $SESSION->university_id;
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
     $icon = new pix_icon('cuser', '', 'local_createuser', array('class' => 'icon pluginicon'));
     $icon2 = new pix_icon('luser', '', 'local_createuser', array('class' => 'icon pluginicon'));
@@ -11,7 +11,7 @@ function local_createuser_extend_navigation(global_navigation $nav)
 
     if(user_has_role_assignment($USER->id, 10))    //user_has_role_assignment($USER->id, 9) || 
     {
-        // $uni_id = $_SESSION['university_id'];
+        // $uni_id = $SESSION->university_id;
         // $nav->add(
         //     'Create User',
         //     new moodle_url($CFG->wwwroot . '/local/createuser/index.php'),

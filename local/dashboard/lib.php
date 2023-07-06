@@ -5,14 +5,15 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/clilib.php');
 function local_dashboard_extend_navigation(global_navigation $nav){
 
-    global $CFG, $PAGE,$DB,$USER;
+    global $CFG, $PAGE,$DB,$USER, $SESSION;
 
     $universityadmin = $DB->get_record("universityadmin",array("userid"=>$USER->id));
 
     $role = $DB->get_record("role_assignments",array("userid"=>$USER->id));
     if($universityadmin)
     {
-        $_SESSION['university_id'] = $universityadmin->university_id;
+        $_SESSION["university_id"] = $universityadmin->university_id;
+        $SESSION->university_id = $universityadmin->university_id;
     }
     if($role)
     {
@@ -329,25 +330,35 @@ function get_child_cat($id){
 
 function create_coursess($event)
 {
-    global $DB;
+    global $DB, $USER, $SESSION;
     purge_caches();
     $table="course";
     $dataobject=new stdClass();
     $dataobject->id=(int)$event->objectid;
     $dataobject->cb_userid=(int)$event->userid;
-    $dataobject->tenent_id=(int)$_SESSION['university_id'];
+    $dataobject->tenent_id=(int)$SESSION->university_id;
     $DB->update_record($table, $dataobject);
+
+    $adhoc = new \local_dashboard\adhoc\enroluser_adhoc();
+    $adhoc->set_custom_data(array(
+        'courseid' => $dataobject->id,
+        'userid' => $USER->id,
+    ));
+    $adhoc->set_component('local_dashboard');
+    $adhoc->set_next_run_time(time());
+    \core\task\manager::queue_adhoc_task($adhoc);
+
 }
 
 function module_create($evv)
 {
-    global $DB;
+    global $DB, $SESSION;
     purge_caches();
     $table2="course_modules";
     $dataobject2=new stdClass();
     $dataobject2->id=(int)$evv->objectid;
     $dataobject2->cb_userid=(int)$evv->userid;
-    $dataobject2->tenent_id=(int)$_SESSION['university_id'];
+    $dataobject2->tenent_id=(int)$SESSION->university_id;
     $DB->update_record($table2, $dataobject2);
 }
 

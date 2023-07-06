@@ -46,7 +46,7 @@ require_once($CFG->libdir.'/adminlib.php');
 $resetall = optional_param('resetall', false, PARAM_BOOL);
 
 $pagetitle = get_string('mypage', 'admin');
-global $DB,$USER,$OUTPUT;
+global $DB,$USER,$OUTPUT, $SESSION;
 $title = 'Dashboard';
 
 $PAGE->set_title($title);
@@ -568,7 +568,7 @@ if(!is_siteadmin())
        /* echo $USER->id;
         echo $id;  */
         $rto_count = $DB->count_records("school", ['id'=>$USER->id]);
-        $university_id = $_SESSION['university_id'];
+        $university_id = $SESSION->university_id;
         /*echo '<br>' . $university_id; */
         $uni_user_count = $DB->count_records("university_user", ['university_id'=>$university_id]);
         

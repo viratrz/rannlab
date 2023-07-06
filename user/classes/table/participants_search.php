@@ -92,7 +92,7 @@ class participants_search {
      */
     public function get_participants(string $additionalwhere = '', array $additionalparams = [], string $sort = '',
             int $limitfrom = 0, int $limitnum = 0): moodle_recordset {
-        global $DB;
+        global $DB, $SESSION;
 
         [
             'subqueryalias' => $subqueryalias,
@@ -114,14 +114,14 @@ class participants_search {
                  {$outerwhere}
                        {$sort}";
 
-                       if($schoolid=$_SESSION['university_id']){
-                        $outerwhere="WHERE scc.university_id=$_SESSION[university_id] OR sc.university_id=$_SESSION[university_id]" ;
+                       if($schoolid=$SESSION->university_id){
+                        $outerwhere="WHERE scc.university_id=$schoolid OR sc.university_id=$schoolid" ;
                          $sql = "{$outerselect}
                                           FROM ({$innerselect}
                                                           FROM {$innerjoins}
                                                  {$innerwhere}
                                                ) {$subqueryalias}
-                                 {$outerjoins} LEFT join  {university_user} sc  on sc.userid = u.id and sc.university_id=$_SESSION[university_id] LEFT JOIN {universityadmin} scc  on scc.userid = u.id and scc.university_id=$_SESSION[university_id]
+                                 {$outerjoins} LEFT join  {university_user} sc  on sc.userid = u.id and sc.university_id=$schoolid LEFT JOIN {universityadmin} scc  on scc.userid = u.id and scc.university_id=$schoolid
                                  {$outerwhere} 
                                        {$sort}";  
                                     //   $DB->set_debug(true);
@@ -144,7 +144,7 @@ class participants_search {
      * @return int
      */
     public function get_total_participants_count(string $additionalwhere = '', array $additionalparams = []): int {
-        global $DB;
+        global $DB, $SESSION;
 
         [
             'subqueryalias' => $subqueryalias,
@@ -164,7 +164,7 @@ class participants_search {
          {$outerjoins}
          {$outerwhere}";
 
-if($schoolid=$_SESSION['university_id']){
+if($schoolid=$SESSION->university_id){
     $outerwhere="Where sc.id>0";
     $sql = "SELECT COUNT(u.id)
         FROM ({$innerselect}

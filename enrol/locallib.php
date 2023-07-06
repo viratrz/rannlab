@@ -510,7 +510,7 @@ class course_enrolment_manager {
      */
     public function get_potential_users($enrolid, $search = '', $searchanywhere = false, $page = 0, $perpage = 25,
             $addedenrollment = 0, $returnexactcount = false) {
-        global $DB;
+        global $DB,$SESSION;
 
         [$ufields, $joins, $params, $wherecondition] = $this->get_basic_search_conditions($search, $searchanywhere);
 
@@ -528,11 +528,22 @@ class course_enrolment_manager {
         } 
         else 
         {
+            $universitycond = "";
+            if (!isset($SESSION->university_id) || empty($SESSION->university_id)){
+                $universityadmin = $DB->get_record_sql("SELECT university_id FROM {universityadmin} WHERE userid= $USER->id UNION SELECT university_id FROM {university_user} WHERE userid= $USER->id");
+                if($universityadmin){
+                    $SESSION->university_id = $universityadmin->university_id;
+                    $universitycond = " AND ua.university_id = $universityadmin->university_id";
+                }
+            }
+            if(isset($SESSION->university_id)) {
+                $universitycond = " AND ua.university_id = $SESSION->university_id";
+            }
             $sql = " FROM {user} u
                       $joins
             LEFT JOIN {user_enrolments} ue ON (ue.userid = u.id AND ue.enrolid = :enrolid)
             LEFT JOIN {university_user} ua ON (ua.userid = u.id)
-                WHERE $wherecondition AND ua.university_id = $_SESSION[university_id]
+                WHERE $wherecondition $universitycond
                 
                       AND ue.id IS NULL";
         $params['enrolid'] = $enrolid;

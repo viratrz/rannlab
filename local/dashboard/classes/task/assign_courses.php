@@ -51,7 +51,7 @@ class assign_courses extends adhoc_task
             // get the university
             try {
                 $university = $DB->get_record('school', ['id' => $pcourse->university_id], '*', MUST_EXIST);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;    
             }
             // get the course

@@ -4,7 +4,7 @@ require_once('../../config.php');
 require_once('lib.php');
 require_login();
 
-global $USER, $DB;
+global $USER, $DB, $SESSION;
 
 $title = 'CUE Student List';
 $pagetitle = $title;
@@ -12,7 +12,7 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagelayout('standard');
 
-$uni_id = $_SESSION['university_id'];
+$uni_id = $SESSION->university_id;
 $all_university_users = $DB->get_records_sql("SELECT uu.* FROM {university_user} uu WHERE uu.university_id=$uni_id UNION SELECT ua.* FROM  {universityadmin} ua  WHERE ua.university_id=$uni_id");
 // foreach ($all_university_users as $all_university_user) 
 // {
