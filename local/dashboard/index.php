@@ -28,7 +28,7 @@ $PAGE->set_pagelayout('standard');
    
    
    <title>Create New University </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -40,33 +40,33 @@ $PAGE->set_pagelayout('standard');
    
 
    <style>
-        .bootstrap-select .dropdown-toggle .filter-option{
-        background-color: white !important;
-        border: 1px solid gray !important;
-        border-radius: 5px !important;
-        height: 34px !important;
-        }
+    .bootstrap-select .dropdown-toggle .filter-option{
+       background-color: white !important;
+       border: 1px solid gray !important;
+       border-radius: 5px !important;
+       height: 34px !important;
+    }
     .show>.btn-light.dropdown-toggle {
-         background-color: white !important;
-      }
+      background-color: white !important;
+   }
    
-      .box-shadow {
-         box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
-         padding: 0px 20px 20px;
-         border-radius: 8px;
-      }
+   .box-shadow {
+      box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+      padding: 0px 20px 20px;
+      border-radius: 8px;
+   }
 
-      .error1 {
-         color: red;
-         font-size: 15px;
-      }
+   .error1 {
+      color: red;
+      font-size: 15px;
+   }
 
-      .err {
-         color: red;
-         font-size: 150%;
-      }
+   .err {
+      color: red;
+      font-size: 150%;
+   }
 
-      .button {
+   .button {
          /*background: #000;
          
          color: #fff;
@@ -86,13 +86,13 @@ $PAGE->set_pagelayout('standard');
 
       
       .eye {
-            position: absolute;
-            font: normal normal normal 14px/1 FontAwesome;
-            right: 0px;
-            top: 35%;
-            transform: translate(-50%, -80%);
-            z-index: 999;
-        }
+         position: absolute;
+         font: normal normal normal 14px/1 FontAwesome;
+         right: 0px;
+         top: 35%;
+         transform: translate(-50%, -80%);
+         z-index: 999;
+      }
       label {
          font-weight: 700;
       }
@@ -100,14 +100,14 @@ $PAGE->set_pagelayout('standard');
       .button:hover {
         /* color: #000;
          background: #ffe500; */
-      background-color: transparent;
-      border-color: #6c757d;
-      color: #6c757d;
-      -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
-      -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
-      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
-      text-decoration: none;
-      BORDER: 2PX SOLID #6c757d;
+         background-color: transparent;
+         border-color: #6c757d;
+         color: #6c757d;
+         -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+         -moz-box-shadow: 0 1px 4px 0 rgba(0,0,0,0);
+         box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0%);
+         text-decoration: none;
+         BORDER: 2PX SOLID #6c757d;
       }
 
       .heading-row {
@@ -153,44 +153,44 @@ $PAGE->set_pagelayout('standard');
       }
       input, select
       {
-        min-height: 35px !important;
-        max-height: 35px !important;
+       min-height: 35px !important;
+       max-height: 35px !important;
     }
     #loader
     {
       display: none;
-    }
-    #output
-    {
+   }
+   #output
+   {
       max-height: 50px !important;
-    }
-    .btn-default
-    {
+   }
+   .btn-default
+   {
       background-color: white !important;
       color:  black !important;
       border: 1px solid gray !important;
-    }
-    #courses_msg{
+   }
+   #courses_msg{
       color: red;
       margin-left: 25%;
-    }
-
-    *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
-      border-color: #6c757d !important;
-    }
-    .form-group{
-   font-family: "Nunito",sans-serif;
    }
-    .iti--separate-dial-code .iti__selected-flag {
-    background-color: transparent !important;
-    }
-    
-    
-    .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
-    background-color: transparent !important;
-    }
-   
-   </style>
+
+   *:focus, *:active, input:active, input:focus, a:active, a:focus, button:active, button:focus, .form-control:focus {
+      border-color: #6c757d !important;
+   }
+   .form-group{
+      font-family: "Nunito",sans-serif;
+   }
+   .iti--separate-dial-code .iti__selected-flag {
+     background-color: transparent !important;
+  }
+
+
+  .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+     background-color: transparent !important;
+  }
+
+</style>
 </head>
 
 <body>
@@ -213,7 +213,7 @@ $PAGE->set_pagelayout('standard');
                   <span class="error1 col-md-8 pl-0"></span>
                </div> -->
 
-              <div class="form-group row">
+               <div class="form-group row">
                   <label for="label" class="col-md-3">Long Name<span class="err"> *</span></label> 
                   <input type="text" class="form-control col-md-9 focusError" id="longname" placeholder="Enter Name" name="longname" onblur="allLetter1(this)" required>
                   <div class="col-md-3"></div>
@@ -233,7 +233,7 @@ $PAGE->set_pagelayout('standard');
                   <div class="col-md-3"></div>
                   <span class="error1 col-md-8 pl-0"></span>
                </div>
-              <div class="form-group row">
+               <div class="form-group row">
                   <label for="label" class="col-md-3">RTO Code <span class="err"> *</span></label>
                   <input type="text" class="form-control col-md-9 focusError" maxlength="15" id="rto" placeholder="Enter RTO Code" name="rto_code" onkeyup="numberOnly8(this.value)"  required>
                   <div class="col-md-3"></div>
@@ -255,9 +255,9 @@ $PAGE->set_pagelayout('standard');
                      <?php } ?>
                   </select>
                   <div class="col-md-4"><span class="error1 pl-0"></span> </div>
-                       
+
                </div>
-                <div class="form-group row">
+               <div class="form-group row">
                   <label for="label" class="col-md-3">City/Town <span class="err">*</span> </label>
                   <input type="text" class="form-control col-md-9 focusError" id="city" placeholder="Enter City/Town" onblur="allLetter(this)" title="Minimum Three letter Require In City/Town" name="city" required>
                   <div class="col-md-3"></div>
@@ -273,12 +273,25 @@ $PAGE->set_pagelayout('standard');
                </div>
 
                <?php 
-                  $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
-                  $category11 = $DB->get_records_sql("SELECT * FROM {course_categories}");
-                  $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
-                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE category !=0 AND category !=$resource_course_id->id LIMIT 5 ");
-               
+               $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
 
+               $pluginconfig = get_config('local_dashboard');
+
+               $admin_categories = isset($pluginconfig->admin_categories) ? $pluginconfig->admin_categories : '';
+               if ($admin_categories) {
+                  $admin_categories_arr = explode(',', $admin_categories);
+               } else {
+                  $admin_categories_arr = [];
+               }
+               if (!empty($admin_categories_arr)) {
+                  list($insql, $inparams) = $DB->get_in_or_equal($admin_categories_arr);
+                  $category11 = $DB->get_records_sql("SELECT * FROM {course_categories} WHERE id $insql", $inparams);
+                  $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
+                  $all_courses = $DB->get_records_sql("SELECT * FROM {course} WHERE category $insql", $inparams);
+               }else{
+                  $category11 = [];
+                  $all_courses = [];
+               }
 
                ?>
 
@@ -287,14 +300,14 @@ $PAGE->set_pagelayout('standard');
                   <select name="package" class="col-md-4 focusError" id="package" onchange="selectPackage(this.value)">
                      <option value="">Select package</option>
                      <?php foreach($all_packages as $package){?>
-                     <option value="<?php echo $package->id; ?>"><?php echo $package->package_value; ?></option>
+                        <option value="<?php echo $package->id; ?>"><?php echo $package->package_value; ?></option>
                      <?php } ?>
                   </select>
                   <div class="col-md-4"><span class="error1 pl-0"></span></div>
-               <span id="package_info"> </span>
+                  <span id="package_info"> </span>
 
                </div>
-                        
+
                <div class="heading mb-3">
                   <h5 class="text-primary font-weight-bold" style="padding: 10px; color: white !important; background-color: #2441e7; border-radius: 5px; margin: 0 -13px; margin-bottom: 30px;">Enter RTO Super Admin Details</h5>
                </div>
@@ -302,31 +315,31 @@ $PAGE->set_pagelayout('standard');
                   <label for="label" class="col-md-3">User name <span class="err">*</span></label>
                   <input type="text" class="form-control col-md-9 focusError" id="username" placeholder="Enter User Name"  name="username" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                  <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">First Name <span class="err">*</span></label>
                   <input type="text" class="form-control col-md-9 focusError" id="firstname" placeholder="Enter First Name" onblur="allLetter(this)" name="firstname" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0" id="firstname_msg"></span>
+                  <span class="error1 col-md-8 pl-0" id="firstname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Last Name <span class="err">*</span></label>
                   <input type="text" class="form-control col-md-9 focusError" id="lastname" placeholder="Enter Last Name" onblur="allLetter(this)" name="lastname" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0" id="lastname_msg"></span>
+                  <span class="error1 col-md-8 pl-0" id="lastname_msg"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Phone Number <span class="err">*</span></label>
                   <input type="text" class="form-control col-md-12 focusError" id="phone" placeholder="Enter Phone Number" name="phone_no" onkeyup="numberOnly(this.value)" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                  <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Email-Id <span class="err">*</span></label>
                   <input type="email" class="form-control col-md-9 focusError" id="email" placeholder="Enter Email-Id" name="email" required>
                   <div class="col-md-3"></div>
-                     <span class="error1 col-md-8 pl-0"></span>
+                  <span class="error1 col-md-8 pl-0"></span>
                </div>
                <div class="form-group row">
                   <label for="label" class="col-md-3">Confirm Email-Id <span class="err">*</span></label>
@@ -337,7 +350,7 @@ $PAGE->set_pagelayout('standard');
                <div class="form-group row">
                   <label for="label" class="col-md-3">Password <span class="err">*</span></label>
                   <div class="calendar col-md-9 p-0">
-                  <input type="text" style="width: 100%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="" onkeyup="checksPassword(this.value)"/>
+                     <input type="text" style="width: 100%;" class="form-control focusError" placeholder="Enter Password" id="password" name="password" value="" onkeyup="checksPassword(this.value)"/>
                      <!-- <span id="msg" style="margin-left: -540px;"></span> -->
                      <i class="fa fa-eye-slash eye" aria-hidden="true" onclick="showPassword(1)"></i>
                      <span class="error_message spassword_error" style="display: none; color: red;" id="pasward">Enter minimum 8 chars with atleast 1 number, lower, upper &amp; special(@#$%&!-_&amp;) char.</span>
@@ -361,43 +374,43 @@ $PAGE->set_pagelayout('standard');
                         <option value="<?php echo $category1->id; ?>"><?php echo $category1->name; ?></option>
                      <?php } ?>
                      
-                    
+
                      
                   </select>
                   <span id="category_msg"> </span>
                </div>
 
                <div class="form-group row">
-               <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
-               <div class="col-md-4">
-                   <input type="text" placeholder="Search course.." class="col-md-12" id="coursesearch" onkeyup="filterFunction()">
-                   <select class="col-md-12 pl-0 " id="courses" name="courses[]" multiple data-live-search="true" size="30" style="height: 100%;">
+                  <label for="label" class="col-md-3">Select Courses <span class="err"></span> </label>
+                  <div class="col-md-4">
+                    <input type="text" placeholder="Search course.." class="col-md-12" id="coursesearch" onkeyup="filterFunction()">
+                    <select class="col-md-12 pl-0 " id="courses" name="courses[]" multiple data-live-search="true" size="30" style="height: 100%;">
 
-                      <?php foreach($all_courses as $course){?>
-                         <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
+                       <?php foreach($all_courses as $course){?>
+                          <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
                           <!--<option value="<?php echo $course->id; ?>" class="course-option" data-category="<?php echo $course->category; ?>"><?php echo $course->fullname; ?></option>-->
-                      <?php } ?>
-                   </select>
-                   <span id="courses_msg"> </span>
-               </div>
+                       <?php } ?>
+                    </select>
+                    <span id="courses_msg"> </span>
+                 </div>
 
 
-               </div>
-               <div class="form-group row">
-                  <label for="label" class="col-md-3">Upload RTO Logo <span class="err"></span></label>
-                  <div class="calendar col-md-5 p-0"> 
+              </div>
+              <div class="form-group row">
+               <label for="label" class="col-md-3">Upload RTO Logo <span class="err"></span></label>
+               <div class="calendar col-md-5 p-0"> 
                   <input type="file" name="university_logo"  id="university_logo" accept="image/*" onchange="loadFile(event)">
-                  </div>
-                  <div class="calendar col-md-4 p-0">
-                  <img id="output"/>
-                  </div>
                </div>
-               <div class="form-group row">
-                  <div class="d-flex col-md-6">
-                     <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New RTO</a>&nbsp;
-                     <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
-                  </div>
-                  <div class="justify-content-center col-md-1" id="loader">
+               <div class="calendar col-md-4 p-0">
+                  <img id="output"/>
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="d-flex col-md-6">
+                  <a href="##" class="button d-block  text-center" onclick="adduniversity();">Create New RTO</a>&nbsp;
+                  <a href="<?php echo $CFG->wwwroot; ?>/local/dashboard/table.php?>" class="button d-block   text-center">Cancel</a>
+               </div>
+               <div class="justify-content-center col-md-1" id="loader">
                   <div class="spinner-border text-primary" role="status">
                      <span class="sr-only">Loading...</span>
                   </div>
@@ -407,41 +420,41 @@ $PAGE->set_pagelayout('standard');
       </div>
    </div>
 
-<script>
+   <script>
    // $(document).ready(function () {
       // $('select').selectpicker();
    // });
-   var loadFile = function(event) {
-    var output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
+      var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
       URL.revokeObjectURL(output.src) // free memory
-    }
-  };
-  
-  
+   }
+};
+
+
 function checksPassword(password){
-var pattern = /^.*(?=.{8,20})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&!-_]).*$/;
-if(!pattern.test(password)) {
-$(".spassword_error").show();
-}else
-{
-$(".spassword_error").hide();
-}
+   var pattern = /^.*(?=.{8,20})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&!-_]).*$/;
+   if(!pattern.test(password)) {
+      $(".spassword_error").show();
+   }else
+   {
+      $(".spassword_error").hide();
+   }
 
 }
 
 
-  
+
 function validatePassword(password) {
-                
+
     // Do not show anything when the length of password is zero.
-    if (password.length === 0) {
-        document.getElementById("msg").innerHTML = "";
-        return;
-    }
+  if (password.length === 0) {
+    document.getElementById("msg").innerHTML = "";
+    return;
+ }
     // Create an array and push all possible values that you want in password
-    var matchedCase = new Array();
+ var matchedCase = new Array();
     matchedCase.push("[$@$!%*#?&]"); // Special Charector
     matchedCase.push("[A-Z]");      // Uppercase Alpabates
     matchedCase.push("[0-9]");      // Numbers
@@ -450,34 +463,34 @@ function validatePassword(password) {
     // Check the conditions
     var ctr = 0;
     for (var i = 0; i < matchedCase.length; i++) {
-        if (new RegExp(matchedCase[i]).test(password)) {
-            ctr++;
-        }
-    }
+       if (new RegExp(matchedCase[i]).test(password)) {
+         ctr++;
+      }
+   }
     // Display it
-    var color = "";
-    var strength = "";
-    switch (ctr) {
-        case 0:
-        case 1:
-        case 2:
-            strength = "Very Weak";
-            color = "red";
-            break;
-        case 3:
-            strength = "Medium";
-            color = "orange";
-            break;
-        case 4:
-            strength = "Strong";
-            color = "green";
-            break;
-    }
-    document.getElementById("msg").innerHTML = strength;
-    document.getElementById("msg").style.color = color;
+   var color = "";
+   var strength = "";
+   switch (ctr) {
+   case 0:
+   case 1:
+   case 2:
+      strength = "Very Weak";
+      color = "red";
+      break;
+   case 3:
+      strength = "Medium";
+      color = "orange";
+      break;
+   case 4:
+      strength = "Strong";
+      color = "green";
+      break;
+   }
+   document.getElementById("msg").innerHTML = strength;
+   document.getElementById("msg").style.color = color;
 }
 
-  
+
 
 
 
@@ -531,13 +544,13 @@ function numberOnly8(inputvalue) {
    if (inputvalue.length > 0)
    {
       if(inputvalue.match(all_number1))
-     {
-      erroeClass[3].innerHTML = " ";
-     }
-   else
-     {
-      erroeClass[3].innerHTML = "Only numbers allowed";
-     }
+      {
+         erroeClass[3].innerHTML = " ";
+      }
+      else
+      {
+         erroeClass[3].innerHTML = "Only numbers allowed";
+      }
    }
    else
    {
@@ -551,13 +564,13 @@ function smallOnly(inputvalue) {
    if (inputvalue.length > 0)
    {
       if(inputvalue.match(smallletter))
-     {
-      erroeClass[7].innerHTML = " ";
-     }
-   else
-     {
-      erroeClass[7].innerHTML = "Capital letter and special character not allow";
-     }
+      {
+         erroeClass[7].innerHTML = " ";
+      }
+      else
+      {
+         erroeClass[7].innerHTML = "Capital letter and special character not allow";
+      }
    }
    else
    {
@@ -570,15 +583,15 @@ function numberOnly(inputvalue) {
    if (inputvalue.length > 0)
    {
       if(inputvalue.match(all_number))
-     {
-      erroeClass[12].innerHTML = " ";
-      num_value =true;
-     }
-   else
-     {
-      erroeClass[12].innerHTML = "This field accepted number only";
-      num_value =false;
-     }
+      {
+         erroeClass[12].innerHTML = " ";
+         num_value =true;
+      }
+      else
+      {
+         erroeClass[12].innerHTML = "This field accepted number only";
+         num_value =false;
+      }
    }
    else
    {
@@ -604,7 +617,7 @@ function showPassword(obj)
       if (x.type === "password") 
          x.type = "text";
       else 
-         x.type = "password";  
+      x.type = "password";  
    } 
    else 
    {
@@ -612,7 +625,7 @@ function showPassword(obj)
       if (x.type === "password")
          x.type = "text";
       else 
-         x.type = "password";
+      x.type = "password";
    }
 }
 // *****************showPassword End****************
@@ -777,16 +790,16 @@ function adduniversity()
          type: "POST",
          url: "<?php echo $CFG->wwwroot ?>" + "/local/dashboard/customuniversity.php",
          dataType: "json",
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
+         data: formData,
+         cache: false,
+         contentType: false,
+         processData: false,
          // data: $("#addnewuniversity").serialize(),
          beforeSend: function(){
-         $("#loader").show();
+            $("#loader").show();
          },
          complete:function(data){
-         $("#loader").hide();
+            $("#loader").hide();
          },
          success: function(json) 
          {
@@ -839,78 +852,78 @@ function selectPackage(package_id)
          // console.log(json['course']);
          $("#package_info").html(json['html']);
       }
-});
+   });
 }
 function selectedCategory(categoryid) 
 {
-    $('#selectedcategoryid').val(categoryid);
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/getcoursesbycategory.php",
-      data: {id:categoryid},
-      dataType: "json",
-      success: function(json) 
-      {
-         $("#courses").empty();
-         console.log(json['courses']);
-         var select = document.getElementById("courses");
-         for(key in json['courses'] ){
-             console.log(json['courses'][key].fullname);
-             $('#courses').append('<option value="'+key+'">'+json['courses'][key].fullname+'</option>');
+  $('#selectedcategoryid').val(categoryid);
+  $.ajax({
+   type: "POST",
+   url: "<?php echo $CFG->wwwroot ?>" + "/local/createadmin/getcoursesbycategory.php",
+   data: {id:categoryid},
+   dataType: "json",
+   success: function(json) 
+   {
+      $("#courses").empty();
+      console.log(json['courses']);
+      var select = document.getElementById("courses");
+      for(key in json['courses'] ){
+        console.log(json['courses'][key].fullname);
+        $('#courses').append('<option value="'+key+'">'+json['courses'][key].fullname+'</option>');
 
              //var option = document.createElement("option");
              //option.value = key;
              //option.text = json['courses'][key].fullname;
              //select.appendChild(option);
-             
-         }
-         $("#courses").selectpicker("refresh");
-         
+
+     }
+     $("#courses").selectpicker("refresh");
+
          //$("#package_info").html(json['html']);
-      }
+  }
 });
 }
-   </script>
+</script>
 <script>
-     
-     var phone_number = window.intlTelInput(document.querySelector("#phone"), {
-  separateDialCode: true,
-  preferredCountries:["au"],
-  hiddenInput: "full",
-  utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
-});
 
-$("form").submit(function() {
-  var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
-$("input[name='phone_number[full]'").val(full_number);
-  alert(full_number)
-  
-});
+ var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["au"],
+    hiddenInput: "full",
+    utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+ });
 
-     function filterFunction() {
-         var input, filter, ul, li, a, i;
-         input = document.getElementById("myInput");
-         filter = input.value.toUpperCase();
-         div = document.getElementById("courses");
-         a = div.getElementsByTagName("option");
-         for (i = 0; i < a.length; i++) {
-             txtValue = a[i].textContent || a[i].innerText;
-             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                 a[i].style.display = "";
-             } else {
-                 a[i].style.display = "none";
-             }
-         }
-     }
- </script>
+ $("form").submit(function() {
+    var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+    $("input[name='phone_number[full]'").val(full_number);
+    alert(full_number)
 
-   
-   
-   
-   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-   
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ });
+
+ function filterFunction() {
+   var input, filter, ul, li, a, i;
+   input = document.getElementById("myInput");
+   filter = input.value.toUpperCase();
+   div = document.getElementById("courses");
+   a = div.getElementsByTagName("option");
+   for (i = 0; i < a.length; i++) {
+     txtValue = a[i].textContent || a[i].innerText;
+     if (txtValue.toUpperCase().indexOf(filter) > -1) {
+       a[i].style.display = "";
+    } else {
+       a[i].style.display = "none";
+    }
+ }
+}
+</script>
+
+
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
 </body>

@@ -37,7 +37,9 @@ class enroluser_adhoc  extends \core\task\adhoc_task {
 
         try{
             if(!is_siteadmin($data->userid)) {
-                enrol_try_internal_enrol($data->courseid,$data->userid);
+                // role to assign in the course
+                $roleid = 12;
+                enrol_try_internal_enrol($data->courseid,$data->userid, $roleid);
             }
             mtrace("Enrolled user with id $data->userid into course with id $data->courseid successfully");
 

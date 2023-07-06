@@ -92,7 +92,6 @@ class assign_courses extends adhoc_task
             $DB->update_record('assign_course', $pcourse);
             $universityadmin = \core_user::get_user($university_admin_userid->userid);
             enrol_try_internal_enrol($restorerecord->itemid, $universityadmin->id, 12);
-            enrol_try_internal_enrol($restorerecord->itemid, $universityadmin->id, 1);
             $courseresource = new stdClass();
             $courseresource->university_id=$pcourse->university_id;
             $courseresource->course_id=$pcourse->course_id;
