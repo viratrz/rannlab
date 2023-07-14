@@ -339,6 +339,12 @@ function create_coursess($event)
     $dataobject->tenent_id=(int)$SESSION->university_id;
     $DB->update_record($table, $dataobject);
 
+    $assign_course = new stdClass();
+    $assign_course->university_id = $dataobject->tenent_id;
+    $assign_course->course_id = $dataobject->id;
+    $assign_course->is_pending = 0;
+    $assign_id = $DB->insert_record('assign_course', $assign_course);
+
     $adhoc = new \local_dashboard\adhoc\enroluser_adhoc();
     $adhoc->set_custom_data(array(
         'courseid' => $dataobject->id,

@@ -902,7 +902,7 @@ function selectedCategory(categoryid)
 
  function filterFunction() {
    var input, filter, ul, li, a, i;
-   input = document.getElementById("myInput");
+   input = document.getElementById("coursesearch");
    filter = input.value.toUpperCase();
    div = document.getElementById("courses");
    a = div.getElementsByTagName("option");
