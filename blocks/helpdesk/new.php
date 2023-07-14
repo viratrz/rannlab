@@ -66,6 +66,7 @@ if (!empty($tags)) {
 }
 
 $hd_userid = optional_param('hd_userid', 0, PARAM_INT);
+// print_object($hd_userid);die;
 if ($hd_userid) {
     helpdesk_is_capable(HELPDESK_CAP_ANSWER, true);
     $url->param('hd_userid', $hd_userid);
@@ -110,6 +111,7 @@ $ticket = $hd->new_ticket();
 if (!$ticket->parse($data)) {
     print_error("cannotparsedata", 'block_helpdesk');
 }
+print_object($ticket);die;
 if ($hd_userid) { $ticket->set_firstcontact($USER->id); }
 if (!$ticket->store()) {
     print_error('unabletostoreticket', 'block_helpdesk');

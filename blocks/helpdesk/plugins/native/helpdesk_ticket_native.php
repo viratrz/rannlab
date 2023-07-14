@@ -111,7 +111,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             $newuserurl->param('function', HELPDESK_USERLIST_NEW_SUBMITTER);
             $newuserurl->param('tid', $this->get_idstring());
             $str .="<br /><small><a href=\"" . $newuserurl->out() . "\">" .
-                   get_string('changeuser', 'block_helpdesk') . '</a></small>';
+            get_string('changeuser', 'block_helpdesk') . '</a></small>';
         }
         $row[] = $str;
         $row[] = helpdesk_user_link($user);
@@ -173,11 +173,11 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             $url = "{$CFG->wwwroot}/blocks/helpdesk/plugins/native/action/grab.php";
             $grab_help = $OUTPUT->help_icon('grabquestion', 'block_helpdesk');
             $row[] = "<form action=\"{$url}\" method=\"get\">"
-                . '<input type="hidden" name="id" value="'
-                . $this->get_idstring() . '" />'
-                . '<input type="submit" value="'
-                . get_string('grabquestion', 'block_helpdesk')
-                . "\" />{$grab_help}</form>";
+            . '<input type="hidden" name="id" value="'
+            . $this->get_idstring() . '" />'
+            . '<input type="submit" value="'
+            . get_string('grabquestion', 'block_helpdesk')
+            . "\" />{$grab_help}</form>";
             $table->data[] = $row;
         }
 
@@ -299,9 +299,9 @@ class helpdesk_ticket_native extends helpdesk_ticket {
                 $row = array();
                 if ($isanswerer and !$readonly) {
                     $remove = "<br />
-                               <small>
-                                   <a href=\"$url\">$removestr</a>
-                               </small>";
+                    <small>
+                    <a href=\"$url\">$removestr</a>
+                    </small>";
                 } else {
                     $remove = '';
                 }
@@ -376,7 +376,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
                     }
                     $url = $url->out();
                     if($isanswerer) {
-                    $hideshowbutton = "<form name=\"updatehideshow\"action=\"{$url}\" method=\"get\">" .
+                        $hideshowbutton = "<form name=\"updatehideshow\"action=\"{$url}\" method=\"get\">" .
                         "<input type=\"submit\" value=\"{$str}\" />" .
                         "<input type=\"hidden\" name=\"id\" value=\"{$update->id}\" /></form>";
                     } else {
@@ -384,7 +384,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
                     }
                     if ($hd->is_update_hidden($update)) {
                         $row[] = get_string('thisupdateishidden', 'block_helpdesk') . '<br />'
-                            . $hideshowbutton;
+                        . $hideshowbutton;
                     } else {
                         $row[] = $hideshowbutton;
                     }
@@ -691,7 +691,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             'type'      => HELPDESK_UPDATE_TYPE_DETAILED,
         );
         $update->notes_editor['text'] = fullname_nowarnings($user) . ' '
-            . get_string('wasassigned', 'block_helpdesk');
+        . get_string('wasassigned', 'block_helpdesk');
         $update->notes_editor['format'] = FORMAT_HTML;
         if(!$this->add_update($update)) {
             echo $OUTPUT->notification(get_string('cantaddupdate', 'block_helpdesk'));
@@ -734,7 +734,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
                 'type'      => HELPDESK_UPDATE_TYPE_DETAILED,
             );
             $update->notes_editor['text'] = fullname_nowarnings($user) . ' ' .
-                get_string('wasunassigned', 'block_helpdesk');
+            get_string('wasunassigned', 'block_helpdesk');
             $update->notes_editor['format'] = FORMAT_HTML;
 
             if(!$this->add_update($update)) {
@@ -968,7 +968,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             $this->firstcontact = helpdesk_get_user($this->firstcontact);
         }
         $dataobject->firstcontact       = is_object($this->firstcontact) ?
-                                          $this->firstcontact->userid : 0;
+        $this->firstcontact->userid : 0;
 
         $assigned = $this->get_assigned();
         if ($assigned === false) {
@@ -1048,6 +1048,7 @@ class helpdesk_ticket_native extends helpdesk_ticket {
         if (!is_object($data)) {
             return false;
         }
+
         $hd_user = helpdesk_get_user($USER->id);
         // An id may not always exists, like if this is a new ticket.
         if (isset($data->id)) {
@@ -1266,32 +1267,32 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             isset($tag->id)){
 
             return false;
-        }
+    }
 
-        $tag->value = '';
-        if (!$tag->id = $DB->insert_record('block_helpdesk_ticket_tag', $tag)) {
-            return false;
-        }
+    $tag->value = '';
+    if (!$tag->id = $DB->insert_record('block_helpdesk_ticket_tag', $tag)) {
+        return false;
+    }
 
-        $this->update_tag($tag);
+    $this->update_tag($tag);
 
         // Lets make an update saying we added this tag.
-        $dat = new stdClass;
-        $dat->ticketid  = $this->id;
-        $dat->notes_editor = array('text' => get_string('tagaddedwithnameof', 'block_helpdesk') . $tag->name,
-            'format' => FORMAT_HTML);
-        $dat->status    = HELPDESK_NATIVE_UPDATE_TAG;
-        $dat->type      = HELPDESK_UPDATE_TYPE_DETAILED;
+    $dat = new stdClass;
+    $dat->ticketid  = $this->id;
+    $dat->notes_editor = array('text' => get_string('tagaddedwithnameof', 'block_helpdesk') . $tag->name,
+        'format' => FORMAT_HTML);
+    $dat->status    = HELPDESK_NATIVE_UPDATE_TAG;
+    $dat->type      = HELPDESK_UPDATE_TYPE_DETAILED;
 
-        if(!$this->add_update($dat)) {
-            echo $OUTPUT->notification(get_string('cantaddupdate', 'block_helpdesk'));
-        }
+    if(!$this->add_update($dat)) {
+        echo $OUTPUT->notification(get_string('cantaddupdate', 'block_helpdesk'));
+    }
 
         // Update modified time and refresh the ticket.
-        $this->store();
-        $this->fetch();
-        return true;
-    }
+    $this->store();
+    $this->fetch();
+    return true;
+}
 
     /**
      * Removes a tag from the database for a certain ticket based on an id.

@@ -295,7 +295,7 @@ class helpdesk_native extends helpdesk {
         }
 
         $records = $DB->get_records_select('block_helpdesk_ticket', $where, 'timemodified DESC',
-                                      'id, status', $offset, $count);
+          'id, status', $offset, $count);
 
         if (empty($records)) {
             return false;
@@ -510,27 +510,27 @@ class helpdesk_native extends helpdesk {
         global $CFG;
 
         $settings->add(new admin_setting_heading('block_helpdesk_plugin',
-                                                 get_string('pluginsettings', 'block_helpdesk'),
-                                                 get_string('pluginsettingsdesc', 'block_helpdesk')));
+         get_string('pluginsettings', 'block_helpdesk'),
+         get_string('pluginsettingsdesc', 'block_helpdesk')));
 
         $settings->add(new admin_setting_configcheckbox('block_helpdesk_assigned_auto_watch',
-                                                        get_string('assignedaswatchers', 'block_helpdesk'),
-                                                        get_string('assignedaswatchersdesc', 'block_helpdesk'),
-                                                        '1', '1', '0'));
+            get_string('assignedaswatchers', 'block_helpdesk'),
+            get_string('assignedaswatchersdesc', 'block_helpdesk'),
+            '1', '1', '0'));
 
         $settings->add(new admin_setting_configcheckbox('block_helpdesk_show_firstcontact',
-                                                        get_string('showfirstcontact', 'block_helpdesk'),
-                                                        get_string('showfirstcontactdesc', 'block_helpdesk'),
-                                                        '0', '1', '0'));
+            get_string('showfirstcontact', 'block_helpdesk'),
+            get_string('showfirstcontactdesc', 'block_helpdesk'),
+            '0', '1', '0'));
 
         $settings->add(new admin_setting_configcheckbox('block_helpdesk_send_update_email',
-                                                        get_string('sendemailupdate', 'block_helpdesk'),
-                                                        get_string('sendemailupdatedesc', 'block_helpdesk'),
-                                                        '0', '1', '0'));
+            get_string('sendemailupdate', 'block_helpdesk'),
+            get_string('sendemailupdatedesc', 'block_helpdesk'),
+            '0', '1', '0'));
         $settings->add(new admin_setting_configcheckbox('block_helpdesk_includeagent',
-                                                        get_string('includeagent', 'block_helpdesk'),
-                                                        get_string('includeagentdesc', 'block_helpdesk'),
-                                                        '0', '1', '0'));
+            get_string('includeagent', 'block_helpdesk'),
+            get_string('includeagentdesc', 'block_helpdesk'),
+            '0', '1', '0'));
 
         //$settings->add(new admin_setting_configcheckbox('block_helpdesk_get_email_tickets',
         //                                                get_string('getemailtickets', 'block_helpdesk'),
@@ -538,38 +538,38 @@ class helpdesk_native extends helpdesk {
         //                                                '0', '1', '0'));
 
         $settings->add(new admin_setting_configtext('block_helpdesk_email_addr',
-                                                    get_string('emailaddr', 'block_helpdesk'),
-                                                    get_string('emailaddrdesc', 'block_helpdesk'),
-                                                    '', PARAM_TEXT, 28));
+            get_string('emailaddr', 'block_helpdesk'),
+            get_string('emailaddrdesc', 'block_helpdesk'),
+            '', PARAM_TEXT, 28));
 
         $settings->add(new admin_setting_configpasswordunmask('block_helpdesk_email_passwd',
-                                                              get_string('emailpasswd', 'block_helpdesk'),
-                                                              get_string('emailpasswddesc', 'block_helpdesk'),
-                                                              '', PARAM_TEXT, 28));
+          get_string('emailpasswd', 'block_helpdesk'),
+          get_string('emailpasswddesc', 'block_helpdesk'),
+          '', PARAM_TEXT, 28));
 
         $settings->add(new admin_setting_configtext('block_helpdesk_email_name',
-                                                    get_string('emailname', 'block_helpdesk'),
-                                                    get_string('emailnamedesc', 'block_helpdesk'),
-                                                    '', PARAM_TEXT));
+            get_string('emailname', 'block_helpdesk'),
+            get_string('emailnamedesc', 'block_helpdesk'),
+            '', PARAM_TEXT));
 
         $settings->add(new admin_setting_configtext('block_helpdesk_email_subject',
-                                                    get_string('emailsubject', 'block_helpdesk'),
-                                                    get_string('emailsubjectdesc', 'block_helpdesk'),
-                                                    get_string('emaildefaultsubject', 'block_helpdesk'),
-                                                    PARAM_TEXT));
+            get_string('emailsubject', 'block_helpdesk'),
+            get_string('emailsubjectdesc', 'block_helpdesk'),
+            get_string('emaildefaultsubject', 'block_helpdesk'),
+            PARAM_TEXT));
 
         $settings->add(new admin_setting_configtextarea('block_helpdesk_email_content',
-                                                        get_string('emailcontent', 'block_helpdesk'),
-                                                        get_string('emailcontentdesc', 'block_helpdesk'),
-                                                        get_string('emaildefaultnotestext', 'block_helpdesk'),
-                                                        PARAM_RAW));
+            get_string('emailcontent', 'block_helpdesk'),
+            get_string('emailcontentdesc', 'block_helpdesk'),
+            get_string('emaildefaultnotestext', 'block_helpdesk'),
+            PARAM_RAW));
 
         $base = 'admin_setting_config';
         $class = ($CFG->version >= 2007101590.00) ? "{$base}textarea" : "{$base}textarea";
         $settings->add(new admin_setting_confightmleditor('block_helpdesk_email_htmlcontent',
-                                  get_string('emailrtfcontent', 'block_helpdesk'),
-                                  get_string('emailrtfcontentdesc', 'block_helpdesk'),
-                                  '', PARAM_RAW));
+          get_string('emailrtfcontent', 'block_helpdesk'),
+          get_string('emailrtfcontentdesc', 'block_helpdesk'),
+          '', PARAM_RAW));
 
         //$settings->add(new admin_setting_configtext('block_helpdesk_ticket_idle_dur',
         //                                            get_string('emailidlewait', 'block_helpdesk'),
@@ -633,30 +633,30 @@ class helpdesk_native extends helpdesk {
         $currentuser = $USER->id;
         $current_hd_user = helpdesk_get_user($USER->id);
         switch($rel) {
-        case HELPDESK_NATIVE_REL_REPORTEDBY:
+            case HELPDESK_NATIVE_REL_REPORTEDBY:
             $search->status = $this->get_status_ids(true, false, false);
             $search->submitter = $current_hd_user->hd_userid;
             break;
-        case HELPDESK_NATIVE_REL_WATCHING:
+            case HELPDESK_NATIVE_REL_WATCHING:
             $search->status = $this->get_status_ids(true, false, false);
             $search->watcher = $current_hd_user->hd_userid;
             break;
-        case HELPDESK_NATIVE_REL_NEW:
+            case HELPDESK_NATIVE_REL_NEW:
             $search->status[] = $DB->get_field('block_helpdesk_status', 'id', array('name' => 'new'));
             break;
-        case HELPDESK_NATIVE_REL_UNASSIGNED:
+            case HELPDESK_NATIVE_REL_UNASSIGNED:
             $currentuser = 0;
-        case HELPDESK_NATIVE_REL_ASSIGNEDTO:
+            case HELPDESK_NATIVE_REL_ASSIGNEDTO:
             $search->status = $this->get_status_ids(true, false, false);
             $search->answerer = $currentuser;
             break;
-        case HELPDESK_NATIVE_REL_CLOSED:
+            case HELPDESK_NATIVE_REL_CLOSED:
             $search->status = $this->get_status_ids(false, true, false);
             break;
-        case HELPDESK_NATIVE_REL_ALL:
+            case HELPDESK_NATIVE_REL_ALL:
             $search->status = $this->get_status_ids(true, true, false);
             break;
-        default:
+            default:
             return false;
         }
 
@@ -689,8 +689,8 @@ class helpdesk_native extends helpdesk {
             $where .= 'core = 1';
         }
         $sql = "
-            SELECT id, name
-            FROM {block_helpdesk_status}
+        SELECT id, name
+        FROM {block_helpdesk_status}
         ";
         if(!empty($where)) {
             $sql .= "WHERE {$where}";
@@ -711,9 +711,9 @@ class helpdesk_native extends helpdesk {
      */
     function get_default_relation($cap=null) {
         switch($cap) {
-        case HELPDESK_CAP_ANSWER:
+            case HELPDESK_CAP_ANSWER:
             return HELPDESK_NATIVE_REL_ASSIGNEDTO;
-        default:
+            default:
             return HELPDESK_NATIVE_REL_REPORTEDBY;
         }
         return HELPDESK_NATIVE_REL_REPORTEDBY;
@@ -754,7 +754,7 @@ class helpdesk_native extends helpdesk {
      *                  false for no failed search.)
      */
     function search($data, $count=10, $page=0) {
-        global $OUTPUT, $DB;
+        global $OUTPUT, $DB, $SESSION;
         if(is_string($data)) {
             print_error('deprecated search call parameter. I want an object, not a string. ROAR!');
         }
@@ -788,10 +788,11 @@ class helpdesk_native extends helpdesk {
         $selectcount    = 'SELECT COUNT(DISTINCT t.id)';
 
         $sqltickets = "
-            FROM {block_helpdesk_ticket} AS t
-            JOIN {block_helpdesk_hd_user} AS hu ON t.hd_userid = hu.id
-            LEFT JOIN {user} AS u ON hu.userid = u.id
-            LEFT JOIN {block_helpdesk_ticket_tag} AS tt ON t.id = tt.ticketid
+        FROM {block_helpdesk_ticket} AS t
+        JOIN {block_helpdesk_hd_user} AS hu ON t.hd_userid = hu.id
+        LEFT JOIN {user} AS u ON hu.userid = u.id
+        LEFT JOIN {block_helpdesk_ticket_tag} AS tt ON t.id = tt.ticketid
+        LEFT JOIN {university_user} uu ON uu.userid = hu.userid
         ";
 
         if($data->answerer <= 0) {
@@ -801,6 +802,7 @@ class helpdesk_native extends helpdesk {
         $sqltickets    .= $data->answerer > 0 ? " AND hta.userid = $data->answerer " : '';
 
         $wheretickets   = array('t.summary', 't.detail', 'tt.value', 'u.firstname', 'u.lastname', 'hu.name');
+        
 
         $params = array();
         $ticketsearchgroups = array();
@@ -845,65 +847,74 @@ class helpdesk_native extends helpdesk {
             $andwhere[] = '(' . implode(') AND (', $ticketsearchgroups) . ')';
         }
 
+        if (!is_siteadmin()) {
+            $andwhere[] = 'uu.university_id = '. $SESSION->university_id;
+        }
+
         $ticketwheresql = '';
         if (!empty($data->watcher) || !empty($data->submitter) || $data->answerer == 0
             || !empty($ticketsearchgroups) || (!empty($data->status) && $insql !== '')) {
             $ticketwheresql = 'WHERE ' . implode(' AND ', $andwhere);
-        }
+    }
         // END BEWARE
 
-        $orderby        = "ORDER BY timemodified DESC";
-        $searchquery    = "SELECT * FROM ({$selectsearch} {$sqltickets} {$ticketwheresql}) AS foo {$orderby}";
-        $countquery     = "{$selectcount} {$sqltickets} {$ticketwheresql}";
+    $orderby        = "ORDER BY timemodified DESC";
+    $searchquery    = "SELECT * FROM ({$selectsearch} {$sqltickets} {$ticketwheresql}) AS foo {$orderby}";
+    $countquery     = "{$selectcount} {$sqltickets} {$ticketwheresql}";
 
-        $tidbitcount    = $DB->count_records_sql($countquery, $params);
-        $offset         = $page * $count;
-        $tidbits        = $DB->get_records_sql($searchquery, $params, $offset, $count);
+    // print_object($searchquery);
+    // print_object($params);
+    // die();
 
-        $bigtickets     = array();
-        if(!empty($tidbits)) {
-            foreach($tidbits as $small_ticket) {
-                $ticketobj = $this->new_ticket();
-                $ticketobj->set_idstring($small_ticket->id);
-                $ticketobj->fetch();
-                $bigtickets[] = $ticketobj;
-            }
+
+    $tidbitcount    = $DB->count_records_sql($countquery, $params);
+    $offset         = $page * $count;
+    $tidbits        = $DB->get_records_sql($searchquery, $params, $offset, $count);
+
+    $bigtickets     = array();
+    if(!empty($tidbits)) {
+        foreach($tidbits as $small_ticket) {
+            $ticketobj = $this->new_ticket();
+            $ticketobj->set_idstring($small_ticket->id);
+            $ticketobj->fetch();
+            $bigtickets[] = $ticketobj;
         }
-
-        $result                 = new stdClass;
-        $result->results        = $bigtickets;
-        $result->count          = $tidbitcount;
-        $result->httpdata       = base64_encode(serialize($data));
-
-        return $result;
     }
 
-    function change_overview_form($ticket) {
-        global $CFG;
-        $id = $ticket->get_idstring();
-        if (empty($id)) {
-            return false;
-        }
-        $url = new moodle_url("$CFG->wwwroot/blocks/helpdesk/edit.php");
-        $url->param('id', $ticket->get_idstring());
+    $result                 = new stdClass;
+    $result->results        = $bigtickets;
+    $result->count          = $tidbitcount;
+    $result->httpdata       = base64_encode(serialize($data));
 
-        $user = helpdesk_get_hd_user($ticket->get_hd_userid());
+    return $result;
+}
 
-        $context = context_system::instance();
+function change_overview_form($ticket) {
+    global $CFG;
+    $id = $ticket->get_idstring();
+    if (empty($id)) {
+        return false;
+    }
+    $url = new moodle_url("$CFG->wwwroot/blocks/helpdesk/edit.php");
+    $url->param('id', $ticket->get_idstring());
+
+    $user = helpdesk_get_hd_user($ticket->get_hd_userid());
+
+    $context = context_system::instance();
 
         // Prepare the form file area.
-        $editoroptions = array('maxfiles'=> 99, 'maxbytes'=>$CFG->maxbytes, 'context'=>$context);
-        $ticket = file_prepare_standard_editor($ticket, 'detail', $editoroptions, $context,
-                'block_helpdesk', 'ticketdetail', $id);
-        $ticket->notes = '';
-        $ticket->notesformat = FORMAT_HTML;
-        $ticket = file_prepare_standard_editor($ticket, 'notes', $editoroptions, $context,
-                'block_helpdesk', 'ticketnotes', 0);
-        $ticket->username = fullname_nowarnings($user);
-        $form = new change_overview_form($url->out(), array('ticket' => $ticket, 'editoroptions' => $editoroptions));
+    $editoroptions = array('maxfiles'=> 99, 'maxbytes'=>$CFG->maxbytes, 'context'=>$context);
+    $ticket = file_prepare_standard_editor($ticket, 'detail', $editoroptions, $context,
+        'block_helpdesk', 'ticketdetail', $id);
+    $ticket->notes = '';
+    $ticket->notesformat = FORMAT_HTML;
+    $ticket = file_prepare_standard_editor($ticket, 'notes', $editoroptions, $context,
+        'block_helpdesk', 'ticketnotes', 0);
+    $ticket->username = fullname_nowarnings($user);
+    $form = new change_overview_form($url->out(), array('ticket' => $ticket, 'editoroptions' => $editoroptions));
 
-        return $form;
-    }
+    return $form;
+}
 
     /**
      * Overridden method to return a moodle form object for a new ticket.
@@ -965,10 +976,10 @@ class helpdesk_native extends helpdesk {
         $data->notesformat = FORMAT_HTML;
         if (!empty($USER->id)) {
             $data = file_prepare_standard_editor($data, 'notes', $editoroptions, $context,
-                    'block_helpdesk', 'ticketnotes', 0);
+                'block_helpdesk', 'ticketnotes', 0);
         }
         $form = new update_ticket_form($url->out(false),
-                array('ticket' => $data, 'editoroptions' => $editoroptions), 'post');
+            array('ticket' => $data, 'editoroptions' => $editoroptions), 'post');
         return $form;
     }
 
