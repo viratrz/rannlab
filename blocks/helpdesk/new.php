@@ -111,7 +111,7 @@ $ticket = $hd->new_ticket();
 if (!$ticket->parse($data)) {
     print_error("cannotparsedata", 'block_helpdesk');
 }
-print_object($ticket);die;
+
 if ($hd_userid) { $ticket->set_firstcontact($USER->id); }
 if (!$ticket->store()) {
     print_error('unabletostoreticket', 'block_helpdesk');
