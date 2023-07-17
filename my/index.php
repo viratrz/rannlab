@@ -49,15 +49,24 @@ $pagetitle = get_string('mypage', 'admin');
 global $DB,$USER,$OUTPUT, $SESSION;
 $title = 'Dashboard';
 
+if (isguestuser()) { 
+    $context = context_system::instance();
+    $PAGE->set_blocks_editing_capability('moodle/my:configsyspages');
+}else{
+    $userid = $USER->id;
+    $context = context_user::instance($USER->id);
+    $PAGE->set_blocks_editing_capability('moodle/my:manageblocks');
+}
+$PAGE->set_context($context);
+
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('mydashboard');
 $PAGE->set_secondary_active_tab('appearance');
-$PAGE->set_blocks_editing_capability('moodle/my:configsyspages');
 $PAGE->set_url(new moodle_url('/my/index.php'));
 $roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
 $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
-admin_externalpage_setup('mypage', '', null, '', array('pagelayout' => 'mydashboard'));
+// admin_externalpage_setup('mypage', '', null, '', array('pagelayout' => 'mydashboard'));
 
 $PAGE->add_body_class('limitedwidth');
 $PAGE->set_pagetype('my-index');
@@ -66,6 +75,8 @@ $PAGE->set_title($pagetitle);
 $PAGE->set_heading($pagetitle);
 $PAGE->set_secondary_navigation(false);
 $PAGE->set_primary_active_tab('myhome');
+
+
 
 
 function get_course_image($courseid)
