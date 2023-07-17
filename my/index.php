@@ -436,7 +436,7 @@ if(!is_siteadmin())
 
 <?php
 }
-else if ($role_shortname->shortname === "trainer") 
+else if ($role_shortname->shortname === "trainer" || $role_shortname->shortname === "leadtrainer") 
 {
   $coursecount = $DB->count_records("user_enrolments", ['userid'=>$USER->id]);
   $getuniversityid = $DB->get_record("university_user", ['userid'=>$USER->id]);
