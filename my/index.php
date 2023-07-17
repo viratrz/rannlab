@@ -436,18 +436,23 @@ else if ($role_shortname->shortname === "trainer")
   $groups = $DB->get_records_sql("SELECT {groups}.id FROM {user_enrolments} inner join {enrol} on {user_enrolments}.enrolid = {enrol}.id inner join {university_user} on {university_user}.userid = {user_enrolments}.userid inner join {user} on {user}.id = {university_user}.userid inner join {groups} on {groups}.courseid = {enrol}.courseid where {university_user}.university_id = '$getuniversityid->university_id' and {university_user}.userid = '$USER->id'");
   $totalactivities = $DB->get_records_sql("SELECT {course_modules}.id FROM {user_enrolments} inner join {enrol} on {user_enrolments}.enrolid = {enrol}.id inner join {university_user} on {university_user}.userid = {user_enrolments}.userid inner join {user} on {user}.id = {university_user}.userid inner join {course_modules} on {course_modules}.course  = {enrol}.courseid where {university_user}.university_id = '$getuniversityid->university_id' and {university_user}.userid = '$USER->id'");
   $module_course_completed_count = $DB->count_records("course_modules_completion",  array( 'userid'=> "$USER->id", 'completionstate' => '1' ));
-  $module_course_completed = ($module_course_completed_count/$coursecount)*100;
-  $module_course_incompleted = 100-$module_course_completed;
+  if ($coursecount > 0) {
+      $module_course_completed = ($module_course_completed_count/$coursecount)*100;
+      $module_course_incompleted = 100-$module_course_completed;
+  }else{
+    $module_course_completed = 0;
+    $module_course_incompleted = 0;
+}
 
-  $present = $DB->count_records("autoattend_students", ['status'=>'P']);
-  $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
+$present = $DB->count_records("autoattend_students", ['status'=>'P']);
+$absent = $DB->count_records("autoattend_students", ['status'=>'X']);
       //var_dump($module_course_completed);
       //die;
 
-  ?>
+?>
 
-  <div class="row" style="justify-content: space-between;">
-      <!-- ./col -->
+<div class="row" style="justify-content: space-between;">
+  <!-- ./col -->
       <!--<div class="col-sm-4">
                           <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="ff_one">
                             <div class="detais">
@@ -600,8 +605,13 @@ else if ($role_shortname->shortname === "trainer")
         $more8week = $DB->get_records_sql("SELECT {user}.id FROM {user} inner join {university_user} on {university_user}.userid = {user}.id where {university_user}.university_id = '$university_id' AND week(FROM_UNIXTIME({user}.lastlogin)) <= WEEK( current_date ) - 8 ;");
         $uni_user = $DB->get_record("university_user", ['university_id'=>$university_id]);
         $module_course_completed_count = $DB->count_records("course_modules_completion",  array( 'userid'=> "$uni_user->userid", 'completionstate' => '1' ));
-        $module_course_completed = ($module_course_completed_count/$coursecount)*100;
-        $module_course_incompleted = (100-$module_course_completed)*-1;
+        if ($coursecount) {
+            $module_course_completed = ($module_course_completed_count/$coursecount)*100;
+            $module_course_incompleted = (100-$module_course_completed);
+        }else{
+            $module_course_completed = 0;
+            $module_course_incompleted = 0;
+        }
         if (is_siteadmin()) {
             $unassignedticket = $DB->count_records("block_helpdesk_ticket",['assigned_refs'=>'0']);
             $openticket = $DB->get_records_sql("SELECT * FROM {block_helpdesk_ticket} where status = '1' OR status = '6'");
