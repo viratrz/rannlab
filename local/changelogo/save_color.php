@@ -20,12 +20,12 @@ if(isset($_POST['f_color'])) {
 // echo "<pre>";
 // var_dump($_POST,$last_color,$footer_color,$header_color,$university->university_id);
 // die;
-purge_caches();
 $set_color = new stdclass();
 $set_color->id = $university_id;
 $set_color->header_color = $header_color;
 $set_color->footer_color = $footer_color;
 $status=$DB->update_record('school', $set_color);
+unset($SESSION->university_theme_colors);
 // echo $status;
 if($status)
 {
