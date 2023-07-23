@@ -54,6 +54,8 @@ $rel            = optional_param('rel', $defaultrel, PARAM_TEXT);
 $form           = $hd->search_form();
 $data           = $form->get_data();
 
+// print_object($data);die;
+
 if (!isset($data)) { $data = new stdClass; }
 if(!helpdesk_is_capable(HELPDESK_CAP_ANSWER)) {
     $data->submitter = $USER->id;
@@ -69,9 +71,9 @@ echo $OUTPUT->heading(get_string('helpdesk', 'block_helpdesk'));
 // Create ticket button
 echo '<button id="create-ticket-btn">Create Ticket</button>';
 echo '<script>
-    document.getElementById("create-ticket-btn").onclick = function() {
-        window.location.href = "' . new moodle_url('/blocks/helpdesk/new.php') . '";
-    };
+document.getElementById("create-ticket-btn").onclick = function() {
+    window.location.href = "' . new moodle_url('/blocks/helpdesk/new.php') . '";
+};
 </script>';
 
 
@@ -86,6 +88,9 @@ if(!$form->is_submitted() and empty($httpdata)) {
     }
     if(is_string($rel)) {
         $data = $hd->get_ticket_relation_search($rel);
+        
+        // we are forcefully violating the relationship thing and setting answerer to all 
+        $data->answerer = -1;
         if(!$data) {
             print_error('relationnosearchpreset', 'block_helpdesk');
         }
@@ -111,6 +116,7 @@ if (!empty($fd->status)) {
     $fd->status = implode(',', $fd->status);
 }
 unset($fd->submitter);
+// print_object($fd);die;
 $form->set_data($fd);
 
 $options = $hd->get_ticket_relations($cap);
@@ -146,7 +152,7 @@ foreach ($options as $option) {
 }
 
 echo "<div id=\"ticketlistoptions\">
-    <div class=\"left2div\">";
+<div class=\"left2div\">";
 $form->display();
 echo "</div>";
 

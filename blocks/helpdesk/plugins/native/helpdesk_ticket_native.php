@@ -1186,7 +1186,8 @@ class helpdesk_ticket_native extends helpdesk_ticket {
             // notifications are turned on.
             // NOTE: This method will automatically check to see if we can send
             // emails out, don't worry about checking that here.
-            if($dat->type == HELPDESK_UPDATE_TYPE_USER) {
+            // adding one more condition to send emails
+            if($dat->type == HELPDESK_UPDATE_TYPE_DETAILED || $dat->type == HELPDESK_UPDATE_TYPE_USER) {
                 $rval = $hd->email_update($this);
             }
 

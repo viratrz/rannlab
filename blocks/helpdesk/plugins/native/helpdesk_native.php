@@ -461,6 +461,7 @@ class helpdesk_native extends helpdesk {
                 $rval = email_to_external_user($user, $supportuser, $emailsubject, $emailtext, $emailhtml);
             } else {
                 $rval = email_to_user($user, $supportuser, $emailsubject, $emailtext, $emailhtml);
+                $messageid = $this->update_message_user($user, $supportuser, $emailsubject, $emailtext, $emailhtml, $url);
             }
             if ($rval === false) {
                 echo $OUTPUT->notification(get_string('failedtosendemail', 'block_helpdesk'));
@@ -468,6 +469,33 @@ class helpdesk_native extends helpdesk {
         }
 
         return true;
+    }
+
+
+    private function update_message_user($user, $supportuser, $subject, $bodytext, $bodyhtml, $ticketurl = '')
+    {
+        $subject = $subject;
+        $userto = $user;
+        $userfrom = $supportuser;
+        $message = new \core\message\message();
+        $message->component = 'moodle'; // Your plugin's name
+        $message->name = 'instantmessage'; // Your notification name from message.php
+        $message->userfrom = $userfrom;
+        $message->userto = $userto;
+        $message->subject = $subject;
+        $message->fullmessage = $bodytext;
+        $message->fullmessageformat = FORMAT_MARKDOWN;
+        $message->fullmessagehtml = $bodyhtml;
+        $message->smallmessage = $subject;
+        $message->notification = 1;
+        if (!$ticketurl) {
+            $message->contexturl = (new \moodle_url('/blocks/helpdesk/search.php'))->out(false);
+        }else{
+            $message->contexturl = $ticketurl;
+        }
+        $message->contexturlname = 'Tickets';
+        $messageid = message_send($message);
+        return $messageid;
     }
 
     private function process_watchers_to_email($watchers) {
@@ -510,8 +538,8 @@ class helpdesk_native extends helpdesk {
         global $CFG;
 
         $settings->add(new admin_setting_heading('block_helpdesk_plugin',
-         get_string('pluginsettings', 'block_helpdesk'),
-         get_string('pluginsettingsdesc', 'block_helpdesk')));
+           get_string('pluginsettings', 'block_helpdesk'),
+           get_string('pluginsettingsdesc', 'block_helpdesk')));
 
         $settings->add(new admin_setting_configcheckbox('block_helpdesk_assigned_auto_watch',
             get_string('assignedaswatchers', 'block_helpdesk'),
@@ -647,7 +675,8 @@ class helpdesk_native extends helpdesk {
             case HELPDESK_NATIVE_REL_UNASSIGNED:
             $currentuser = 0;
             case HELPDESK_NATIVE_REL_ASSIGNEDTO:
-            $search->status = $this->get_status_ids(true, false, false);
+            // forcefully getting all statuses by default
+            $search->status = $this->get_status_ids(true, true, false);
             $search->answerer = $currentuser;
             break;
             case HELPDESK_NATIVE_REL_CLOSED:
@@ -794,6 +823,10 @@ class helpdesk_native extends helpdesk {
         LEFT JOIN {block_helpdesk_ticket_tag} AS tt ON t.id = tt.ticketid
         LEFT JOIN {university_user} uu ON uu.userid = hu.userid
         ";
+
+        if (is_siteadmin()) {
+            $sqltickets .= " JOIN {universityadmin} ua ON ua.userid = hu.userid ";
+        }
 
         if($data->answerer <= 0) {
             $sqltickets .= "LEFT ";
