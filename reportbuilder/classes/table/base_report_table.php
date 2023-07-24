@@ -71,6 +71,8 @@ abstract class base_report_table extends table_sql implements dynamic, renderabl
     protected function init_sql(string $fields, string $from, array $joins, string $where, array $params,
             array $groupby = []): void {
 
+        global $SESSION, $USER;
+
         $wheres = [];
         if ($where !== '') {
             $wheres[] = $where;
@@ -113,6 +115,31 @@ abstract class base_report_table extends table_sql implements dynamic, renderabl
 
         // Add unique table joins.
         $from .= ' ' . implode(' ', array_unique($joins));
+
+        $universityid = $SESSION->university_id;
+        if($universityid) {
+
+            $usertablecheck = explode('{user} ', $from);
+            if(!is_null($usertablecheck[1])) {
+                $usertablealias = explode(' ', $usertablecheck[1]);
+                $usertablealias = $usertablealias[0];
+                if ($usertablealias) {
+                    $from .= " LEFT JOIN {university_user} uniu ON uniu.userid=$usertablealias.id";
+                    $wheresql .= ' AND uniu.university_id=' . $universityid;
+                }
+            }
+
+            $coursetablecheck = explode('{course} ', $from);
+            if(!is_null($coursetablecheck[1])) {
+                $coursetablealias = explode(' ', $coursetablecheck[1]);
+                $coursetablealias = $coursetablealias[0];
+                if ($coursetablealias) {
+                    $from .= " JOIN {enrol} enr ON c.id=enr.courseid JOIN {user_enrolments} uenr ON enr.id=uenr.enrolid";
+                    $wheresql .= ' AND uenr.userid=' . $USER->id;
+                }
+            }
+
+        }
 
         $this->set_sql($fields, $from, $wheresql, $params);
 
