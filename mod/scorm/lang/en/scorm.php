@@ -458,3 +458,4 @@ $string['youmustselectastatus'] = 'You must select a status to require';
 $string['info'] = 'Info';
 $string['displayactivityname'] = 'Display activity name';
 $string['displayactivityname_help'] = 'Whether or not to display the activity name above the SCORM player.';
+$string['courseembedurl'] = 'Hide & get embed URL';

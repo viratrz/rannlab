@@ -414,9 +414,9 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
     }
 
     if ($orgs = $DB->get_records_select('scorm_scoes', 'scorm = ? AND '.
-                                         $DB->sql_isempty('scorm_scoes', 'launch', false, true).' AND '.
-                                         $DB->sql_isempty('scorm_scoes', 'organization', false, false),
-                                         array($scorm->id), 'sortorder, id', 'id, identifier, title')) {
+     $DB->sql_isempty('scorm_scoes', 'launch', false, true).' AND '.
+     $DB->sql_isempty('scorm_scoes', 'organization', false, false),
+     array($scorm->id), 'sortorder, id', 'id, identifier, title')) {
         if (count($orgs) <= 1) {
             unset($orgs);
             $orgs = array();
@@ -434,7 +434,7 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
                 $conditions['organization'] = $currentorg;
             }
             $report .= html_writer::start_tag('ul', array('id' => '0', 'class' => $liststyle));
-                $conditions['scorm'] = $scorm->id;
+            $conditions['scorm'] = $scorm->id;
             if ($scoes = $DB->get_records('scorm_scoes', $conditions, "sortorder, id")) {
                 // Drop keys so that we can access array sequentially.
                 $scoes = array_values($scoes);
@@ -471,67 +471,67 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
                         $nextsco = false;
                     }
                     if (($nextsco !== false) && ($sco->parent != $nextsco->parent) &&
-                            (($level == 0) || (($level > 0) && ($nextsco->parent == $sco->identifier)))) {
+                        (($level == 0) || (($level > 0) && ($nextsco->parent == $sco->identifier)))) {
                         $sublist++;
-                    } else {
-                        $report .= $OUTPUT->spacer(array("height" => "12", "width" => "13"));
-                    }
-
-                    if ($sco->launch) {
-                        $score = '';
-                        $totaltime = '';
-                        if ($usertrack = scorm_get_tracks($sco->id, $user->id)) {
-                            if ($usertrack->status == '') {
-                                $usertrack->status = 'notattempted';
-                            }
-                            $strstatus = get_string($usertrack->status, 'scorm');
-                            $report .= $OUTPUT->pix_icon($usertrack->status, $strstatus, 'scorm');
-                        } else {
-                            if ($sco->scormtype == 'sco') {
-                                $report .= $OUTPUT->pix_icon('notattempted', get_string('notattempted', 'scorm'), 'scorm');
-                            } else {
-                                $report .= $OUTPUT->pix_icon('asset', get_string('asset', 'scorm'), 'scorm');
-                            }
-                        }
-                        $report .= "&nbsp;$sco->title $score$totaltime".html_writer::end_tag('li');
-                        if ($usertrack !== false) {
-                            $sometoreport = true;
-                            $report .= html_writer::start_tag('li').html_writer::start_tag('ul', array('class' => $liststyle));
-                            foreach ($usertrack as $element => $value) {
-                                if (substr($element, 0, 3) == 'cmi') {
-                                    $report .= html_writer::tag('li', s($element) . ' => ' . s($value));
-                                }
-                            }
-                            $report .= html_writer::end_tag('ul').html_writer::end_tag('li');
-                        }
-                    } else {
-                        $report .= "&nbsp;$sco->title".html_writer::end_tag('li');
-                    }
+                } else {
+                    $report .= $OUTPUT->spacer(array("height" => "12", "width" => "13"));
                 }
-                for ($i = 0; $i < $level; $i++) {
-                    $report .= html_writer::end_tag('ul').html_writer::end_tag('li');
+
+                if ($sco->launch) {
+                    $score = '';
+                    $totaltime = '';
+                    if ($usertrack = scorm_get_tracks($sco->id, $user->id)) {
+                        if ($usertrack->status == '') {
+                            $usertrack->status = 'notattempted';
+                        }
+                        $strstatus = get_string($usertrack->status, 'scorm');
+                        $report .= $OUTPUT->pix_icon($usertrack->status, $strstatus, 'scorm');
+                    } else {
+                        if ($sco->scormtype == 'sco') {
+                            $report .= $OUTPUT->pix_icon('notattempted', get_string('notattempted', 'scorm'), 'scorm');
+                        } else {
+                            $report .= $OUTPUT->pix_icon('asset', get_string('asset', 'scorm'), 'scorm');
+                        }
+                    }
+                    $report .= "&nbsp;$sco->title $score$totaltime".html_writer::end_tag('li');
+                    if ($usertrack !== false) {
+                        $sometoreport = true;
+                        $report .= html_writer::start_tag('li').html_writer::start_tag('ul', array('class' => $liststyle));
+                        foreach ($usertrack as $element => $value) {
+                            if (substr($element, 0, 3) == 'cmi') {
+                                $report .= html_writer::tag('li', s($element) . ' => ' . s($value));
+                            }
+                        }
+                        $report .= html_writer::end_tag('ul').html_writer::end_tag('li');
+                    }
+                } else {
+                    $report .= "&nbsp;$sco->title".html_writer::end_tag('li');
                 }
             }
-            $report .= html_writer::end_tag('ul').html_writer::empty_tag('br');
+            for ($i = 0; $i < $level; $i++) {
+                $report .= html_writer::end_tag('ul').html_writer::end_tag('li');
+            }
         }
-        $report .= html_writer::end_div();
+        $report .= html_writer::end_tag('ul').html_writer::empty_tag('br');
     }
-    if ($sometoreport) {
-        if ($firstmodify < $now) {
-            $timeago = format_time($now - $firstmodify);
-            echo get_string('firstaccess', 'scorm').': '.userdate($firstmodify).' ('.$timeago.")".html_writer::empty_tag('br');
-        }
-        if ($lastmodify > 0) {
-            $timeago = format_time($now - $lastmodify);
-            echo get_string('lastaccess', 'scorm').': '.userdate($lastmodify).' ('.$timeago.")".html_writer::empty_tag('br');
-        }
-        echo get_string('report', 'scorm').":".html_writer::empty_tag('br');
-        echo $report;
-    } else {
-        print_string('noactivity', 'scorm');
+    $report .= html_writer::end_div();
+}
+if ($sometoreport) {
+    if ($firstmodify < $now) {
+        $timeago = format_time($now - $firstmodify);
+        echo get_string('firstaccess', 'scorm').': '.userdate($firstmodify).' ('.$timeago.")".html_writer::empty_tag('br');
     }
+    if ($lastmodify > 0) {
+        $timeago = format_time($now - $lastmodify);
+        echo get_string('lastaccess', 'scorm').': '.userdate($lastmodify).' ('.$timeago.")".html_writer::empty_tag('br');
+    }
+    echo get_string('report', 'scorm').":".html_writer::empty_tag('br');
+    echo $report;
+} else {
+    print_string('noactivity', 'scorm');
+}
 
-    return true;
+return true;
 }
 
 /**
@@ -596,7 +596,7 @@ function scorm_get_user_grades($scorm, $userid=0) {
     $grades = array();
     if (empty($userid)) {
         $scousers = $DB->get_records_select('scorm_scoes_track', "scormid=? GROUP BY userid",
-                                            array($scorm->id), "", "userid,null");
+            array($scorm->id), "", "userid,null");
         if ($scousers) {
             foreach ($scousers as $scouser) {
                 $grades[$scouser->userid] = new stdClass();
@@ -610,7 +610,7 @@ function scorm_get_user_grades($scorm, $userid=0) {
 
     } else {
         $preattempt = $DB->get_records_select('scorm_scoes_track', "scormid=? AND userid=? GROUP BY userid",
-                                                array($scorm->id, $userid), "", "userid,null");
+            array($scorm->id, $userid), "", "userid,null");
         if (!$preattempt) {
             return false; // No attempt yet.
         }
@@ -676,7 +676,7 @@ function scorm_grade_item_update($scorm, $grades=null) {
 
     if ($scorm->grademethod == GRADESCOES) {
         $maxgrade = $DB->count_records_select('scorm_scoes', 'scorm = ? AND '.
-                                                $DB->sql_isnotempty('scorm_scoes', 'launch', false, true), array($scorm->id));
+            $DB->sql_isnotempty('scorm_scoes', 'launch', false, true), array($scorm->id));
         if ($maxgrade) {
             $params['gradetype'] = GRADE_TYPE_VALUE;
             $params['grademax']  = $maxgrade;
@@ -800,8 +800,8 @@ function scorm_reset_gradebook($courseid, $type='') {
     global $CFG, $DB;
 
     $sql = "SELECT s.*, cm.idnumber as cmidnumber, s.course as courseid
-              FROM {scorm} s, {course_modules} cm, {modules} m
-             WHERE m.name='scorm' AND m.id=cm.module AND cm.instance=s.id AND s.course=?";
+    FROM {scorm} s, {course_modules} cm, {modules} m
+    WHERE m.name='scorm' AND m.id=cm.module AND cm.instance=s.id AND s.course=?";
 
     if ($scorms = $DB->get_records_sql($sql, array($courseid))) {
         foreach ($scorms as $scorm) {
@@ -827,8 +827,8 @@ function scorm_reset_userdata($data) {
 
     if (!empty($data->reset_scorm)) {
         $scormssql = "SELECT s.id
-                         FROM {scorm} s
-                        WHERE s.course=?";
+        FROM {scorm} s
+        WHERE s.course=?";
 
         $DB->delete_records_select('scorm_scoes_track', "scormid IN ($scormssql)", array($data->courseid));
 
@@ -1216,7 +1216,7 @@ function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COM
 
     $cm = get_coursemodule_from_instance('scorm', $scorm->id, $scorm->course);
     if (empty($cm) || !$completion->is_enabled($cm)) {
-            return;
+        return;
     }
 
     if (empty($userid)) { // We need to get all the relevant users from $grades param.
@@ -1328,10 +1328,10 @@ function scorm_check_mode($scorm, &$newattempt, &$attempt, $userid, &$mode) {
     $completionelement = $completionelements[$scormversion];
 
     $sql = "SELECT sc.id, t.value
-              FROM {scorm_scoes} sc
-         LEFT JOIN {scorm_scoes_track} t ON sc.scorm = t.scormid AND sc.id = t.scoid
-                   AND t.element = ? AND t.userid = ? AND t.attempt = ?
-             WHERE sc.scormtype = 'sco' AND sc.scorm = ?";
+    FROM {scorm_scoes} sc
+    LEFT JOIN {scorm_scoes_track} t ON sc.scorm = t.scormid AND sc.id = t.scoid
+    AND t.element = ? AND t.userid = ? AND t.attempt = ?
+    WHERE sc.scormtype = 'sco' AND sc.scorm = ?";
     $tracks = $DB->get_recordset_sql($sql, array($completionelement, $userid, $attempt, $scorm->id));
 
     foreach ($tracks as $track) {
@@ -1532,7 +1532,7 @@ function scorm_refresh_events($courseid = 0, $instance = null, $cm = null) {
  * @return \core_calendar\local\event\entities\action_interface|null
  */
 function mod_scorm_core_calendar_provide_event_action(calendar_event $event,
-                                                      \core_calendar\action_factory $factory, $userid = null) {
+  \core_calendar\action_factory $factory, $userid = null) {
     global $CFG, $USER;
 
     require_once($CFG->dirroot . '/mod/scorm/locallib.php');
@@ -1593,7 +1593,7 @@ function scorm_get_coursemodule_info($coursemodule) {
 
     $dbparams = ['id' => $coursemodule->instance];
     $fields = 'id, name, intro, introformat, completionstatusrequired, completionscorerequired, completionstatusallscos, '.
-        'timeopen, timeclose';
+    'timeopen, timeclose';
     if (!$scorm = $DB->get_record('scorm', $dbparams, $fields)) {
         return false;
     }
@@ -1634,39 +1634,39 @@ function mod_scorm_get_completion_active_rule_descriptions($cm) {
     if (empty($cm->customdata['customcompletionrules'])
         || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
         return [];
-    }
+}
 
-    $descriptions = [];
-    foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
-        switch ($key) {
-            case 'completionstatusrequired':
-                if (!is_null($val)) {
+$descriptions = [];
+foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
+    switch ($key) {
+        case 'completionstatusrequired':
+        if (!is_null($val)) {
                     // Determine the selected statuses using a bitwise operation.
-                    $cvalues = array();
-                    foreach (scorm_status_options(true) as $bit => $string) {
-                        if (($val & $bit) == $bit) {
-                            $cvalues[] = $string;
-                        }
-                    }
-                    $statusstring = implode(', ', $cvalues);
-                    $descriptions[] = get_string('completionstatusrequireddesc', 'scorm', $statusstring);
+            $cvalues = array();
+            foreach (scorm_status_options(true) as $bit => $string) {
+                if (($val & $bit) == $bit) {
+                    $cvalues[] = $string;
                 }
-                break;
-            case 'completionscorerequired':
-                if (!is_null($val)) {
-                    $descriptions[] = get_string('completionscorerequireddesc', 'scorm', $val);
-                }
-                break;
-            case 'completionstatusallscos':
-                if (!empty($val)) {
-                    $descriptions[] = get_string('completionstatusallscos', 'scorm');
-                }
-                break;
-            default:
-                break;
+            }
+            $statusstring = implode(', ', $cvalues);
+            $descriptions[] = get_string('completionstatusrequireddesc', 'scorm', $statusstring);
         }
+        break;
+        case 'completionscorerequired':
+        if (!is_null($val)) {
+            $descriptions[] = get_string('completionscorerequireddesc', 'scorm', $val);
+        }
+        break;
+        case 'completionstatusallscos':
+        if (!empty($val)) {
+            $descriptions[] = get_string('completionstatusallscos', 'scorm');
+        }
+        break;
+        default:
+        break;
     }
-    return $descriptions;
+}
+return $descriptions;
 }
 
 /**
@@ -1818,13 +1818,13 @@ function mod_scorm_core_calendar_get_event_action_string(string $eventtype): str
 
     switch ($eventtype) {
         case SCORM_EVENT_TYPE_OPEN:
-            $identifier = 'calendarstart';
-            break;
+        $identifier = 'calendarstart';
+        break;
         case SCORM_EVENT_TYPE_CLOSE:
-            $identifier = 'calendarend';
-            break;
+        $identifier = 'calendarend';
+        break;
         default:
-            return get_string('requiresaction', 'calendar', $modulename);
+        return get_string('requiresaction', 'calendar', $modulename);
     }
 
     return get_string($identifier, 'scorm', $modulename);
@@ -1841,8 +1841,18 @@ function mod_scorm_core_calendar_get_event_action_string(string $eventtype): str
  * @return void
  */
 function scorm_extend_settings_navigation(settings_navigation $settings, navigation_node $scormnode): void {
+    global $PAGE;
     if (has_capability('mod/scorm:viewreport', $settings->get_page()->cm->context)) {
         $url = new moodle_url('/mod/scorm/report.php', ['id' => $settings->get_page()->cm->id]);
         $scormnode->add(get_string("reports", "scorm"), $url, navigation_node::TYPE_CUSTOM, null, 'scormreport');
     }
+
+    $course = $PAGE->course;
+    $coursecontext = context_course::instance($course->id);
+
+    if (has_capability('moodle/course:activityvisibility', $coursecontext)) {
+        $url = new moodle_url('/mod/scorm/coursepageembed.php', ['id' => $settings->get_page()->cm->id]);
+        $scormnode->add(get_string("courseembedurl", "scorm"), $url, navigation_node::TYPE_CUSTOM, null, 'embedurlgenerator');
+    }
+
 }
