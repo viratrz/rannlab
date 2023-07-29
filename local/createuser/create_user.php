@@ -14,6 +14,9 @@ $lastname =   $_POST['lastname'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 $role_id = (int)$_POST['role_id'];
+
+$courses = optional_param('course',null,PARAM_INT);
+
 $get_username = $DB->get_record('user', array('username'=>$username));
 
 if($get_username)
@@ -98,6 +101,14 @@ if ($package_id->num_of_user > $total_user)
             $insert_admin = $DB->insert_record('universityadmin', $user_info, true, false);
         }
         $insert_user = $DB->insert_record('university_user', $user_info, true, false);
+
+        foreach ($courses as $cours) {
+            $coursecontext = context_course::instance($cours);
+            $assignableroles = get_assignable_roles($coursecontext,ROLENAME_ORIGINAL,'');
+            $assignablerole = array_key_exists($role_id,$assignableroles);
+            $roleid = $assignablerole?$role_id:null;
+            enrol_try_internal_enrol($cours, $user_id, $roleid);
+        }
 
         if($insert_user)
         {	

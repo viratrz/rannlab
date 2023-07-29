@@ -24,7 +24,12 @@ email_to_user($to_user,$from_user,$sub,$msg);
 
 global $USER, $DB;
 $un_id=$DB->get_record('universityadmin', ['userid'=>$USER->id]);
-
+if(!$un_id){
+    if(is_siteadmin()) {
+        $userpage = new moodle_url('/admin/user.php');
+        redirect($userpage);
+    }
+}
 $uni_users = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {university_user} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id ORDER BY u.id DESC");
 
 $totalcount = count($uni_users);
