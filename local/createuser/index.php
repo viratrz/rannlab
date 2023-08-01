@@ -248,17 +248,17 @@ $PAGE->set_pagelayout('standard');
                ?>
                <div class="form-group row">
                   <label for="label" class="col-md-3"> Enroll Units<span class="err">*</span></label>
-                  <div class="calendar col-md-3 p-0">
-                     <select name="course[]" id="course" style="width: 100%;" class="form-control focusError selectpicker"  multiple data-live-search="true">
-                        <!--<option value="">Select course</option>-->
-                     <?php 
-                         foreach($data1 as $data12){?>
-                           <option value="<?php echo $data12->id; ?>"><?php echo $data12->fullname; ?></option>
-                        <?php } ?>
-                        
-                     </select>
-                     <span class="errormsg2" id="roleid">   </span>                  
-                  </div>
+
+                   <div class="col-md-4">
+                       <input type="text" placeholder="Search course.." class="col-md-12" id="coursesearch" onkeyup="filterFunction()">
+                       <select class="col-md-12 pl-0 " id="course" name="course[]" multiple data-live-search="true" size="30" style="height: 100%;">
+
+                           <?php foreach($data1 as $course){?>
+                               <option value="<?php echo $course->id; ?>"><?php echo $course->fullname; ?></option>
+                           <?php } ?>
+                       </select>
+                       <span id="courses_msg"> </span>
+                   </div>
                   <div class="col-md-6 pl-2"><span class="error1 pl-0 "></span></div>
                </div>
 
@@ -461,7 +461,21 @@ function addAdmin()
    }
 }
 
-
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("coursesearch");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("course");
+    a = div.getElementsByTagName("option");
+    for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
 
 </script>
 

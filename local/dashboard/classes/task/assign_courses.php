@@ -86,7 +86,12 @@ class assign_courses extends adhoc_task
             $asynctask->execute();
 
             $restorerecord = $DB->get_record('backup_controllers', array('backupid' => $restoreid), 'id, itemid', MUST_EXIST);
-            
+
+            $newcourse = new stdClass();
+            $newcourse->id = $restorerecord->itemid;
+            $newcourse->fullname = $course->fullname;
+            update_course($newcourse);
+
             // we expect that task executed successfully
             $pcourse->is_pending = 0;
             $pcourse->course_id = $restorerecord->itemid;
