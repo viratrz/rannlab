@@ -371,9 +371,13 @@ class core_renderer extends \core_renderer {
 
       $theme_colours = $SESSION->university_theme_colors;
       if ($theme_colours->header_color) {
-       $header_css = 'header {background-color: '.$theme_colours->header_color .' !important;}';
-     }
-     if ($theme_colours->header_color) {
+       $header_css = 'header{background-color: '.$theme_colours->header_color .' !important;} ';
+       if (!($PAGE->pagelayout == 'mydashboard' && $PAGE->pagetype == 'my-index')) {
+        $header_css .= 'header{ background-image: unset !important; }';
+      }
+      // echo $header_css;die;
+    }
+    if ($theme_colours->header_color) {
       $footer_css = '.footer_one {background-color: '.$theme_colours->footer_color .' !important;}';
     }
 
