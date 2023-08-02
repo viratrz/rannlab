@@ -360,10 +360,18 @@ class core_renderer extends \core_renderer {
     $output = '';
 
     // adding header footer color for university
-    if (isset($SESSION->university_id)) {
+    if (isset($SESSION->university_id) || is_siteadmin()) {
   // get header footer colour
       if (!isset($SESSION->university_theme_colors)) {
-        $theme_colours = $DB->get_record('school', ['id' => $SESSION->university_id], 'id,header_color,footer_color', IGNORE_MISSING);
+        $university_id = $SESSION->university_id;
+        if (is_siteadmin()) {
+          $theme_colours = new \stdClass();
+          $theme_colours->header_color = get_config('theme_edumy', 'university_header_color');
+          $theme_colours->footer_color = get_config('theme_edumy', 'university_footer_color');
+        }else{
+          $theme_colours = $DB->get_record('school', ['id' => $university_id], 'id,header_color,footer_color', IGNORE_MISSING);
+        }
+        // print_object($theme_colours);die;
         if (!empty($theme_colours)) {
           $SESSION->university_theme_colors = $theme_colours;
         }
@@ -377,7 +385,7 @@ class core_renderer extends \core_renderer {
       }
       // echo $header_css;die;
     }
-    if ($theme_colours->header_color) {
+    if ($theme_colours->footer_color) {
       $footer_css = '.footer_one {background-color: '.$theme_colours->footer_color .' !important;}';
     }
 

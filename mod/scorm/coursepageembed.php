@@ -46,7 +46,7 @@ if (!empty($sco)) {
 $scormembedurl = new moodle_url('/mod/scorm/player.php', ['mode' => 'normal', 'scoid' => $scoid, 'cm' => $cm->id, 'display' => 'popup']);
 $scormembedurl = $scormembedurl->out(false);
 
-$iframe = ["<iframe src='$scormembedurl' style='height:75vh; width:75vw'></iframe>"];
+$iframe = ["<iframe src='$scormembedurl' style='height:80vh; width:75vw'></iframe>"];
 
 if (set_coursemodule_visible($cm->id, 0)) {
 	\core\event\course_module_updated::create_from_cm($cm, $modcontext)->trigger();
