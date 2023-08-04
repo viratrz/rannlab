@@ -29,6 +29,8 @@ if(!$un_id){
         $userpage = new moodle_url('/admin/user.php');
         redirect($userpage);
     }
+    $homepage = new moodle_url('/my');
+    redirect($homepage,'Not authorise to see users list.',null,\core\output\notification::NOTIFY_INFO);
 }
 $uni_users = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {university_user} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id ORDER BY u.id DESC");
 

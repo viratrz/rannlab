@@ -59,13 +59,20 @@ if (isguestuser()) {
 }
 $PAGE->set_context($context);
 
+$roles = get_user_roles(context_system::instance(), $USER->id, true);
+$role_shortnames = [];
+foreach ($roles as $role) {
+    $role_shortnames[] = $role->shortname;
+}
+
+
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagelayout('mydashboard');
 $PAGE->set_secondary_active_tab('appearance');
 $PAGE->set_url(new moodle_url('/my/index.php'));
 $roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
-$role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
+//$role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
 // admin_externalpage_setup('mypage', '', null, '', array('pagelayout' => 'mydashboard'));
 
 $PAGE->add_body_class('limitedwidth');
@@ -349,7 +356,7 @@ echo $OUTPUT->header();
 if(!is_siteadmin())
 {
     $roleid = $DB->get_record("role_assignments",['userid'=>$USER->id]);
-    $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
+//    $role_shortname = $DB->get_record("role",['id'=>$roleid->roleid]);
     $stud_name = $DB->get_record("user",['id'=>$roleid->username]);
     //$coursecount = $DB->count_records("course", ['idnumber'=>'resourcecat']);
     $stud_courses = $DB->get_records_sql("SELECT * FROM {role_assignments} WHERE userid ='$USER->id'");
@@ -368,7 +375,8 @@ if(!is_siteadmin())
     
     
     
-    if ($role_shortname->shortname === "student") 
+//    if ($role_shortname->shortname === "student")
+    if (in_array("student",$role_shortnames))
     {
         $complete_course = $DB->count_records("course_completions", ['userid'=>$USER->id]);
         $overdue_courses = $coursecount - $complete_course;
@@ -436,7 +444,8 @@ if(!is_siteadmin())
 
 <?php
 }
-else if ($role_shortname->shortname === "trainer" || $role_shortname->shortname === "leadtrainer") 
+//else if ($role_shortname->shortname === "trainer" || $role_shortname->shortname === "leadtrainer")
+else if (in_array("trainer",$role_shortnames) || in_array("leadtrainer",$role_shortnames))
 {
   $coursecount = $DB->count_records("user_enrolments", ['userid'=>$USER->id]);
   $getuniversityid = $DB->get_record("university_user", ['userid'=>$USER->id]);
@@ -588,7 +597,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
 
 
 
-                else if($role_shortname->shortname === "rtoadmin" || $role_shortname->shortname === "subrtoadmin")
+                else if(in_array("rtoadmin",$role_shortnames) || in_array("subrtoadmin",$role_shortnames))
                 { 
        /* echo $USER->id;
        echo $id;  */
