@@ -68,6 +68,7 @@ if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo
 } else {
   $headerlogo4 = $CFG->wwwroot . '/theme/edumy/images/header-logo.png';
 }
+$headerlogo4 = $_SESSION["logo_path"];
 if(method_exists('theme_edumy\output\core_renderer', 'get_theme_image_headerlogo_mobile') && method_exists('theme_edumy\output\core_renderer_maintenance', 'get_theme_image_headerlogo_mobile') && !empty($OUTPUT->get_theme_image_headerlogo_mobile())){
   $headerlogo_mobile = $OUTPUT->get_theme_image_headerlogo_mobile(null, 100);
 } else {

@@ -16,3 +16,6 @@ body#page-my-index header.header-nav.menu_style_home_one.dashbord_pages {
   background-image: -webkit-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
   background-image: -ms-linear-gradient(0deg, [[setting:color_gradient_end]] 0%, [[setting:color_gradient_start]] 100%);
 }*/
+#page-login-index .img-fluid {
+    width: 100px;
+}
