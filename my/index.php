@@ -48,6 +48,7 @@ $resetall = optional_param('resetall', false, PARAM_BOOL);
 $pagetitle = get_string('mypage', 'admin');
 global $DB,$USER,$OUTPUT, $SESSION;
 $title = 'Dashboard';
+require_login();
 
 if (isguestuser()) { 
     $context = context_system::instance();

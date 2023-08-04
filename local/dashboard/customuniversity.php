@@ -158,7 +158,13 @@ try {
 
         if (basename($_FILES["university_logo"]["name"]) && $inserted) 
         {
-            $path_filename ="/local/changelogo/logo/". basename($_FILES["university_logo"]["name"]);
+            $path = "/local/changelogo/logo/".$inserted."/";
+            $absolutepath = $CFG->dirroot.$path;
+            if (!file_exists($absolutepath)) {
+                mkdir($absolutepath, $CFG->directorypermissions, true);
+            }
+            $filename = str_replace(' ', '_', basename($_FILES["university_logo"]["name"]));
+            $path_filename =$path. $filename;
             $target_file = $CFG->dirroot.$path_filename;
             $uploaed = move_uploaded_file($_FILES["university_logo"]["tmp_name"], $target_file);
             if ($uploaed ) 
