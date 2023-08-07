@@ -20,7 +20,8 @@ $from_user->maildisplay= true;
 
 email_to_user($to_user,$from_user,$sub,$msg);
 
-
+$name = 'User List';
+$url = new moodle_url("/local/createuser/table.php");
 
 global $USER, $DB;
 $un_id=$DB->get_record('universityadmin', ['userid'=>$USER->id]);
@@ -29,30 +30,63 @@ if(!$un_id){
         $userpage = new moodle_url('/admin/user.php');
         redirect($userpage);
     }
-    $homepage = new moodle_url('/my');
-    redirect($homepage,'Not authorise to see users list.',null,\core\output\notification::NOTIFY_INFO);
-}
+
+    $roles = get_user_roles(context_system::instance(), $USER->id, true);
+    $role_shortnames = [];
+    foreach ($roles as $role) {
+        $role_shortnames[] = $role->shortname;
+    }
+    if (!in_array("trainer",$role_shortnames) && !in_array("leadtrainer",$role_shortnames)) {
+        $homepage = new moodle_url('/my');
+        redirect($homepage,'Not authorise to see users list.',null,\core\output\notification::NOTIFY_WARNING);
+    }
+
+    list($insql, $insqlparam) = $DB->get_in_or_equal([3,4],SQL_PARAMS_NAMED);
+
+    $sql = "SELECT e.id AS enrolid FROM {role_assignments} asg
+                    JOIN {context} AS ctx ON asg.contextid=ctx.id
+                    JOIN {course} c ON ctx.instanceid = c.id
+                    JOIN {enrol} e ON e.courseid=c.id
+                    WHERE e.status=:status AND asg.userid=:userid AND asg.roleid $insql";
+    $params = ['status' => ENROL_USER_ACTIVE,'userid' => (int)$USER->id];
+    $params = array_merge($params, $insqlparam);
+
+    $data = $DB->get_records_sql($sql,$params);
+
+    $data = array_keys($data);
+
+    $context = context_system::instance();
+    $PAGE->set_title($name);
+    $PAGE->set_heading($name);
+    $PAGE->set_pagelayout('standard');
+    $PAGE->set_context($context);
+
+    $userlisttable = new \local_createuser\table\Userlist('course',$data);
+    echo $OUTPUT->header();
+    $userlisttable->out($perpage,true);
+
+} else
+{
 $uni_users = $DB->get_records_sql("SELECT u.* FROM {user} u INNER JOIN {university_user} s ON u.id = s.userid WHERE s.university_id=$un_id->university_id ORDER BY u.id DESC");
 
 $totalcount = count($uni_users);
 
 $start = $page * $perpage;
 if ($start > count($uni_users)) {
-  $page = 0;
-  $start = 0;
+    $page = 0;
+    $start = 0;
 }
 $uni_users = array_slice($uni_users, $start, $perpage, true);
 
 
-$name = 'User List';
-$url = new moodle_url("/local/createuser/table.php");
+
 
 $PAGE->set_title($name);
 $PAGE->set_heading($name);
 $PAGE->set_pagelayout('standard');
 
 if ($_GET['msg']) {
-  echo(\core\notification::success($_GET['msg']));
+    echo(\core\notification::success($_GET['msg']));
 }
 
 ?>
@@ -60,137 +94,146 @@ if ($_GET['msg']) {
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>User List</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <title>User List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-  <style>
-    .fade:not(.show) {
-      opacity: 1 !important;
-    }
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <style>
+        .fade:not(.show) {
+            opacity: 1 !important;
+        }
 
-    .box-shadow {
-      box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
-      padding: 0px 20px 20px;
-      border-radius: 8px;
-    }
+        .box-shadow {
+            box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+            padding: 0px 20px 20px;
+            border-radius: 8px;
+        }
 
-    body {
-      background: #f7f7f7;
-    }
+        body {
+            background: #f7f7f7;
+        }
 
-    td a {
-      padding: 6px 32px;
-      color: #fff;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
+        td a {
+            padding: 6px 32px;
+            color: #fff;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
 
-    td a:hover {
-      color: #fff;
-      text-decoration: none;
-    }
+        td a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
 
-    .button {
-      background: #000;
-      padding: 10px 15px;
-      color: #fff;
-      text-decoration: none !important;
-      border-radius: 4px;
-      border: 1px solid #ffe500;
-      font-weight: 600;
-      box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
-    }
+        .button {
+            background: #000;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none !important;
+            border-radius: 4px;
+            border: 1px solid #ffe500;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+        }
 
-    .button:hover {
-      color: #000;
-      background: #ffe500;
-    }
+        .button:hover {
+            color: #000;
+            background: #ffe500;
+        }
 
-    table {
-      border-left: 1px solid #f2f2f2;
-      border-right: 1px solid #f2f2f2;
-    }
+        table {
+            border-left: 1px solid #f2f2f2;
+            border-right: 1px solid #f2f2f2;
+        }
 
-    .heading-row {
-      background: #000;
-      color: #fff;
-      border: 2px solid #ffe500;
-      padding: 8px 0px;
-      border-radius: 8px;
-    }
+        .heading-row {
+            background: #000;
+            color: #fff;
+            border: 2px solid #ffe500;
+            padding: 8px 0px;
+            border-radius: 8px;
+        }
 
 
-    .modal-select {
-      margin: 0px 15px !important;
-    }
-  </style>
+        .modal-select {
+            margin: 0px 15px !important;
+        }
+    </style>
 </head>
 
 <body>
 <?php echo $OUTPUT->header(); ?>
-  
-  <div class="container">
+
+<div class="container">
     <div class="row">
-      <div class="p-0 col-md-12">
-        <div class="p-0 box-shadow">
-          <div class="heading-row">
-            <div class="col-md-12">
-              <h5 class="mb-0" style="color: white;" >User List</h5>
+        <div class="p-0 col-md-12">
+            <div class="p-0 box-shadow">
+                <div class="heading-row">
+                    <div class="col-md-12">
+                        <h5 class="mb-0" style="color: white;">User List</h5>
+                    </div>
+                </div>
+                <h5 class="mt-2 mr-1" style="color: purple; text-align: end;"><a class="btn btn-info"
+                                                                                 href="<?php echo $CFG->wwwroot . '/local/createuser/index.php'; ?>"><i
+                                class="fa fa-plus-circle" aria-hidden="true"></i>Add New User</a></h5>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr class="bg-secondary">
+                        <th>User Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email-Id</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($uni_users as $user) {
+                        $role_id = $DB->get_record('role_assignments', ['userid' => $user->id]);
+                        $role_name = $DB->get_record('role', ['id' => $role_id->roleid]);
+                        ?>
+                        <tr>
+
+                            <td><a style="color: black;" href="#" class="p-2"
+                                   onclick="UserProfile(<?php echo $user->id; ?>);"><?php echo $user->username; ?></a>
+                            </td>
+                            <td><?php echo $user->firstname; ?></td>
+                            <td><?php echo $user->lastname; ?></td>
+                            <td><?php echo $user->email; ?></td>
+                            <td><?php if ($role_name->shortname == 'ua') echo "University Admin"; else echo ucfirst($role_name->name); ?></td>
+                            <td><a href="#" class="p-2" onclick="editUser(<?php echo $user->id; ?>);"><i
+                                            class="fa fa-pencil" aria-hidden="true" title="Edit"
+                                            style="color:#000;"></i></a>
+                                <a href="#" onclick="deleteUser(<?php echo $user->id; ?>)" class=""
+                                   style="padding:8px;"><i class="fa fa-trash text-danger" title="Delete"
+                                                           aria-hidden="true" style="color:#000;"></i></a>
+                                <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
             </div>
-          </div>
-          <h5 class="mt-2 mr-1" style="color: purple; text-align: end;"><a class="btn btn-info" href="<?php echo $CFG->wwwroot.'/local/createuser/index.php'; ?>"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add New User</a></h5>
-          <table class="table table-hover table-bordered">
-            <thead>
-              <tr class="bg-secondary">
-                <th>User Name</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email-Id</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($uni_users as $user) {
-                $role_id = $DB->get_record('role_assignments', ['userid'=>$user->id]);
-                $role_name = $DB->get_record('role', ['id'=>$role_id->roleid]);
-                ?>
-                <tr>
-                  
-                  <td><a style="color: black;" href="#" class="p-2" onclick="UserProfile(<?php echo $user->id; ?>);"><?php echo $user->username; ?></a></td>
-                  <td><?php echo $user->firstname; ?></td>
-                  <td><?php echo $user->lastname; ?></td>
-                  <td><?php echo $user->email; ?></td>
-                  <td><?php if($role_name->shortname == 'ua')echo "University Admin";else echo ucfirst($role_name->name); ?></td>
-                  <td><a href="#" class="p-2" onclick="editUser(<?php echo $user->id; ?>);"><i class="fa fa-pencil" aria-hidden="true" title="Edit" style="color:#000;"></i></a>
-                    <a href="#" onclick="deleteUser(<?php echo $user->id; ?>)" class="" style="padding:8px;" ><i class="fa fa-trash text-danger" title="Delete"  aria-hidden="true" style="color:#000;"></i></a>
-                    <input type="hidden" id="sessionkey" value="<?php echo $USER->sesskey; ?>">
-                  </td>
-                </tr>
-              <?php } ?>
-            </tbody>
-          </table>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <div class="pagination mt-3">
-  <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
+    <?php echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $url); ?>
 </div>
 
 </body>
 </html>
+<?php } ?>
 
 <script>
   function deleteUser(id)
