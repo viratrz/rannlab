@@ -292,21 +292,21 @@ nav.breadcrumb_widgets.ccn-clip-l {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     width:32%;
+    padding:5px;
 }
 
 .cutom-heading-box{
     text-align: center;
 }
 .custom-heading-p-box{
-    padding-top: 15%;
+    padding-top: 30px;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 500;
     color: white;
-    text-transform: uppercase;
 }
 .custom-faicon{
     text-align: center;
-    font-size: 45px;
+    font-size: 40px;
     margin-top: -35px;
     background-color: #8E30FF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -314,7 +314,8 @@ nav.breadcrumb_widgets.ccn-clip-l {
     width: 80px;
     border-radius: 49%;
     display: inline-block;
-    margin-left: 25%;
+    margin-left: calc(25% + 40px);
+    padding-top: 10px;
     color: white;
 }
 .custom-numbers-dashboard-cards{
@@ -326,6 +327,8 @@ nav.breadcrumb_widgets.ccn-clip-l {
     width: 30px;
     border-radius: 49%;
     display: inline-block;
+    text-align: center;
+    padding-top: 2px;
 }
     #inst200{
 background: #17263C;
@@ -342,11 +345,60 @@ h3#inst205{
     color: white;
 }
 .custom-heading-p-box-type2{
-    padding-top: 5%;
+    padding: 15px;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 500;
     color: white;
-    text-transform: uppercase;
+}
+.fa-fw
+{
+ 
+ color:#B578FF;
+}
+.ccn_dashnav_item
+{
+  color:#fff;
+}
+.ccn_dashbord_nav_list li a
+{
+  padding: 0px 0px 15px 15px !important;
+}
+.dashbord #block-region-side-pre .block
+{
+  border-radius: 20px;
+
+}
+.ccnDashBlHd
+{
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  text-align:center;
+}
+
+.maincalendar .calendarmonth td .day-number-circle .day-number
+{
+  color:#fff;
+}
+.maincalendar .calendarmonth .clickable:hover
+{
+  background-color: #B578FF !important;
+}
+.maincalendar .calendarmonth td, .maincalendar .calendarmonth th
+{
+  color:#fff !important;
+}
+.footer-link a
+{
+  color:#fff !important;
+}
+.calendar-controls .current
+{
+  color:#fff !important;
+}
+.arrow_link
+{
+  color:#fff !important;
 }
 </style>
 </head>';
@@ -493,7 +545,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Learners Assigned</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -523,7 +575,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Total Groups</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -552,7 +604,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Total Activities</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -666,6 +718,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
 
         ?>
 
+<div style="width:100%;background:#B578FF;border-radius:10px;padding:5px 10px;margin-bottom:50px;"> <p style="color:#fff;padding-top:10px">Learners Eligible for Billing ( Period Ending June 14, 2023 )</p>  </div>
         <div class="row" style="justify-content: space-between;">
           <!-- ./col -->
           <!--<div class="col-sm-4">
@@ -686,7 +739,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Total Units</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -715,7 +768,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Total Groups</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -744,7 +797,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <p class="custom-heading-p-box" >Total Activities</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -775,16 +828,16 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <div class="cutom-heading-box">
                             <p class="custom-heading-p-box-type2" >Total Users</p>
                         </div>
-                        <div style="padding-left: 40%;">
+                        <div style="text-align:center;">
                           <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($totalstudents)+count($totaltrainer)+count($totaladmin); ?></p>
                       </div>
-                      <div style="padding-left: 30%; color: white;">
+                      <div style="text-align:center; color: white;">
                           <p>Students : <?php echo count($totalstudents); ?></p>
                           <p>Trainers : <?php echo count($totaltrainer); ?></p>
                           <p>Admin : <?php echo count($totaladmin); ?></p>
                       </div>
 
-                      <hr style="background-color: white;">
+                      
                       <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -810,16 +863,16 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <div class="cutom-heading-box">
                             <p class="custom-heading-p-box-type2" >Inactive Users</p>
                         </div>
-                        <div style="padding-left: 40%;">
+                        <div style="text-align:center;">
                           <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($last24week)+count($last48week)+count($more8week); ?></p>
                       </div>
-                      <div style="padding-left: 30%; color: white;">
+                      <div style="text-align:center; color: white;">
                           <p>2-4 Weeks : <?php echo count($last24week); ?></p>
                           <p>4-8 Weeks : <?php echo count($last48week); ?></p>
                           <p>8 Weeks or More : <?php echo count($more8week); ?></p>
                       </div>
 
-                      <hr style="background-color: white;">
+                      
                       <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/local/createuser/user_list.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -842,15 +895,15 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                         <div class="cutom-heading-box">
                             <p class="custom-heading-p-box-type2" >Invite Pending</p>
                         </div>
-                        <div style="padding-left: 40%;">
+                        <div style="text-align:center;">
                           <p class="custom-numbers-dashboard-cards" style="float: unset;"> <?php echo count($last24week)+count($last48week); ?></p>
                       </div>
-                      <div style="padding-left: 30%; color: white;">
+                      <div style="text-align:center; color: white;">
                           <p>Expired : <?php echo count($last24week); ?></p>
                           <p>Not Signed In : <?php echo count($last48week); ?></p>
                       </div>
 
-                      <hr style="background-color: white;">
+                      
                       <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/local/dashboard/resendinvite_user.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -883,7 +936,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                             <p class="custom-heading-p-box" style="font-weight: unset;" >Unassigned</p>
                         </div>
 
-                        <hr style="background-color: white;">
+                        
                         <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -910,7 +963,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                             <p class="custom-heading-p-box" style="font-weight: unset;" >Open</p>
                         </div>
 
-                        <hr style="background-color: white;">
+                        
                         <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -937,7 +990,7 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
                             <p class="custom-heading-p-box" style="font-weight: unset;" >Unresolved</p>
                         </div>
 
-                        <hr style="background-color: white;">
+                        
                         <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                           <div style="width:50%; float: left;" >
                               <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1012,7 +1065,7 @@ else {
                         <p class="custom-heading-p-box" >Total Client</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%; padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/local/dashboard/table.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1043,7 +1096,7 @@ else {
                         <p class="custom-heading-p-box" >Total Users</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/admin/user.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1073,7 +1126,7 @@ else {
                         <p class="custom-heading-p-box" >Total Units</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/course/management.php';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1113,7 +1166,7 @@ else {
                         <p class="custom-heading-p-box" >Unassigned</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=unassignedtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1143,7 +1196,7 @@ else {
                         <p class="custom-heading-p-box" >Open</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=newtickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1172,7 +1225,7 @@ else {
                         <p class="custom-heading-p-box" >Unresolved</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'/blocks/helpdesk/search.php?rel=alltickets';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1248,7 +1301,7 @@ else {
                         <p class="custom-heading-p-box" >Unpaid Invoices</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'#';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1277,7 +1330,7 @@ else {
                         <p class="custom-heading-p-box" >Invoice Due Soon</p>
                     </div>
 
-                    <hr style="background-color: white;">
+                    
                     <div  style="width:100%;padding-left: 15px;padding-right: 15px;">
                       <div style="width:50%; float: left;" >
                           <a href="<?php echo $CFG->wwwroot .'#';?>" class="small-box-footer" style = "color: white;">More info <i class="fas fa-arrow-circle-right"></i></a>
