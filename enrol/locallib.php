@@ -533,6 +533,8 @@ class course_enrolment_manager {
                 $universityadmin = $DB->get_record_sql("SELECT university_id FROM {universityadmin} WHERE userid= $USER->id UNION SELECT university_id FROM {university_user} WHERE userid= $USER->id");
                 if($universityadmin){
                     $SESSION->university_id = $universityadmin->university_id;
+                    $schoollogo = $DB->get_record('school',['id'=>$universityadmin->university_id],'logo_path');
+                    $_SESSION["logo_path"] = $CFG->wwwroot . $schoollogo->logo_path;
                     $universitycond = " AND ua.university_id = $universityadmin->university_id";
                 }
             }

@@ -233,6 +233,11 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         $_SESSION["university_id"] = $universityadmin->university_id;
         $SESSION->university_id = $universityadmin->university_id;
 
+        if($universityadmin) {
+            $schoollogo = $DB->get_record('school',['id'=>$universityadmin->university_id],'logo_path');
+            $_SESSION["logo_path"] = $CFG->wwwroot . $schoollogo->logo_path;
+        }
+
         \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
         redirect($CFG->wwwroot.'/my');
         // sets the username cookie

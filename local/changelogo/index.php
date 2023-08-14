@@ -45,11 +45,24 @@ echo $OUTPUT->header();
     else if ($data = $mform->get_data()) 
     {   
         $new_name = $mform->get_new_filename('userfile');
-        $path= 'logo/'.$new_name;
+        $university = $DB->get_record('universityadmin',array('userid' => $USER->id));
+        $filename = str_replace(' ', '_', $new_name);
+        if(isset($university->university_id) &&  $university->university_id) {
+            $path = "logo/".$SESSION->university_id."/".$filename;
+            $filedir = "/local/changelogo/logo/".$SESSION->university_id."/";
+            $absolutepath = $CFG->dirroot.$filedir;
+            if (!file_exists($absolutepath)) {
+                mkdir($absolutepath, $CFG->directorypermissions, true);
+            }
+        } else {
+            $path= 'logo/'.$filename;
+
+        }
         $fullpath = "/local/changelogo/". $path;
+
         $success = $mform->save_file('userfile', $path, true);
         
-        $university = $DB->get_record('universityadmin',array('userid' => $USER->id));
+
         // var_dump($university);
         // die;
         $set_logo = new stdclass();
@@ -59,6 +72,7 @@ echo $OUTPUT->header();
         
         if($success)
         {
+            $_SESSION["logo_path"] = $CFG->wwwroot . $fullpath;
             redirect("$CFG->wwwroot./my/", "Logo Changed Successfully");
             //redirect("$CFG->wwwroot./my/courses.php", "Logo Changed Successfully");
             //echo $set_logo->logo_path;
