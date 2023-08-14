@@ -267,6 +267,7 @@ $templatecontext = [
     'is_4' => (int)$ccnMdlVersion >= 400 ? true : false
 ];
 
+
 if((int)$ccnMdlVersion >= 400) {
   $templatecontext['primarymoremenu'] = $primarymenu['moremenu'];
   $templatecontext['secondarymoremenu'] = $secondarynavigation ? : false;
@@ -368,7 +369,7 @@ $ccnLcVbCollection = array(
   "cocoon_users_slider_2",
   "cocoon_users_slider_2_dark",
   "cocoon_users_slider_round",
- );
+);
 $ccnControlBlockListUri = $CFG->wwwroot . '/theme/edumy/ccn/visualize/ccn_block/jpeg/large/';
 $ccnControlBlockListUriThumb = $CFG->wwwroot . '/theme/edumy/ccn/visualize/ccn_block/jpeg/thumb/';
 $PAGE->requires->js_init_call('ccnCommentHandler', array(get_string('add_comment', 'theme_edumy')));

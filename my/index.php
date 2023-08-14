@@ -314,7 +314,7 @@ nav.breadcrumb_widgets.ccn-clip-l {
     width: 80px;
     border-radius: 49%;
     display: inline-block;
-    margin-left: calc(25% + 40px);
+    margin-left: calc(25% + 25px);
     padding-top: 10px;
     color: white;
 }
@@ -352,7 +352,7 @@ h3#inst205{
 }
 .fa-fw
 {
- 
+
  color:#B578FF;
 }
 .ccn_dashnav_item
@@ -718,9 +718,14 @@ $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
 
         ?>
 
-<div style="width:100%;background:#B578FF;border-radius:10px;padding:5px 10px;margin-bottom:50px;"> <p style="color:#fff;padding-top:10px">Learners Eligible for Billing ( Period Ending June 14, 2023 )</p>  </div>
-        <div class="row" style="justify-content: space-between;">
-          <!-- ./col -->
+        <div style="width:100%;background:#B578FF;border-radius:10px;padding:5px 10px;margin-bottom:50px; display: flex; align-items: center;"> <p style="color:#fff;padding-top:10px; max-width: 50%;">Learners Eligible for Billing ( Period Ending June 14, 2023 ) </p>  
+            <div class="d-flex" style="width: 50%;     align-items: center;">
+                <span>35/100 Learners</span>
+                <div class="progress bg-white border" style="width: 100%;"> 
+                    <div class="progress-bar bar" role="progressbar" aria-valuenow="35" style="width: 35%" aria-valuemin="0" aria-valuemax="100"></div>
+                </div></div></div>
+                <div class="row" style="justify-content: space-between;">
+                  <!-- ./col -->
           <!--<div class="col-sm-4">
                           <a href="<?php echo $CFG->wwwroot .'/my/courses.php';?>" class="ff_one">
                             <div class="detais">

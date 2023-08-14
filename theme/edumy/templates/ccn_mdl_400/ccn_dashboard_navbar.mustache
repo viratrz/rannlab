@@ -11,43 +11,43 @@
         </button>
       </div>
       {{#logo}}
-        <a href="{{{ ccnLogoUrl }}}" class="navbar_brand float-left dn-smd">
-          {{#dash_header_white}}
-            {{#logo_image}}<img class="logo1 img-fluid" src="{{{headerlogo2}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
-            {{#logo_image}}<img class="logo2 img-fluid" src="{{{headerlogo2}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
-          {{/dash_header_white}}
-          {{^dash_header_white}}
-            {{#logo_image}}<img class="logo1 img-fluid" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
-            {{#logo_image}}<img class="logo2 img-fluid" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
-          {{/dash_header_white}}
-          {{#logotype}}<span>{{{ sitename }}}</span>{{/logotype}}
-        </a>
+      <a href="{{{ ccnLogoUrl }}}" class="navbar_brand float-left dn-smd">
+        {{#dash_header_white}}
+        {{#logo_image}}<img class="logo1 img-fluid" src="{{{headerlogo2}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+        {{#logo_image}}<img class="logo2 img-fluid" src="{{{headerlogo2}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+        {{/dash_header_white}}
+        {{^dash_header_white}}
+        {{#logo_image}}<img class="logo1 img-fluid" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+        {{#logo_image}}<img class="logo2 img-fluid" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+        {{/dash_header_white}}
+        {{#logotype}}<span>{{{ sitename }}}</span>{{/logotype}}
+      </a>
       {{/logo}}
       {{#display_library_list}}
-        <ul class="mt20 pull-left mr20 ml10">
-          <li class="list-inline-item">
-            <div class="header_top_lang_widget">
-              <div class="ht-widget-container">
-                <div class="vertical-wrapper">
-                  <h2 class="title-vertical home3">
-                    <span class="text-title">{{#str}}library, theme_edumy{{/str}}</span> <i class="fa fa-angle-down show-down" aria-hidden="true"></i>
-                  </h2>
-                  <div class="content-vertical">
-                    {{{ ccn_librarylist }}}
-                  </div>
+      <ul class="mt20 pull-left mr20 ml10">
+        <li class="list-inline-item">
+          <div class="header_top_lang_widget">
+            <div class="ht-widget-container">
+              <div class="vertical-wrapper">
+                <h2 class="title-vertical home3">
+                  <span class="text-title">{{#str}}library, theme_edumy{{/str}}</span> <i class="fa fa-angle-down show-down" aria-hidden="true"></i>
+                </h2>
+                <div class="content-vertical">
+                  {{{ ccn_librarylist }}}
                 </div>
               </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </li>
+      </ul>
       {{/display_library_list}}
 
 
       <nav class="navbar navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
         {{#primarymoremenu}}
-          <div class="primary-navigation">
-            {{> theme_edumy/ccn_mdl_400/moremenu}}
-          </div>
+        <div class="primary-navigation">
+          {{> theme_edumy/ccn_mdl_400/moremenu}}
+        </div>
         {{/primarymoremenu}}
         <ul class="navbar-nav d-none d-md-flex my-1 px-1">
           <!-- page_heading_menu -->
@@ -55,7 +55,17 @@
         </ul>
       </nav>
 
-
+      {{#header_search_bar}}
+      <ul class="pull-left mt15 mr20 ml10" style="display: flex; align-items: center;">
+        <li class="list-inline-item dn-1366">
+          <div class="ht_search_widget">
+            <div class="header_search_widget">
+              {{{ccn_globalsearch_navbar}}}
+            </div>
+          </div>
+        </li>
+      </ul>
+      {{/header_search_bar}}
       <ul id="respMenu" class="" data-menu-style="horizontal">
         {{> theme_edumy/ccn_navbar_user }}
       </ul>
@@ -70,12 +80,12 @@
       <div class="main_logo_home2">
         <a href="{{{ ccnLogoUrl }}}" class="mobileBrand">
           {{#logo_image}}
-            {{#headerlogo_mobile}}
-              <img class="nav_logo_img img-fluid float-left mt20" src="{{{headerlogo_mobile}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>
-            {{/headerlogo_mobile}}
-            {{^headerlogo_mobile}}
-              <img class="nav_logo_img img-fluid float-left mt20" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>
-            {{/headerlogo_mobile}}
+          {{#headerlogo_mobile}}
+          <img class="nav_logo_img img-fluid float-left mt20" src="{{{headerlogo_mobile}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>
+          {{/headerlogo_mobile}}
+          {{^headerlogo_mobile}}
+          <img class="nav_logo_img img-fluid float-left mt20" src="{{{headerlogo1}}}" alt="{{{sitename}}}" {{#logo_styles}} style="{{{logo_styles}}}" {{/logo_styles}}>
+          {{/headerlogo_mobile}}
           {{/logo_image}}
           {{#logotype}}<span>{{{sitename}}}</span>{{/logotype}}
         </a>
@@ -89,10 +99,10 @@
   <nav id="menu" class="stylehome1">
     <ul>
       {{#display_library_list}}
-        <li class="ccn_mob_menu_library">
-          <a href="#vertical-menu">{{#str}}library, theme_edumy{{/str}} <i class="flaticon-right-arrow"></i></a>
-          {{{ ccn_librarylist }}}
-        </li>
+      <li class="ccn_mob_menu_library">
+        <a href="#vertical-menu">{{#str}}library, theme_edumy{{/str}} <i class="flaticon-right-arrow"></i></a>
+        {{{ ccn_librarylist }}}
+      </li>
       {{/display_library_list}}
       {{{ output.custom_menu }}}
       {{> theme_edumy/ccn_header_mob_user }}
