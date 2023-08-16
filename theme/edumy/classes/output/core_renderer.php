@@ -1633,4 +1633,13 @@ public function should_display_main_logo($headinglevel = 1) {
 }
 
 
+    /**
+     * This renders the navbar.
+     * Uses bootstrap compatible html.
+     */
+    public function navbar() {
+        return $this->render_from_template('core/navbar', $this->page->navbar);
+    }
+
+
 }

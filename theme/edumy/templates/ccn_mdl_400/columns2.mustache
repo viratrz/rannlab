@@ -4,6 +4,15 @@
   {{> theme_edumy/ccn_preloader }}
   <div class="wrapper" id="page-content">
     {{> theme_edumy/ccn_mdl_400/navbar }}
+      <div class="row">
+          <div class="col-lg-12">
+              <nav class="breadcrumb_widgets {{{breadcrumb_clip_dash}}}" aria-label="breadcrumb mb30">
+                  <ol class="breadcrumb float-right">
+                      {{{ output.navbar }}}
+                  </ol>
+              </nav>
+          </div>
+      </div>
     <div id="ccn-page-wrapper">
       <div id="ccnSettingsMenuContainer">
         <div id="ccnSettingsMenuInner">{{! @ccnIrrevocable: These container divs #ccnSettingsMenuContainer/Inner must exist unconditionally, only contents can be conditional }}
@@ -119,6 +128,11 @@
 </body>
 
 </html>
+<style>
+    .footer_one {
+        height: 10px;
+    }
+</style>
 {{#js}}
   M.util.js_pending('theme_boost/loader');
   require(['theme_boost/loader'], function() {
