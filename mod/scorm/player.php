@@ -28,6 +28,8 @@ $currentorg = optional_param('currentorg', '', PARAM_RAW);          // selected 
 $newattempt = optional_param('newattempt', 'off', PARAM_ALPHA);     // the user request to start a new attempt.
 $displaymode = optional_param('display', '', PARAM_ALPHA);
 
+$autostart = optional_param('autostart', true, PARAM_BOOL);
+
 if (!empty($id)) {
     if (! $cm = get_coursemodule_from_id('scorm', $id, 0, true)) {
         print_error('invalidcoursemodule');
@@ -167,21 +169,21 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
         && !has_capability('mod/scorm:viewreport', context_module::instance($cm->id))) {
         // Redirect students back to site home to avoid redirect loop.
         $exiturl = $CFG->wwwroot;
-    } else {
+} else {
         // Redirect back to the correct section if one section per page is being used.
-        $exiturl = course_get_url($course, $cm->sectionnum)->out();
-    }
+    $exiturl = course_get_url($course, $cm->sectionnum)->out();
+}
 }
 
 // Print the page header.
 $PAGE->requires->data_for_js('scormplayerdata', Array('launch' => false,
-                                                       'currentorg' => '',
-                                                       'sco' => 0,
-                                                       'scorm' => 0,
-                                                       'courseid' => $scorm->course,
-                                                       'cwidth' => $scorm->width,
-                                                       'cheight' => $scorm->height,
-                                                       'popupoptions' => $scorm->options), true);
+   'currentorg' => '',
+   'sco' => 0,
+   'scorm' => 0,
+   'courseid' => $scorm->course,
+   'cwidth' => $scorm->width,
+   'cheight' => $scorm->height,
+   'popupoptions' => $scorm->options), true);
 $PAGE->requires->js('/mod/scorm/request.js', true);
 $PAGE->requires->js('/lib/cookies.js', true);
 
@@ -216,7 +218,7 @@ if ($displaymode !== 'popup') {
 echo html_writer::start_div('', array('id' => 'scormpage'));
 echo html_writer::start_div('', array('id' => 'tocbox'));
 echo html_writer::div(html_writer::tag('script', '', array('id' => 'external-scormapi', 'type' => 'text/JavaScript')), '',
-                        array('id' => 'scormapi-parent'));
+    array('id' => 'scormapi-parent'));
 
 if ($scorm->hidetoc == SCORM_TOC_POPUP or $mode == 'browse' or $mode == 'review') {
     echo html_writer::start_div('mb-3', array('id' => 'scormtop'));
@@ -237,7 +239,7 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
     // Added incase javascript popups are blocked we don't provide a direct link
     // to the pop-up as JS communication can fail - the user must disable their pop-up blocker.
     $linkcourse = html_writer::link($CFG->wwwroot.'/course/view.php?id='.
-                    $scorm->course, get_string('finishscormlinkname', 'scorm'));
+        $scorm->course, get_string('finishscormlinkname', 'scorm'));
     echo $OUTPUT->box(get_string('finishscorm', 'scorm', $linkcourse), 'generalbox', 'altfinishlink');
 }
 echo html_writer::end_div(); // Toc tree ends.
@@ -256,10 +258,10 @@ if ($result->prerequisites) {
         $url = new moodle_url($PAGE->url, array('scoid' => $sco->id, 'display' => 'popup', 'mode' => $mode));
         echo html_writer::script(
             js_writer::function_call('scorm_openpopup', Array($url->out(false),
-                                                       $name, $scorm->options,
-                                                       $scorm->width, $scorm->height)));
+               $name, $scorm->options,
+               $scorm->width, $scorm->height)));
         echo html_writer::tag('noscript', html_writer::tag('iframe', '', array('id' => 'main',
-                                'class' => 'scoframe', 'name' => 'main', 'src' => 'loadSCO.php?id='.$cm->id.$scoidstr.$modestr)));
+            'class' => 'scoframe', 'name' => 'main', 'src' => 'loadSCO.php?id='.$cm->id.$scoidstr.$modestr)));
     }
 } else {
     echo $OUTPUT->box(get_string('noprerequisites', 'scorm'));
@@ -279,8 +281,13 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
         'requires' => array('json'),
     );
     $scorm->nav = intval($scorm->nav);
-    $PAGE->requires->js_init_call('M.mod_scorm.init', array($scorm->nav, $scorm->navpositionleft, $scorm->navpositiontop,
-                            $scorm->hidetoc, $collapsetocwinsize, $result->toctitle, $name, $sco->id, $adlnav), false, $jsmodule);
+    if ($autostart) {
+        $PAGE->requires->js_init_call('M.mod_scorm.init', array($scorm->nav, $scorm->navpositionleft, $scorm->navpositiontop,
+            $scorm->hidetoc, $collapsetocwinsize, $result->toctitle, $name, $sco->id, $adlnav), false, $jsmodule);
+    }else{
+        $PAGE->requires->js_init_call('M.mod_scorm.init', array($scorm->nav, $scorm->navpositionleft, $scorm->navpositiontop,
+            $scorm->hidetoc, $collapsetocwinsize, $result->toctitle, $name, $sco->id, $adlnav, false), false, $jsmodule);
+    }
 }
 if (!empty($forcejs)) {
     $message = $OUTPUT->box(get_string("forcejavascriptmessage", "scorm"), "generalbox boxaligncenter forcejavascriptmessage");

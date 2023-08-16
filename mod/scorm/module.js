@@ -30,13 +30,13 @@ scorm_layout_widget = null;
 window.scorm_current_node = null;
 
 function underscore(str) {
-    str = String(str).replace(/.N/g,".");
-    return str.replace(/\./g,"__");
+    str = String(str).replace(/.N/g, ".");
+    return str.replace(/\./g, "__");
 }
 
 M.mod_scorm = {};
 
-M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, hide_toc, collapsetocwinsize, toc_title, window_name, launch_sco, scoes_nav) {
+M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, hide_toc, collapsetocwinsize, toc_title, window_name, launch_sco, scoes_nav, autostart = true) {
     var scorm_disable_toc = false;
     var scorm_hide_nav = true;
     var scorm_hide_toc = true;
@@ -58,20 +58,20 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
 
         Y.TreeView.prototype.getNodeByAttribute = function(attribute, value) {
             var node = null,
-                domnode = Y.one('a[' + attribute + '="' + value + '"]');
+            domnode = Y.one('a[' + attribute + '="' + value + '"]');
             if (domnode !== null) {
                 node = scorm_tree_node.getNodeById(domnode.ancestor('li').get('id'));
             }
             return node;
         };
 
-        Y.TreeView.prototype.openAll = function () {
+        Y.TreeView.prototype.openAll = function() {
             this.get('container').all('.yui3-treeview-can-have-children').each(function(target) {
                 this.getNodeById(target.get('id')).open();
             }, this);
         };
 
-        Y.TreeView.prototype.closeAll = function () {
+        Y.TreeView.prototype.closeAll = function() {
             this.get('container').all('.yui3-treeview-can-have-children').each(function(target) {
                 this.getNodeById(target.get('id')).close();
             }, this);
@@ -79,18 +79,18 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
 
         var scorm_parse_toc_tree = function(srcNode) {
             var SELECTORS = {
-                    child: '> li',
-                    label: '> li, > a',
-                    textlabel : '> li, > span',
-                    subtree: '> ul, > li'
-                },
-                children = [];
+                child: '> li',
+                label: '> li, > a',
+                textlabel: '> li, > span',
+                subtree: '> ul, > li'
+            },
+            children = [];
 
             srcNode.all(SELECTORS.child).each(function(childNode) {
                 var child = {},
-                    labelNode = childNode.one(SELECTORS.label),
-                    textNode = childNode.one(SELECTORS.textlabel),
-                    subTreeNode = childNode.one(SELECTORS.subtree);
+                labelNode = childNode.one(SELECTORS.label),
+                textNode = childNode.one(SELECTORS.textlabel),
+                subTreeNode = childNode.one(SELECTORS.subtree);
 
                 if (labelNode) {
                     var title = labelNode.getAttribute('title');
@@ -134,7 +134,7 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
                     return;
                 }
                 // Start to unload iframe here
-                if(!window_name){
+                if (!window_name) {
                     content.removeChild(old);
                     old = null;
                 }
@@ -169,15 +169,15 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
                 mod_scorm_monitorForBeaconRequirement(obj);
             }
             if (window_name) {
-                var mine = window.open('','','width=1,height=1,left=0,top=0,scrollbars=no');
-                if(! mine) {
+                var mine = window.open('', '', 'width=1,height=1,left=0,top=0,scrollbars=no');
+                if (!mine) {
                     alert(M.util.get_string('popupsblocked', 'scorm'));
                 }
                 mine.close();
             }
 
             if (old) {
-                if(window_name) {
+                if (window_name) {
                     var cwidth = scormplayerdata.cwidth;
                     var cheight = scormplayerdata.cheight;
                     var poptions = scormplayerdata.popupoptions;
@@ -211,33 +211,33 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
             var upnode = scorm_up(scorm_current_node);
 
             scorm_buttons[0].set('disabled', ((skipprevnode === null) ||
-                        (typeof(skipprevnode.scoid) === 'undefined') ||
-                        (scoes_nav[skipprevnode.scoid].isvisible === "false") ||
-                        (skipprevnode.title === null) ||
-                        (scoes_nav[launch_sco].hideprevious === 1)));
+                (typeof(skipprevnode.scoid) === 'undefined') ||
+                (scoes_nav[skipprevnode.scoid].isvisible === "false") ||
+                (skipprevnode.title === null) ||
+                (scoes_nav[launch_sco].hideprevious === 1)));
 
             scorm_buttons[1].set('disabled', ((prevnode === null) ||
-                        (typeof(prevnode.scoid) === 'undefined') ||
-                        (scoes_nav[prevnode.scoid].isvisible === "false") ||
-                        (prevnode.title === null) ||
-                        (scoes_nav[launch_sco].hideprevious === 1)));
+                (typeof(prevnode.scoid) === 'undefined') ||
+                (scoes_nav[prevnode.scoid].isvisible === "false") ||
+                (prevnode.title === null) ||
+                (scoes_nav[launch_sco].hideprevious === 1)));
 
             scorm_buttons[2].set('disabled', (upnode === null) ||
-                        (typeof(upnode.scoid) === 'undefined') ||
-                        (scoes_nav[upnode.scoid].isvisible === "false") ||
-                        (upnode.title === null));
+                (typeof(upnode.scoid) === 'undefined') ||
+                (scoes_nav[upnode.scoid].isvisible === "false") ||
+                (upnode.title === null));
 
             scorm_buttons[3].set('disabled', ((nextnode === null) ||
-                        ((nextnode.title === null) && (scoes_nav[launch_sco].flow !== 1)) ||
-                        (typeof(nextnode.scoid) === 'undefined') ||
-                        (scoes_nav[nextnode.scoid].isvisible === "false") ||
-                        (scoes_nav[launch_sco].hidecontinue === 1)));
+                ((nextnode.title === null) && (scoes_nav[launch_sco].flow !== 1)) ||
+                (typeof(nextnode.scoid) === 'undefined') ||
+                (scoes_nav[nextnode.scoid].isvisible === "false") ||
+                (scoes_nav[launch_sco].hidecontinue === 1)));
 
             scorm_buttons[4].set('disabled', ((skipnextnode === null) ||
-                        (skipnextnode.title === null) ||
-                        (typeof(skipnextnode.scoid) === 'undefined') ||
-                        (scoes_nav[skipnextnode.scoid].isvisible === "false") ||
-                        scoes_nav[launch_sco].hidecontinue === 1));
+                (skipnextnode.title === null) ||
+                (typeof(skipnextnode.scoid) === 'undefined') ||
+                (scoes_nav[skipnextnode.scoid].isvisible === "false") ||
+                scoes_nav[launch_sco].hidecontinue === 1));
         };
 
         var scorm_toggle_toc = function(windowresize) {
@@ -256,35 +256,35 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
                 var body = Y.one('body');
                 if (body.get('winWidth') < collapsetocwinsize) {
                     toc.addClass(cssclasses.disabled)
-                        .setAttribute('disabled-by', 'screen-size');
+                    .setAttribute('disabled-by', 'screen-size');
                     scorm_toc_toggle_btn.setHTML('&gt;')
-                        .set('title', M.util.get_string('show', 'moodle'));
+                    .set('title', M.util.get_string('show', 'moodle'));
                     scorm_content.removeClass(cssclasses.scorm_grid_content_toc_visible)
-                        .addClass(cssclasses.scorm_grid_content_toc_hidden);
+                    .addClass(cssclasses.scorm_grid_content_toc_hidden);
                 } else if (body.get('winWidth') > collapsetocwinsize) {
                     toc.removeClass(cssclasses.disabled)
-                        .removeAttribute('disabled-by');
+                    .removeAttribute('disabled-by');
                     scorm_toc_toggle_btn.setHTML('&lt;')
-                        .set('title', M.util.get_string('hide', 'moodle'));
+                    .set('title', M.util.get_string('hide', 'moodle'));
                     scorm_content.removeClass(cssclasses.scorm_grid_content_toc_hidden)
-                        .addClass(cssclasses.scorm_grid_content_toc_visible);
+                    .addClass(cssclasses.scorm_grid_content_toc_visible);
                 }
                 return;
             }
             if (toc_disabled) {
                 toc.removeClass(cssclasses.disabled)
-                    .removeAttribute('disabled-by');
+                .removeAttribute('disabled-by');
                 scorm_toc_toggle_btn.setHTML('&lt;')
-                    .set('title', M.util.get_string('hide', 'moodle'));
+                .set('title', M.util.get_string('hide', 'moodle'));
                 scorm_content.removeClass(cssclasses.scorm_grid_content_toc_hidden)
-                    .addClass(cssclasses.scorm_grid_content_toc_visible);
+                .addClass(cssclasses.scorm_grid_content_toc_visible);
             } else {
                 toc.addClass(cssclasses.disabled)
-                    .setAttribute('disabled-by', 'user');
+                .setAttribute('disabled-by', 'user');
                 scorm_toc_toggle_btn.setHTML('&gt;')
-                    .set('title', M.util.get_string('show', 'moodle'));
+                .set('title', M.util.get_string('show', 'moodle'));
                 scorm_content.removeClass(cssclasses.scorm_grid_content_toc_visible)
-                    .addClass(cssclasses.scorm_grid_content_toc_hidden);
+                .addClass(cssclasses.scorm_grid_content_toc_hidden);
             }
         };
 
@@ -304,9 +304,9 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
             }
 
             // Calculate the rough new height from the viewport height.
-            var newheight = Y.one('body').get('winHeight') - 5
-                - Y.one('#scorm_layout').getY()
-                - window.pageYOffset;
+            var newheight = Y.one('body').get('winHeight') - 5 -
+            Y.one('#scorm_layout').getY() -
+            window.pageYOffset;
             if (newheight < 680 || isNaN(newheight)) {
                 newheight = 680;
             }
@@ -355,283 +355,283 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
 
         var scorm_prev = function(node, update_launch_sco) {
             if (node.previous() && node.previous().children.length &&
-                    typeof scoes_nav[launch_sco].prevscoid !== 'undefined') {
+                typeof scoes_nav[launch_sco].prevscoid !== 'undefined') {
                 node = scorm_lastchild(node.previous());
-                if (node) {
-                    var prevscoid = scoes_nav[launch_sco].prevscoid;
-                    if (node.title !== scoes_nav[prevscoid].url) {
-                        node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[prevscoid].url);
-                        if (node === null) {
-                            node = scorm_tree_node.rootNode.children[0];
-                            node.title = scoes_nav[prevscoid].url;
-                        }
-                    }
-                    if (update_launch_sco) {
-                        launch_sco = prevscoid;
-                    }
-                    return node;
-                } else {
-                    return null;
-                }
-            }
-            return scorm_skipprev(node, update_launch_sco);
-        };
-
-        var scorm_skipprev = function(node, update_launch_sco) {
-            if (node.previous() && typeof scoes_nav[launch_sco].prevsibling !== 'undefined') {
-                var prevsibling = scoes_nav[launch_sco].prevsibling;
-                var previous = node.previous();
+            if (node) {
                 var prevscoid = scoes_nav[launch_sco].prevscoid;
-                if (previous.title !== scoes_nav[prevscoid].url) {
-                    previous = scorm_tree_node.getNodeByAttribute('title', scoes_nav[prevsibling].url);
-                    if (previous === null) {
-                        previous = scorm_tree_node.rootNode.children[0];
-                        previous.title = scoes_nav[prevsibling].url;
-                    }
-                }
-                if (update_launch_sco) {
-                    launch_sco = prevsibling;
-                }
-                return previous;
-            } else if (node.parent && node.parent.parent && typeof scoes_nav[launch_sco].parentscoid !== 'undefined') {
-                var parentscoid = scoes_nav[launch_sco].parentscoid;
-                var parent = node.parent;
-                if (parent.title !== scoes_nav[parentscoid].url) {
-                    parent = scorm_tree_node.getNodeByAttribute('title', scoes_nav[parentscoid].url);
-                    if (parent === null) {
-                        parent = scorm_tree_node.rootNode.children[0];
-                        parent.title = scoes_nav[parentscoid].url;
-                    }
-                }
-                if (update_launch_sco) {
-                    launch_sco = parentscoid;
-                }
-                return parent;
-            }
-            return null;
-        };
-
-        var scorm_next = function(node, update_launch_sco) {
-            if (node === false) {
-                return scorm_tree_node.children[0];
-            }
-            if (node.children.length && typeof scoes_nav[launch_sco].nextscoid != 'undefined') {
-                node = node.children[0];
-                var nextscoid = scoes_nav[launch_sco].nextscoid;
-                if (node.title !== scoes_nav[nextscoid].url) {
-                    node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[nextscoid].url);
+                if (node.title !== scoes_nav[prevscoid].url) {
+                    node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[prevscoid].url);
                     if (node === null) {
                         node = scorm_tree_node.rootNode.children[0];
-                        node.title = scoes_nav[nextscoid].url;
+                        node.title = scoes_nav[prevscoid].url;
                     }
                 }
                 if (update_launch_sco) {
-                    launch_sco = nextscoid;
+                    launch_sco = prevscoid;
                 }
                 return node;
+            } else {
+                return null;
             }
-            return scorm_skipnext(node, update_launch_sco);
-        };
+        }
+        return scorm_skipprev(node, update_launch_sco);
+    };
 
-        var scorm_skipnext = function(node, update_launch_sco) {
-            var next = node.next();
-            if (next && next.title && typeof scoes_nav[launch_sco] !== 'undefined' && typeof scoes_nav[launch_sco].nextsibling !== 'undefined') {
-                var nextsibling = scoes_nav[launch_sco].nextsibling;
-                if (next.title !== scoes_nav[nextsibling].url) {
-                    next = scorm_tree_node.getNodeByAttribute('title', scoes_nav[nextsibling].url);
-                    if (next === null) {
-                        next = scorm_tree_node.rootNode.children[0];
-                        next.title = scoes_nav[nextsibling].url;
-                    }
+    var scorm_skipprev = function(node, update_launch_sco) {
+        if (node.previous() && typeof scoes_nav[launch_sco].prevsibling !== 'undefined') {
+            var prevsibling = scoes_nav[launch_sco].prevsibling;
+            var previous = node.previous();
+            var prevscoid = scoes_nav[launch_sco].prevscoid;
+            if (previous.title !== scoes_nav[prevscoid].url) {
+                previous = scorm_tree_node.getNodeByAttribute('title', scoes_nav[prevsibling].url);
+                if (previous === null) {
+                    previous = scorm_tree_node.rootNode.children[0];
+                    previous.title = scoes_nav[prevsibling].url;
                 }
-                if (update_launch_sco) {
-                    launch_sco = nextsibling;
-                }
-                return next;
-            } else if (node.parent && node.parent.parent && typeof scoes_nav[launch_sco].parentscoid !== 'undefined') {
-                var parentscoid = scoes_nav[launch_sco].parentscoid;
-                var parent = node.parent;
-                if (parent.title !== scoes_nav[parentscoid].url) {
-                    parent = scorm_tree_node.getNodeByAttribute('title', scoes_nav[parentscoid].url);
-                    if (parent === null) {
-                        parent = scorm_tree_node.rootNode.children[0];
-                    }
-                }
-                if (update_launch_sco) {
-                    launch_sco = parentscoid;
-                }
-                return scorm_skipnext(parent, update_launch_sco);
             }
-            return null;
-        };
+            if (update_launch_sco) {
+                launch_sco = prevsibling;
+            }
+            return previous;
+        } else if (node.parent && node.parent.parent && typeof scoes_nav[launch_sco].parentscoid !== 'undefined') {
+            var parentscoid = scoes_nav[launch_sco].parentscoid;
+            var parent = node.parent;
+            if (parent.title !== scoes_nav[parentscoid].url) {
+                parent = scorm_tree_node.getNodeByAttribute('title', scoes_nav[parentscoid].url);
+                if (parent === null) {
+                    parent = scorm_tree_node.rootNode.children[0];
+                    parent.title = scoes_nav[parentscoid].url;
+                }
+            }
+            if (update_launch_sco) {
+                launch_sco = parentscoid;
+            }
+            return parent;
+        }
+        return null;
+    };
+
+    var scorm_next = function(node, update_launch_sco) {
+        if (node === false) {
+            return scorm_tree_node.children[0];
+        }
+        if (node.children.length && typeof scoes_nav[launch_sco].nextscoid != 'undefined') {
+            node = node.children[0];
+            var nextscoid = scoes_nav[launch_sco].nextscoid;
+            if (node.title !== scoes_nav[nextscoid].url) {
+                node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[nextscoid].url);
+                if (node === null) {
+                    node = scorm_tree_node.rootNode.children[0];
+                    node.title = scoes_nav[nextscoid].url;
+                }
+            }
+            if (update_launch_sco) {
+                launch_sco = nextscoid;
+            }
+            return node;
+        }
+        return scorm_skipnext(node, update_launch_sco);
+    };
+
+    var scorm_skipnext = function(node, update_launch_sco) {
+        var next = node.next();
+        if (next && next.title && typeof scoes_nav[launch_sco] !== 'undefined' && typeof scoes_nav[launch_sco].nextsibling !== 'undefined') {
+            var nextsibling = scoes_nav[launch_sco].nextsibling;
+            if (next.title !== scoes_nav[nextsibling].url) {
+                next = scorm_tree_node.getNodeByAttribute('title', scoes_nav[nextsibling].url);
+                if (next === null) {
+                    next = scorm_tree_node.rootNode.children[0];
+                    next.title = scoes_nav[nextsibling].url;
+                }
+            }
+            if (update_launch_sco) {
+                launch_sco = nextsibling;
+            }
+            return next;
+        } else if (node.parent && node.parent.parent && typeof scoes_nav[launch_sco].parentscoid !== 'undefined') {
+            var parentscoid = scoes_nav[launch_sco].parentscoid;
+            var parent = node.parent;
+            if (parent.title !== scoes_nav[parentscoid].url) {
+                parent = scorm_tree_node.getNodeByAttribute('title', scoes_nav[parentscoid].url);
+                if (parent === null) {
+                    parent = scorm_tree_node.rootNode.children[0];
+                }
+            }
+            if (update_launch_sco) {
+                launch_sco = parentscoid;
+            }
+            return scorm_skipnext(parent, update_launch_sco);
+        }
+        return null;
+    };
 
         /**
          * Sends a request to the sequencing handler script on the server.
          * @param {string} datastring
          * @returns {string|boolean|*}
          */
-        var scorm_dorequest_sequencing = function(datastring) {
-            var myRequest = NewHttpReq();
-            var result = DoRequest(
-                myRequest,
-                M.cfg.wwwroot + '/mod/scorm/datamodels/sequencinghandler.php?' + datastring,
-                '',
-                false
+    var scorm_dorequest_sequencing = function(datastring) {
+        var myRequest = NewHttpReq();
+        var result = DoRequest(
+            myRequest,
+            M.cfg.wwwroot + '/mod/scorm/datamodels/sequencinghandler.php?' + datastring,
+            '',
+            false
             );
-            return result;
-        };
+        return result;
+    };
 
         // Launch prev sco
-        var scorm_launch_prev_sco = function() {
-            var result = null;
-            if (scoes_nav[launch_sco].flow === 1) {
-                var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=backward';
-                result = scorm_dorequest_sequencing(datastring);
+    var scorm_launch_prev_sco = function() {
+        var result = null;
+        if (scoes_nav[launch_sco].flow === 1) {
+            var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=backward';
+            result = scorm_dorequest_sequencing(datastring);
 
                 // Check the scorm_ajax_result, it may be false.
-                if (result === false) {
+            if (result === false) {
                     // Either the outcome was a failure, or we are unloading and simply just don't know
                     // what the outcome actually was.
-                    result = {};
-                } else {
-                    result = Y.JSON.parse(result);
-                }
-
-                if (typeof result.nextactivity !== 'undefined' && typeof result.nextactivity.id !== 'undefined') {
-                        var node = scorm_prev(scorm_tree_node.getSelectedNodes()[0]);
-                        if (node == null) {
-                            // Avoid use of TreeView for Navigation.
-                            node = scorm_tree_node.getSelectedNodes()[0];
-                        }
-                        if (node.title !== scoes_nav[result.nextactivity.id].url) {
-                            node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[result.nextactivity.id].url);
-                            if (node === null) {
-                                node = scorm_tree_node.rootNode.children[0];
-                                node.title = scoes_nav[result.nextactivity.id].url;
-                            }
-                        }
-                        launch_sco = result.nextactivity.id;
-                        scorm_activate_item(node);
-                        scorm_fixnav();
-                } else {
-                        scorm_activate_item(scorm_prev(scorm_tree_node.getSelectedNodes()[0], true));
-                }
+                result = {};
             } else {
-                scorm_activate_item(scorm_prev(scorm_tree_node.getSelectedNodes()[0], true));
+                result = Y.JSON.parse(result);
             }
-        };
 
-        // Launch next sco
-        var scorm_launch_next_sco = function () {
-            var result = null;
-            if (scoes_nav[launch_sco].flow === 1) {
-                var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=forward';
-                result = scorm_dorequest_sequencing(datastring);
-
-                // Check the scorm_ajax_result, it may be false.
-                if (result === false) {
-                    // Either the outcome was a failure, or we are unloading and simply just don't know
-                    // what the outcome actually was.
-                    result = {};
-                } else {
-                    result = Y.JSON.parse(result);
-                }
-
-                if (typeof result.nextactivity !== 'undefined' && typeof result.nextactivity.id !== 'undefined') {
-                    var node = scorm_next(scorm_tree_node.getSelectedNodes()[0]);
-                    if (node === null) {
+            if (typeof result.nextactivity !== 'undefined' && typeof result.nextactivity.id !== 'undefined') {
+                var node = scorm_prev(scorm_tree_node.getSelectedNodes()[0]);
+                if (node == null) {
                         // Avoid use of TreeView for Navigation.
-                        node = scorm_tree_node.getSelectedNodes()[0];
-                    }
+                    node = scorm_tree_node.getSelectedNodes()[0];
+                }
+                if (node.title !== scoes_nav[result.nextactivity.id].url) {
                     node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[result.nextactivity.id].url);
                     if (node === null) {
                         node = scorm_tree_node.rootNode.children[0];
                         node.title = scoes_nav[result.nextactivity.id].url;
                     }
-                    launch_sco = result.nextactivity.id;
-                    scorm_activate_item(node);
-                    scorm_fixnav();
-                } else {
-                    scorm_activate_item(scorm_next(scorm_tree_node.getSelectedNodes()[0], true));
                 }
+                launch_sco = result.nextactivity.id;
+                scorm_activate_item(node);
+                scorm_fixnav();
+            } else {
+                scorm_activate_item(scorm_prev(scorm_tree_node.getSelectedNodes()[0], true));
+            }
+        } else {
+            scorm_activate_item(scorm_prev(scorm_tree_node.getSelectedNodes()[0], true));
+        }
+    };
+
+        // Launch next sco
+    var scorm_launch_next_sco = function() {
+        var result = null;
+        if (scoes_nav[launch_sco].flow === 1) {
+            var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=forward';
+            result = scorm_dorequest_sequencing(datastring);
+
+                // Check the scorm_ajax_result, it may be false.
+            if (result === false) {
+                    // Either the outcome was a failure, or we are unloading and simply just don't know
+                    // what the outcome actually was.
+                result = {};
+            } else {
+                result = Y.JSON.parse(result);
+            }
+
+            if (typeof result.nextactivity !== 'undefined' && typeof result.nextactivity.id !== 'undefined') {
+                var node = scorm_next(scorm_tree_node.getSelectedNodes()[0]);
+                if (node === null) {
+                        // Avoid use of TreeView for Navigation.
+                    node = scorm_tree_node.getSelectedNodes()[0];
+                }
+                node = scorm_tree_node.getNodeByAttribute('title', scoes_nav[result.nextactivity.id].url);
+                if (node === null) {
+                    node = scorm_tree_node.rootNode.children[0];
+                    node.title = scoes_nav[result.nextactivity.id].url;
+                }
+                launch_sco = result.nextactivity.id;
+                scorm_activate_item(node);
+                scorm_fixnav();
             } else {
                 scorm_activate_item(scorm_next(scorm_tree_node.getSelectedNodes()[0], true));
             }
-        };
-
-        mod_scorm_launch_prev_sco = scorm_launch_prev_sco;
-        mod_scorm_launch_next_sco = scorm_launch_next_sco;
-
-        var cssclasses = {
-                // YUI grid class: use 100% of the available width to show only content, TOC hidden.
-                scorm_grid_content_toc_hidden: 'yui3-u-1',
-                // YUI grid class: use 1/5 of the available width to show TOC.
-                scorm_grid_toc: 'yui3-u-1-5',
-                // YUI grid class: use 1/24 of the available width to show TOC toggle button.
-                scorm_grid_toggle: 'yui3-u-1-24',
-                // YUI grid class: use 3/4 of the available width to show content, TOC visible.
-                scorm_grid_content_toc_visible: 'yui3-u-3-4',
-                // Reduce height of #scorm_object to accomodate nav buttons under content.
-                scorm_nav_under_content: 'scorm_nav_under_content',
-                disabled: 'disabled'
-            };
-        // layout
-        Y.one('#scorm_toc_title').setHTML(toc_title);
-
-        if (scorm_disable_toc) {
-            Y.one('#scorm_toc').addClass(cssclasses.disabled);
-            Y.one('#scorm_toc_toggle').addClass(cssclasses.disabled);
-            Y.one('#scorm_content').addClass(cssclasses.scorm_grid_content_toc_hidden);
         } else {
-            Y.one('#scorm_toc').addClass(cssclasses.scorm_grid_toc);
-            Y.one('#scorm_toc_toggle').addClass(cssclasses.scorm_grid_toggle);
-            Y.one('#scorm_toc_toggle_btn')
-                .setHTML('&lt;')
-                .setAttribute('title', M.util.get_string('hide', 'moodle'));
-            Y.one('#scorm_content').addClass(cssclasses.scorm_grid_content_toc_visible);
-            scorm_toggle_toc(true);
+            scorm_activate_item(scorm_next(scorm_tree_node.getSelectedNodes()[0], true));
         }
+    };
+
+    mod_scorm_launch_prev_sco = scorm_launch_prev_sco;
+    mod_scorm_launch_next_sco = scorm_launch_next_sco;
+
+    var cssclasses = {
+            // YUI grid class: use 100% of the available width to show only content, TOC hidden.
+        scorm_grid_content_toc_hidden: 'yui3-u-1',
+            // YUI grid class: use 1/5 of the available width to show TOC.
+        scorm_grid_toc: 'yui3-u-1-5',
+            // YUI grid class: use 1/24 of the available width to show TOC toggle button.
+        scorm_grid_toggle: 'yui3-u-1-24',
+            // YUI grid class: use 3/4 of the available width to show content, TOC visible.
+        scorm_grid_content_toc_visible: 'yui3-u-3-4',
+            // Reduce height of #scorm_object to accomodate nav buttons under content.
+        scorm_nav_under_content: 'scorm_nav_under_content',
+        disabled: 'disabled'
+    };
+        // layout
+    Y.one('#scorm_toc_title').setHTML(toc_title);
+
+    if (scorm_disable_toc) {
+        Y.one('#scorm_toc').addClass(cssclasses.disabled);
+        Y.one('#scorm_toc_toggle').addClass(cssclasses.disabled);
+        Y.one('#scorm_content').addClass(cssclasses.scorm_grid_content_toc_hidden);
+    } else {
+        Y.one('#scorm_toc').addClass(cssclasses.scorm_grid_toc);
+        Y.one('#scorm_toc_toggle').addClass(cssclasses.scorm_grid_toggle);
+        Y.one('#scorm_toc_toggle_btn')
+        .setHTML('&lt;')
+        .setAttribute('title', M.util.get_string('hide', 'moodle'));
+        Y.one('#scorm_content').addClass(cssclasses.scorm_grid_content_toc_visible);
+        scorm_toggle_toc(true);
+    }
 
         // hide the TOC if that is the default
-        if (!scorm_disable_toc) {
-            if (scorm_hide_toc == true) {
-                Y.one('#scorm_toc').addClass(cssclasses.disabled);
-                Y.one('#scorm_toc_toggle_btn')
-                    .setHTML('&gt;')
-                    .setAttribute('title', M.util.get_string('show', 'moodle'));
-                Y.one('#scorm_content')
-                    .removeClass(cssclasses.scorm_grid_content_toc_visible)
-                    .addClass(cssclasses.scorm_grid_content_toc_hidden);
-            }
+    if (!scorm_disable_toc) {
+        if (scorm_hide_toc == true) {
+            Y.one('#scorm_toc').addClass(cssclasses.disabled);
+            Y.one('#scorm_toc_toggle_btn')
+            .setHTML('&gt;')
+            .setAttribute('title', M.util.get_string('show', 'moodle'));
+            Y.one('#scorm_content')
+            .removeClass(cssclasses.scorm_grid_content_toc_visible)
+            .addClass(cssclasses.scorm_grid_content_toc_hidden);
         }
+    }
 
         // Basic initialization completed, show the elements.
-        Y.one('#scorm_toc').removeClass('loading');
-        Y.one('#scorm_toc_toggle').removeClass('loading');
+    Y.one('#scorm_toc').removeClass('loading');
+    Y.one('#scorm_toc_toggle').removeClass('loading');
 
         // TOC Resize handle.
-        var layout_width = parseInt(Y.one('#scorm_layout').getComputedStyle('width'), 10);
-        var scorm_resize_handle = new Y.Resize({
-            node: '#scorm_toc',
-            handles: 'r',
-            defMinWidth: 0.2 * layout_width
-        });
+    var layout_width = parseInt(Y.one('#scorm_layout').getComputedStyle('width'), 10);
+    var scorm_resize_handle = new Y.Resize({
+        node: '#scorm_toc',
+        handles: 'r',
+        defMinWidth: 0.2 * layout_width
+    });
         // TOC tree
-        var toc_source = Y.one('#scorm_tree > ul');
-        var toc = scorm_parse_toc_tree(toc_source);
+    var toc_source = Y.one('#scorm_tree > ul');
+    var toc = scorm_parse_toc_tree(toc_source);
         // Empty container after parsing toc.
-        var el = document.getElementById('scorm_tree');
-        el.innerHTML = '';
-        var tree = new Y.TreeView({
-            container: '#scorm_tree',
-            nodes: toc,
-            multiSelect: false
-        });
-        scorm_tree_node = tree;
+    var el = document.getElementById('scorm_tree');
+    el.innerHTML = '';
+    var tree = new Y.TreeView({
+        container: '#scorm_tree',
+        nodes: toc,
+        multiSelect: false
+    });
+    scorm_tree_node = tree;
         // Trigger after instead of on, avoid recursive calls.
-        tree.after('select', function(e) {
-            var node = e.node;
-            if (node.title == '' || node.title == null) {
+    tree.after('select', function(e) {
+        var node = e.node;
+        if (node.title == '' || node.title == null) {
                 return; //this item has no navigation
             }
 
@@ -642,7 +642,7 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
                 if (node_full_url === scorm_active_url) {
                     return;
                 }
-            } else if(scorm_current_node == node){
+            } else if (scorm_current_node == node) {
                 return;
             }
 
@@ -655,156 +655,161 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
                 scorm_bloody_labelclick = true;
             }
         });
-        if (!scorm_disable_toc) {
-            tree.on('close', function(e) {
-                if (scorm_bloody_labelclick) {
-                    scorm_bloody_labelclick = false;
-                    return false;
-                }
-            });
-            tree.subscribe('open', function(e) {
-                if (scorm_bloody_labelclick) {
-                    scorm_bloody_labelclick = false;
-                    return false;
-                }
-            });
-        }
-        tree.render();
-        tree.openAll();
-
-        // On getting the window, always set the focus on the current item
-        Y.one(Y.config.win).on('focus', function (e) {
-            var current = scorm_tree_node.getSelectedNodes()[0];
-            var toc_disabled = Y.one('#scorm_toc').hasClass('disabled');
-            if (current.id && !toc_disabled) {
-                Y.one('#' + current.id).focus();
+    if (!scorm_disable_toc) {
+        tree.on('close', function(e) {
+            if (scorm_bloody_labelclick) {
+                scorm_bloody_labelclick = false;
+                return false;
             }
         });
+        tree.subscribe('open', function(e) {
+            if (scorm_bloody_labelclick) {
+                scorm_bloody_labelclick = false;
+                return false;
+            }
+        });
+    }
+    tree.render();
+    tree.openAll();
+
+        // On getting the window, always set the focus on the current item
+    Y.one(Y.config.win).on('focus', function(e) {
+        var current = scorm_tree_node.getSelectedNodes()[0];
+        var toc_disabled = Y.one('#scorm_toc').hasClass('disabled');
+        if (current.id && !toc_disabled) {
+            Y.one('#' + current.id).focus();
+        }
+    });
 
         // navigation
-        if (scorm_hide_nav == false) {
+    if (scorm_hide_nav == false) {
             // TODO: make some better&accessible buttons.
-            var navbuttonshtml = '<span id="scorm_nav"><button id="nav_skipprev">&lt;&lt;</button>&nbsp;' +
-                                    '<button id="nav_prev">&lt;</button>&nbsp;<button id="nav_up">^</button>&nbsp;' +
-                                    '<button id="nav_next">&gt;</button>&nbsp;<button id="nav_skipnext">&gt;&gt;</button></span>';
-            if (nav_display === 1) {
-                Y.one('#scorm_navpanel').setHTML(navbuttonshtml);
-            } else {
+        var navbuttonshtml = '<span id="scorm_nav"><button id="nav_skipprev">&lt;&lt;</button>&nbsp;' +
+        '<button id="nav_prev">&lt;</button>&nbsp;<button id="nav_up">^</button>&nbsp;' +
+        '<button id="nav_next">&gt;</button>&nbsp;<button id="nav_skipnext">&gt;&gt;</button></span>';
+        if (nav_display === 1) {
+            Y.one('#scorm_navpanel').setHTML(navbuttonshtml);
+        } else {
                 // Nav panel is floating type.
-                var navposition = null;
-                if (navposition_left < 0 && navposition_top < 0) {
+            var navposition = null;
+            if (navposition_left < 0 && navposition_top < 0) {
                     // Set default XY.
-                    navposition = Y.one('#scorm_toc').getXY();
-                    navposition[1] += 200;
-                } else {
+                navposition = Y.one('#scorm_toc').getXY();
+                navposition[1] += 200;
+            } else {
                     // Set user defined XY.
-                    navposition = [];
-                    navposition[0] = parseInt(navposition_left, 10);
-                    navposition[1] = parseInt(navposition_top, 10);
-                }
-                scorm_nav_panel = new Y.Panel({
-                    fillHeight: "body",
-                    headerContent: M.util.get_string('navigation', 'scorm'),
-                    visible: true,
-                    xy: navposition,
-                    zIndex: 999
-                });
-                scorm_nav_panel.set('bodyContent', navbuttonshtml);
-                scorm_nav_panel.removeButton('close');
-                scorm_nav_panel.plug(Y.Plugin.Drag, {handles: ['.yui3-widget-hd']});
-                scorm_nav_panel.render();
+                navposition = [];
+                navposition[0] = parseInt(navposition_left, 10);
+                navposition[1] = parseInt(navposition_top, 10);
             }
-
-            scorm_buttons[0] = new Y.Button({
-                srcNode: '#nav_skipprev',
-                render: true,
-                on: {
-                        'click' : function(ev) {
-                            scorm_activate_item(scorm_skipprev(scorm_tree_node.getSelectedNodes()[0], true));
-                        },
-                        'keydown' : function(ev) {
-                            if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
-                                scorm_activate_item(scorm_skipprev(scorm_tree_node.getSelectedNodes()[0], true));
-                            }
-                        }
-                    }
+            scorm_nav_panel = new Y.Panel({
+                fillHeight: "body",
+                headerContent: M.util.get_string('navigation', 'scorm'),
+                visible: true,
+                xy: navposition,
+                zIndex: 999
             });
-            scorm_buttons[1] = new Y.Button({
-                srcNode: '#nav_prev',
-                render: true,
-                on: {
-                    'click' : function(ev) {
-                        scorm_launch_prev_sco();
-                    },
-                    'keydown' : function(ev) {
-                        if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
-                            scorm_launch_prev_sco();
-                        }
-                    }
-                }
+            scorm_nav_panel.set('bodyContent', navbuttonshtml);
+            scorm_nav_panel.removeButton('close');
+            scorm_nav_panel.plug(Y.Plugin.Drag, {
+                handles: ['.yui3-widget-hd']
             });
-            scorm_buttons[2] = new Y.Button({
-                srcNode: '#nav_up',
-                render: true,
-                on: {
-                    'click' : function(ev) {
-                        scorm_activate_item(scorm_up(scorm_tree_node.getSelectedNodes()[0], true));
-                    },
-                    'keydown' : function(ev) {
-                        if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
-                            scorm_activate_item(scorm_up(scorm_tree_node.getSelectedNodes()[0], true));
-                        }
-                    }
-                }
-            });
-            scorm_buttons[3] = new Y.Button({
-                srcNode: '#nav_next',
-                render: true,
-                on: {
-                    'click' : function(ev) {
-                        scorm_launch_next_sco();
-                    },
-                    'keydown' : function(ev) {
-                        if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
-                            scorm_launch_next_sco();
-                        }
-                    }
-                }
-            });
-            scorm_buttons[4] = new Y.Button({
-                srcNode: '#nav_skipnext',
-                render: true,
-                on: {
-                    'click' : function(ev) {
-                        scorm_activate_item(scorm_skipnext(scorm_tree_node.getSelectedNodes()[0], true));
-                    },
-                    'keydown' : function(ev) {
-                        if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
-                            scorm_activate_item(scorm_skipnext(scorm_tree_node.getSelectedNodes()[0], true));
-                        }
-                    }
-                }
-            });
+            scorm_nav_panel.render();
         }
+
+        scorm_buttons[0] = new Y.Button({
+            srcNode: '#nav_skipprev',
+            render: true,
+            on: {
+                'click': function(ev) {
+                    scorm_activate_item(scorm_skipprev(scorm_tree_node.getSelectedNodes()[0], true));
+                },
+                'keydown': function(ev) {
+                    if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
+                        scorm_activate_item(scorm_skipprev(scorm_tree_node.getSelectedNodes()[0], true));
+                    }
+                }
+            }
+        });
+        scorm_buttons[1] = new Y.Button({
+            srcNode: '#nav_prev',
+            render: true,
+            on: {
+                'click': function(ev) {
+                    scorm_launch_prev_sco();
+                },
+                'keydown': function(ev) {
+                    if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
+                        scorm_launch_prev_sco();
+                    }
+                }
+            }
+        });
+        scorm_buttons[2] = new Y.Button({
+            srcNode: '#nav_up',
+            render: true,
+            on: {
+                'click': function(ev) {
+                    scorm_activate_item(scorm_up(scorm_tree_node.getSelectedNodes()[0], true));
+                },
+                'keydown': function(ev) {
+                    if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
+                        scorm_activate_item(scorm_up(scorm_tree_node.getSelectedNodes()[0], true));
+                    }
+                }
+            }
+        });
+        scorm_buttons[3] = new Y.Button({
+            srcNode: '#nav_next',
+            render: true,
+            on: {
+                'click': function(ev) {
+                    scorm_launch_next_sco();
+                },
+                'keydown': function(ev) {
+                    if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
+                        scorm_launch_next_sco();
+                    }
+                }
+            }
+        });
+        scorm_buttons[4] = new Y.Button({
+            srcNode: '#nav_skipnext',
+            render: true,
+            on: {
+                'click': function(ev) {
+                    scorm_activate_item(scorm_skipnext(scorm_tree_node.getSelectedNodes()[0], true));
+                },
+                'keydown': function(ev) {
+                    if (ev.domEvent.keyCode === 13 || ev.domEvent.keyCode === 32) {
+                        scorm_activate_item(scorm_skipnext(scorm_tree_node.getSelectedNodes()[0], true));
+                    }
+                }
+            }
+        });
+    }
 
         // finally activate the chosen item
-        var scorm_first_url = null;
-        if (typeof tree.rootNode.children[0] !== 'undefined') {
-            if (tree.rootNode.children[0].title !== scoes_nav[launch_sco].url) {
-                var node = tree.getNodeByAttribute('title', scoes_nav[launch_sco].url);
-                if (node !== null) {
-                    scorm_first_url = node;
-                }
-            } else {
-                scorm_first_url = tree.rootNode.children[0];
+    var scorm_first_url = null;
+    if (typeof tree.rootNode.children[0] !== 'undefined') {
+        if (tree.rootNode.children[0].title !== scoes_nav[launch_sco].url) {
+            var node = tree.getNodeByAttribute('title', scoes_nav[launch_sco].url);
+            if (node !== null) {
+                scorm_first_url = node;
             }
+        } else {
+            scorm_first_url = tree.rootNode.children[0];
         }
+    }
 
         if (scorm_first_url == null) { // This is probably a single sco with no children (AICC Direct uses this).
             scorm_first_url = tree.rootNode;
         }
         scorm_first_url.title = scoes_nav[launch_sco].url;
-        scorm_activate_item(scorm_first_url);
+
+        if (autostart) {
+            scorm_activate_item(scorm_first_url);
+        }
 
         // resizing
         scorm_resize_layout();
@@ -837,7 +842,7 @@ M.mod_scorm.connectPrereqCallback = {
     success: function(id, o) {
         if (o.responseText !== undefined) {
             var snode = null,
-                stitle = null;
+            stitle = null;
             if (scorm_tree_node && o.responseText) {
                 snode = scorm_tree_node.getSelectedNodes()[0];
                 stitle = null;
@@ -857,7 +862,7 @@ M.mod_scorm.connectPrereqCallback = {
             if (!pagecontent) {
                 pagecontent = document.getElementById("content");
             }
-            el_new_tree.setAttribute('id','scormtree123');
+            el_new_tree.setAttribute('id', 'scormtree123');
             el_new_tree.innerHTML = o.responseText;
             // Make sure it does not show.
             el_new_tree.style.display = 'none';

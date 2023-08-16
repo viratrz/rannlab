@@ -43,7 +43,7 @@ if (!empty($sco)) {
 	}
 }
 
-$scormembedurl = new moodle_url('{wwwroot}/mod/scorm/player.php', ['mode' => 'normal', 'scoid' => $scoid, 'cm' => $cm->id, 'display' => 'popup']);
+$scormembedurl = new moodle_url('{wwwroot}/mod/scorm/player.php', ['mode' => 'normal', 'scoid' => $scoid, 'cm' => $cm->id, 'display' => 'popup', 'autostart' => false]);
 $scormembedurl = $scormembedurl->out(false);
 
 $iframe = ["<iframe src='$scormembedurl' style='height:80vh; width:75vw'></iframe>"];
