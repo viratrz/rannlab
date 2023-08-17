@@ -33,6 +33,8 @@ function scorm_openpopup(url, name, options, width, height, autostart = true) {
     }
     if (autostart) {
         windowobj.focus();
+    } else {
+        windowobj.blur();
     }
     return windowobj;
 }
