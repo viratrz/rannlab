@@ -179,7 +179,9 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
             if (old) {
                 if (window_name) {
                     var cwidth = scormplayerdata.cwidth;
+                    console.log(cwidth);
                     var cheight = scormplayerdata.cheight;
+                    console.log(cheight);
                     var poptions = scormplayerdata.popupoptions;
                     poptions = poptions + ',resizable=yes'; // Added for IE (MDL-32506).
                     scorm_openpopup(M.cfg.wwwroot + "/mod/scorm/loadSCO.php?" + node.title, window_name, poptions, cwidth, cheight);
@@ -810,6 +812,7 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
         if (autostart) {
             scorm_activate_item(scorm_first_url);
         }
+        scorm_activate_item(scorm_first_url);
 
         // resizing
         scorm_resize_layout();
