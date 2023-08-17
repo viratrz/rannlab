@@ -812,7 +812,6 @@ M.mod_scorm.init = function(Y, nav_display, navposition_left, navposition_top, h
         if (autostart) {
             scorm_activate_item(scorm_first_url);
         }
-        scorm_activate_item(scorm_first_url);
 
         // resizing
         scorm_resize_layout();
