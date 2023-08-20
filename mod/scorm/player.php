@@ -177,13 +177,13 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
 
 // Print the page header.
 $PAGE->requires->data_for_js('scormplayerdata', Array('launch' => false,
- 'currentorg' => '',
- 'sco' => 0,
- 'scorm' => 0,
- 'courseid' => $scorm->course,
- 'cwidth' => $scorm->width,
- 'cheight' => $scorm->height,
- 'popupoptions' => $scorm->options), true);
+   'currentorg' => '',
+   'sco' => 0,
+   'scorm' => 0,
+   'courseid' => $scorm->course,
+   'cwidth' => $scorm->width,
+   'cheight' => $scorm->height,
+   'popupoptions' => $scorm->options), true);
 $PAGE->requires->js('/mod/scorm/request.js', true);
 $PAGE->requires->js('/lib/cookies.js', true);
 
@@ -258,8 +258,8 @@ if ($result->prerequisites) {
         $url = new moodle_url($PAGE->url, array('scoid' => $sco->id, 'display' => 'popup', 'mode' => $mode));
         echo html_writer::script(
             js_writer::function_call('scorm_openpopup', Array($url->out(false),
-             $name, $scorm->options,
-             $scorm->width, $scorm->height)));
+               $name, $scorm->options,
+               $scorm->width, $scorm->height)));
         echo html_writer::tag('noscript', html_writer::tag('iframe', '', array('id' => 'main',
             'class' => 'scoframe', 'name' => 'main', 'src' => 'loadSCO.php?id='.$cm->id.$scoidstr.$modestr)));
     }
@@ -286,17 +286,14 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
             $scorm->hidetoc, $collapsetocwinsize, $result->toctitle, $name, $sco->id, $adlnav), false, $jsmodule);
             ?>
             <style type="text/css">
-               #page-mod-scorm-player #scormpage #scorm_object{
-                width: 100% !important;
-                height: 67% !important;
+             #page-mod-scorm-player #scormpage #scorm_object{
+                width: -webkit-fill-available !important;
+                width: -moz-available !important;
+                width: fill-available !important;
+                height: 60% !important;
             }
             html{
                 overflow: hidden;
-            }
-
-            .activity-wrapper.label.modtype_label iframe {
-                height: 100vh !important;
-                width: 75vw !important;
             }
         </style>
         <?php
@@ -306,17 +303,14 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
 
             ?>
             <style type="text/css">
-               #page-mod-scorm-player #scormpage #scorm_object{
-                width: 100% !important;
-                height: 67% !important;
+             #page-mod-scorm-player #scormpage #scorm_object{
+                width: -webkit-fill-available !important;
+                width: -moz-available !important;
+                width: fill-available !important;
+                height: 60% !important;
             }
             html{
                 overflow: hidden;
-            }
-
-            .activity-wrapper.label.modtype_label iframe {
-                height: 100vh !important;
-                width: 75vw !important;
             }
         </style>
         <?php

@@ -272,3 +272,12 @@
 #page-mod-scorm-player #scormpage div.yui3-g-r img {
     max-width: 100%;
 }
+
+
+
+.path-course.path-course-view .activity-wrapper.label.modtype_label iframe {
+    height: 92vh !important;
+    width: -webkit-fill-available !important;
+    width: -moz-available !important;
+    width: fill-available !important;
+}
