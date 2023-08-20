@@ -4873,7 +4873,9 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu>li.last {
 }
 /*== 1st Layout Footer ==*/
 .footer_one {
-  padding: 80px 0;
+  /*padding: 80px 0;*/
+  padding-bottom: 80px;
+  padding-top: 10px;
 }
 .footer_middle_area {
   border-top: 1px solid rgba(255, 255, 255, .1);
@@ -12127,7 +12129,7 @@ body:not(.ccn_context_focus) .dashbord_nav_list li a i.icon {
   background-size: cover;
 }
 section {
-  padding: 60px 0;
+  /*padding: 60px 0;*/
   position: relative;
 }
 .main-title {
