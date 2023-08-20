@@ -288,15 +288,15 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
             <style type="text/css">
                #page-mod-scorm-player #scormpage #scorm_object{
                 width: 100% !important;
-                height: 50% !important;
+                height: 67% !important;
             }
             html{
                 overflow: hidden;
             }
 
             .activity-wrapper.label.modtype_label iframe {
-                height: 75vh !important;
-                width: 60vw !important;
+                height: 100vh !important;
+                width: 75vw !important;
             }
         </style>
         <?php
@@ -308,15 +308,15 @@ if (empty($scorm->popup) || $displaymode == 'popup') {
             <style type="text/css">
                #page-mod-scorm-player #scormpage #scorm_object{
                 width: 100% !important;
-                height: 50% !important;
+                height: 67% !important;
             }
             html{
                 overflow: hidden;
             }
 
             .activity-wrapper.label.modtype_label iframe {
-                height: 75vh !important;
-                width: 60vw !important;
+                height: 100vh !important;
+                width: 75vw !important;
             }
         </style>
         <?php
