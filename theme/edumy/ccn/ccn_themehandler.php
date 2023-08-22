@@ -13,6 +13,7 @@ include($CFG->dirroot . '/theme/edumy/ccn/ccn_globalsearch.php');
 include($CFG->dirroot . '/theme/edumy/ccn/ccn_globalsearch_navbar.php');
 include($CFG->dirroot . '/theme/edumy/ccn/ccn_librarylist.php');
 include($CFG->dirroot . '/theme/edumy/ccn/course_handler/ccn_activity_nav.php');
+include($CFG->dirroot . '/theme/edumy/ccn/course_handler/ccn_activity_nav_fixed.php');
 require_once($CFG->dirroot. '/theme/edumy/ccn/user_handler/ccn_user_handler.php');
 require_once($CFG->dirroot. '/theme/edumy/ccn/page_handler/ccn_page_handler.php');
 require_once($CFG->dirroot. '/theme/edumy/ccn/mdl_handler/ccn_mdl_handler.php');
@@ -260,6 +261,8 @@ $leftblocks = $OUTPUT->blocks('left');
 /* Deprecate these variables soon; copied & renamed immediately below */
 $hasblocks = strpos($blockshtml, 'data-block=') !== false;
 $hasleftblocks = strpos($leftblocks, 'data-block=') !== false;
+
+
 /* End: Deprecate these variables soon; copied & renamed immediately below */
 $sidebar_left = strpos($leftblocks, 'data-block=') !== false;
 $sidebar_right = strpos($blockshtml, 'data-block=') !== false;
@@ -362,6 +365,18 @@ if($context->id == $context_site->id) {
   $incourse = 1;
 }
 
+
+if ($incourse == 1) {
+  $hasleftblocks = true;
+}
+
+$hassideblocks = ($hasblocks || $hasleftblocks);
+$sidebar_single = (($hasblocks && !$hasleftblocks) || (!$hasblocks && $hasleftblocks));
+$sidebar_single_left = (!$hasblocks && $hasleftblocks);
+$sidebar_single_right = ($hasblocks && !$hasleftblocks);
+$sidebar_double = ($hasblocks && $hasleftblocks);
+$sidebar_none = (!$hasblocks && !$hasleftblocks);
+
 $ccnDashLayoutSetting = get_config('theme_edumy', 'dashboard_layout');
 $ccnDashLayout = 0;
 if($ccnDashLayoutSetting == '1'){
@@ -378,7 +393,7 @@ if ($singlecourse_blocks_setting == 1 && (
   strpos($_SERVER['REQUEST_URI'], "course/admin.php") !== false ||
   (strpos($_SERVER['REQUEST_URI'], "blocks/dedication/dedication.php") !== false && isset($_GET['courseid'])) ||
   $courseSectionPage
-  ) || $userProfileFromCourseParticipants){
+) || $userProfileFromCourseParticipants){
   // Disable ALL block regions, regardless of all other parameters and permission settings
   $sidebar_left = false;
   $sidebar_right = false;
@@ -664,13 +679,13 @@ if(!empty($USER->lang)){$USER->lang = $USER->lang;}else{$USER->lang = '';}
 $secondarynavigation = false;
 $overflow = '';
 if (method_exists($PAGE, 'has_secondary_navigation') && $PAGE->has_secondary_navigation()) {
-    $tablistnav = $PAGE->has_tablist_secondary_navigation();
-    $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
-    $secondarynavigation = $moremenu->export_for_template($OUTPUT);
-    $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
-    if (!is_null($overflowdata)) {
-        $overflow = $overflowdata->export_for_template($OUTPUT);
-    }
+  $tablistnav = $PAGE->has_tablist_secondary_navigation();
+  $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
+  $secondarynavigation = $moremenu->export_for_template($OUTPUT);
+  $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
+  if (!is_null($overflowdata)) {
+    $overflow = $overflowdata->export_for_template($OUTPUT);
+  }
 }
 
 if((int)$ccnMdlVersion < 400) $regionmainsettingsmenu = $OUTPUT->region_main_settings_menu();

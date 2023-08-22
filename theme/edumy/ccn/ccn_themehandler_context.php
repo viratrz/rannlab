@@ -285,6 +285,10 @@ if((int)$ccnMdlVersion >= 400) {
   // 'addblockbutton' => $addblockbutton,
 }
 
+if ($incourse == 1) {
+    $templatecontext['courseFixedNav'] = $_ccnCourseFixedNav;
+}
+
 
 // var_dump($primarymenu['moremenu']);
 $PAGE->requires->jquery();
