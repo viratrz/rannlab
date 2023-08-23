@@ -366,17 +366,6 @@ if($context->id == $context_site->id) {
 }
 
 
-if ($incourse == 1) {
-  $hasleftblocks = true;
-}
-
-$hassideblocks = ($hasblocks || $hasleftblocks);
-$sidebar_single = (($hasblocks && !$hasleftblocks) || (!$hasblocks && $hasleftblocks));
-$sidebar_single_left = (!$hasblocks && $hasleftblocks);
-$sidebar_single_right = ($hasblocks && !$hasleftblocks);
-$sidebar_double = ($hasblocks && $hasleftblocks);
-$sidebar_none = (!$hasblocks && !$hasleftblocks);
-
 $ccnDashLayoutSetting = get_config('theme_edumy', 'dashboard_layout');
 $ccnDashLayout = 0;
 if($ccnDashLayoutSetting == '1'){
