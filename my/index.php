@@ -72,7 +72,7 @@ function get_course_image($courseid)
 {
  global $COURSE;
  $url = '';
- 
+
  $context = context_course::instance($courseid);
  $fs = get_file_storage();
  $files = $fs->get_area_files( $context->id, 'course', 'overviewfiles', 0 );
@@ -424,27 +424,27 @@ if(!is_siteadmin())
     $coursecount = $DB->count_records("user_enrolments", ['userid'=>$USER->id]);
     $complete_course = $DB->count_records("course_completions", ['userid'=>$USER->id]);
     $overdue_courses = $coursecount - $complete_course;
-    
-    
-    
+
+
+
     //var_dump($results);
-    
-    
-    
-    
-    
-    if ($role_shortname->shortname === "student") 
+
+
+
+
+
+    if ($role_shortname->shortname === "student")
     {
         $complete_course = $DB->count_records("course_completions", ['userid'=>$USER->id]);
         $overdue_courses = $coursecount - $complete_course;
         $module_course_completed = $DB->count_records("course_modules_completion",  array( 'userid'=> "$USER->id", 'completionstate' => '1' ));
         $module_course_incompleted = $DB->count_records("course_modules_completion",  array( 'userid'=> "$USER->id", 'completionstate' => '0' ));
-        
+
             // echo $module_course_completed . '<br>';
             // echo $module_course_incompleted;
-        
 
-        
+
+
         ?>
 
 
@@ -487,7 +487,7 @@ if(!is_siteadmin())
 
 <!--<div class="row">
      <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
         <div id="piechart1" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
@@ -495,7 +495,7 @@ if(!is_siteadmin())
 
 <!--<div class="row">
      <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
@@ -505,7 +505,7 @@ if(!is_siteadmin())
 
 <?php
 }
-else if ($role_shortname->shortname === "trainer") 
+else if ($role_shortname->shortname === "trainer")
 {
   $coursecount = $DB->count_records("user_enrolments", ['userid'=>$USER->id]);
   $getuniversityid = $DB->get_record("university_user", ['userid'=>$USER->id]);
@@ -518,12 +518,12 @@ else if ($role_shortname->shortname === "trainer")
   $module_course_completed_count = $DB->count_records("course_modules_completion",  array( 'userid'=> "$USER->id", 'completionstate' => '1' ));
   $module_course_completed = ($module_course_completed_count/$coursecount)*100;
   $module_course_incompleted = 100-$module_course_completed;
-  
+
   $present = $DB->count_records("autoattend_students", ['status'=>'P']);
   $absent = $DB->count_records("autoattend_students", ['status'=>'X']);
       //var_dump($module_course_completed);
       //die;
-  
+
   ?>
 
   <div class="row" style="justify-content: space-between;">
@@ -645,10 +645,10 @@ else if ($role_shortname->shortname === "trainer")
               <!-- ./col -->
 
               <div class="custom-type4-dashboard custom-type4-100-wid" style="padding: 10px;">
-                
+
                 <div class="row px-5" style="display:flex;justify-content: space-between;">
                     <div style="color:#fff;font-weight: 600;">
-                        
+
                       <div class="mt-4 mb-3 mx-2 px-3 py-2"  style="background-color: #c6fad6;border-radius: 10px;">
                         <h3 class="mb-0">Take Attendance</h3>
                     </div>
@@ -661,7 +661,7 @@ else if ($role_shortname->shortname === "trainer")
                 <div style="color:#fff;font-weight: 600;">Calendar-</div>
                 <div style="color:#fff;font-weight: 600;"><div id="ogchart4" style="width: 100%;"></div></div>
             </div>
-            
+
 
         </div>
 
@@ -766,16 +766,17 @@ else if ($role_shortname->shortname === "trainer")
   </div>
 
   <div class="row px-5" style="display:flex;justify-content: space-between;">
+    <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_due_trainer(); ?>
     <p style="color:#fff;font-weight: 600;">Overdue</p>
-    <p class="custom-numbers-dashboard-cards bg-danger color-white"> 3</p>
+    <p class="custom-numbers-dashboard-cards bg-danger color-white"> <?=$dueover ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
   <p style="color:#fff;font-weight: 600;">This Week</p>
-  <p class="custom-numbers-dashboard-cards"> 3</p>
+  <p class="custom-numbers-dashboard-cards"> <?=$due1week ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
     <p style="color:#fff;font-weight: 600;">Next Week</p>
-    <p class="custom-numbers-dashboard-cards"> 3</p>
+    <p class="custom-numbers-dashboard-cards"> <?=$due2week ?></p>
 </div>
 
 </div>
@@ -815,12 +816,12 @@ else if ($role_shortname->shortname === "trainer")
 
 <!--<div class="row">
      <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
         <div id="piechart" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
     <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
          <div id="piechart" ></div>   style="width: 100%; height: 800px;" >
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
@@ -843,12 +844,12 @@ else if ($role_shortname->shortname === "trainer")
 
                     <?php
                 }
-                
 
-                
-                
+
+
+
                 else if($role_shortname->shortname === "rtoadmin" || $role_shortname->shortname === "subrtoadmin")
-                { 
+                {
        /* echo $USER->id;
        echo $id;  */
        $rto_count = $DB->count_records("school", ['id'=>$USER->id]);
@@ -869,7 +870,7 @@ else if ($role_shortname->shortname === "trainer")
         $totalstudents = $DB->get_records_sql("SELECT {university_user}.userid  FROM {role_assignments} inner join {university_user} on {university_user}.userid = {role_assignments}.userid  where {university_user}.university_id = '$university_id' and {role_assignments}.roleid = 5");
         $totaltrainer = $DB->get_records_sql("SELECT {university_user}.userid FROM {role_assignments} inner join {university_user} on {university_user}.userid = {role_assignments}.userid  where {university_user}.university_id = '$university_id' and ({role_assignments}.roleid = 3 or {role_assignments}.roleid = 4)");
         $totaladmin = $DB->get_records_sql("SELECT {university_user}.userid FROM {role_assignments} inner join {university_user} on {university_user}.userid = {role_assignments}.userid  where {university_user}.university_id = '$university_id' and ({role_assignments}.roleid = 9 or {role_assignments}.roleid = 10) ");
-        
+
         $last24week = $DB->get_records_sql("SELECT {user}.id FROM {user} inner join {university_user} on {university_user}.userid = {user}.id where {university_user}.university_id = '$university_id' AND week(FROM_UNIXTIME({user}.lastlogin)) >= WEEK( current_date ) - 4 and week(FROM_UNIXTIME({user}.lastlogin)) <= WEEK( current_date ) - 2;");
         $last48week = $DB->get_records_sql("SELECT {user}.id FROM {user} inner join {university_user} on {university_user}.userid = {user}.id where {university_user}.university_id = '$university_id' AND week(FROM_UNIXTIME({user}.lastlogin)) >= WEEK( current_date ) - 8 and week(FROM_UNIXTIME({user}.lastlogin)) <= WEEK( current_date ) - 4;");
         $more8week = $DB->get_records_sql("SELECT {user}.id FROM {user} inner join {university_user} on {university_user}.userid = {user}.id where {university_user}.university_id = '$university_id' AND week(FROM_UNIXTIME({user}.lastlogin)) <= WEEK( current_date ) - 8 ;");
@@ -877,11 +878,11 @@ else if ($role_shortname->shortname === "trainer")
         $module_course_completed_count = $DB->count_records("course_modules_completion",  array( 'userid'=> "$uni_user->userid", 'completionstate' => '1' ));
         $module_course_completed = ($module_course_completed_count/$coursecount)*100;
         $module_course_incompleted = (100-$module_course_completed)*-1;
-        
+
         $unassignedticket = $DB->count_records("block_helpdesk_ticket",['assigned_refs'=>'0']);
         $openticket = $DB->get_records_sql("SELECT * FROM {block_helpdesk_ticket} where status = '1' OR status = '6'");
         $unresolvedticket = $DB->count_records("block_helpdesk_ticket",['status'=>'2']);
-        
+
         //var_dump($module_course_completed_count);
         //die;
 
@@ -1199,6 +1200,7 @@ else if ($role_shortname->shortname === "trainer")
 
   <div class="custom-type4-dashboard custom-type4-50-wid" style="padding: 10px;">
     <div style="width: 100%;display:flex;justify-content: space-between;">
+      <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_due_admin(); ?>
       <p style="color:#fff;font-weight: 600;">Assessments Due (Students)</p>
       <a href="#"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1206,15 +1208,15 @@ else if ($role_shortname->shortname === "trainer")
 
   <div class="row px-5" style="display:flex;justify-content: space-between;">
     <p style="color:#fff;font-weight: 600;">Overdue</p>
-    <p class="custom-numbers-dashboard-cards bg-danger color-white"> 3</p>
+    <p class="custom-numbers-dashboard-cards bg-danger color-white"> <?=$dueover ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
   <p style="color:#fff;font-weight: 600;">This Week</p>
-  <p class="custom-numbers-dashboard-cards"> 3</p>
+  <p class="custom-numbers-dashboard-cards"> <?=$due1week ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
     <p style="color:#fff;font-weight: 600;">Next Week</p>
-    <p class="custom-numbers-dashboard-cards"> 3</p>
+    <p class="custom-numbers-dashboard-cards"> <?=$due2week ?></p>
 </div>
 
 </div>
@@ -1262,10 +1264,10 @@ else if ($role_shortname->shortname === "trainer")
   <!-- ./col -->
 
   <div class="custom-type4-dashboard custom-type4-100-wid" style="padding: 10px;">
-    
+
     <div class="row px-5" style="display:flex;justify-content: space-between;">
         <div style="color:#fff;font-weight: 600;">
-            
+
           <div class="mt-4 mb-3 mx-2 px-3 py-2"  style="background-color: #c6fad6;border-radius: 10px;">
             <h3 class="mb-0">Take Attendance</h3>
         </div>
@@ -1407,14 +1409,14 @@ else if ($role_shortname->shortname === "trainer")
 
 <!--<div class="row">
      <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
         <div id="piechart" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
     </div>
     </div>
-        
+
             <div class="col-lg-12 col-12">
-      <div class='container'> 
+      <div class='container'>
         <div id="piechart2" class="pie-chart" style="width: 100%; height: 320px; "></div>
       </div>
   </div><br>-->
@@ -1426,7 +1428,7 @@ else if ($role_shortname->shortname === "trainer")
 }
 }
 else {
-    
+
     $all_packages = $DB->get_records_sql("SELECT * FROM {package}");
         //$all_university= $DB->get_records_sql("SELECT * FROM {school}");
     $resource_course_id = $DB->get_record("course_categories",['idnumber'=>'resourcecat']);
@@ -1435,13 +1437,13 @@ else {
     $user_count = $DB->count_records("user");
     $rto_count = $DB->count_records("school");
     $package_count = $DB->count_records("package");
-    
+
     $all_university= $DB->get_records_sql("SELECT * FROM {school} ORDER BY name DESC LIMIT 10 ");
     $unassignedticket = $DB->count_records("block_helpdesk_ticket",['assigned_refs'=>'0']);
     $openticket = $DB->get_records_sql("SELECT * FROM {block_helpdesk_ticket} where status = '1' OR status = '6'");
     $unresolvedticket = $DB->count_records("block_helpdesk_ticket",['status'=>'2']);
         //var_dump($unresolvedticket); die;
-    
+
     ?>
 
     <br>
@@ -1674,7 +1676,7 @@ else {
                   <th>Units </th>
                   <th>Package Value ($)</th>
               </tr>
-              <?php 
+              <?php
               $i = 1;
               foreach($all_packages as $package){?>
                 <tr>
@@ -1857,7 +1859,7 @@ else {
 </div>
 
 
-<?php 
+<?php
 $db_host='localhost';
 $db_user='elearngroup_vetmoodle';
 $db_pass='=m2$jfM%mGrz';
@@ -1870,11 +1872,11 @@ if (!$con) {
 }else{
    $sql ="SELECT * FROM mdl_package";
    $result = mysqli_query($con,$sql);
-   
-   
+
+
    $chart_data="";
-   while ($row = mysqli_fetch_array($result)) { 
-       
+   while ($row = mysqli_fetch_array($result)) {
+
     $productname[]  = $row['package_value']  ;
     $sales[] = $row['num_of_user'];
 }
@@ -1962,8 +1964,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 <script type="text/javascript">
-  
-  
+
+
   google.charts.load('current', {packages: ['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
@@ -1988,8 +1990,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
   }
 </script>
 <script type="text/javascript">
-  
-  
+
+
   google.charts.load('current', {packages: ['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
@@ -2037,13 +2039,13 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
       data.addRows([
         ['Present', 80],
         ['Absent', 20],
-        
-        
+
+
         ]);
 
   // Set chart options
       var options = {
-       
+
        slices: {
         0: { color: '#c6fad6' },
         1: { color: '#8E30FF' }
@@ -2078,13 +2080,13 @@ chart.draw(data, options);
       data.addRows([
         ['Present', 80],
         ['Absent', 20],
-        
-        
+
+
         ]);
 
   // Set chart options
       var options = {
-       
+
        slices: {
         0: { color: '#c6fad6' },
         1: { color: '#8E30FF' }
