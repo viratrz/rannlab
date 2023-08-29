@@ -783,6 +783,7 @@ else if ($role_shortname->shortname === "trainer")
 
 <div class="custom-type4-dashboard custom-type4-50-wid" style="padding: 10px;">
     <div style="width: 100%;display:flex;justify-content: space-between;">
+      <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_markingdue_trainer(); ?>
       <p style="color:#fff;font-weight: 600;">Marking Due (Trainers)</p>
       <a href="#"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -790,15 +791,15 @@ else if ($role_shortname->shortname === "trainer")
 
   <div class="row px-5" style="display:flex;justify-content: space-between;">
       <p style="color:#fff;font-weight: 600;">Overdue</p>
-      <p class="custom-numbers-dashboard-cards bg-danger color-white"> 3</p>
+      <p class="custom-numbers-dashboard-cards bg-danger color-white"> <?=$dueover ?></p>
   </div>
   <div class="row px-5" style="display:flex;justify-content: space-between;">
     <p style="color:#fff;font-weight: 600;">This Week</p>
-    <p class="custom-numbers-dashboard-cards"> 3</p>
+    <p class="custom-numbers-dashboard-cards"> <?=$due1week ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
   <p style="color:#fff;font-weight: 600;">Next Week</p>
-  <p class="custom-numbers-dashboard-cards"> 3</p>
+  <p class="custom-numbers-dashboard-cards"> <?=$due2week ?></p>
 </div>
 
 
@@ -1200,7 +1201,7 @@ else if ($role_shortname->shortname === "trainer")
 
   <div class="custom-type4-dashboard custom-type4-50-wid" style="padding: 10px;">
     <div style="width: 100%;display:flex;justify-content: space-between;">
-      <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_due_admin(); ?>
+      <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_due_rtoadmin(); ?>
       <p style="color:#fff;font-weight: 600;">Assessments Due (Students)</p>
       <a href="#"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1223,6 +1224,7 @@ else if ($role_shortname->shortname === "trainer")
 
 <div class="custom-type4-dashboard custom-type4-50-wid" style="padding: 10px;">
     <div style="width: 100%;display:flex;justify-content: space-between;">
+      <?php [$dueover,$due1week,$due2week] = \local_dashboard\helper\pending_assessment::assessment_markingdue_rtoadmin(); ?>
       <p style="color:#fff;font-weight: 600;">Marking Due (Trainers)</p>
       <a href="#"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -1230,15 +1232,15 @@ else if ($role_shortname->shortname === "trainer")
 
   <div class="row px-5" style="display:flex;justify-content: space-between;">
       <p style="color:#fff;font-weight: 600;">Overdue</p>
-      <p class="custom-numbers-dashboard-cards bg-danger color-white"> 3</p>
+      <p class="custom-numbers-dashboard-cards bg-danger color-white"> <?=$dueover ?></p>
   </div>
   <div class="row px-5" style="display:flex;justify-content: space-between;">
     <p style="color:#fff;font-weight: 600;">This Week</p>
-    <p class="custom-numbers-dashboard-cards"> 3</p>
+    <p class="custom-numbers-dashboard-cards"> <?=$due1week ?></p>
 </div>
 <div class="row px-5" style="display:flex;justify-content: space-between;">
   <p style="color:#fff;font-weight: 600;">Next Week</p>
-  <p class="custom-numbers-dashboard-cards"> 3</p>
+  <p class="custom-numbers-dashboard-cards"> <?=$due2week ?></p>
 </div>
 
 

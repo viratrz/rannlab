@@ -5,6 +5,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 include_once($CFG->dirroot . '/course/lib.php');
+include_once($CFG->dirroot . '/mod/forum/lib.php');
 
 $_ccnCourseFixedNav = '';
 $ccnCourseUrl = '';
@@ -52,7 +53,7 @@ if ($DB->record_exists('course', array('id' => $COURSE->id))) {
 		// 	$_ccnCourseFixedNav .= '<li class="list-group-item"><a href="#">Link</a></li>';
 		// }
 
-		
+
 		$_ccnCourseFixedNav .= '<li class="list-group-item"><a href="'.$CFG->wwwroot.'/message/index.php">Inbox</a></li>
 		<li class="list-group-item"><a href="'.$CFG->wwwroot.'/user/preferences.php">Settings</a></li>
 		<li class="list-group-item"><a href="'.$CFG->wwwroot.'/blocks/helpdesk/search.php">Help</a></li>
