@@ -822,7 +822,7 @@ if ($ncsub_records) {
   <div class="custom-type4-dashboard custom-type4-50-wid" style="padding: 10px;">
     <div style="width: 100%;display:flex;justify-content: space-between;">
       <p style="color:#fff;font-weight: 600;">Assessments Due (Students)</p>
-      <a href="#"
+      <a href="<?= $CFG->wwwroot.'/local/dashboard/assessment_due.php'?>"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
   </div>
 
@@ -846,7 +846,7 @@ if ($ncsub_records) {
     <div style="width: 100%;display:flex;justify-content: space-between;">
       <?php [$dueover, $due1week, $due2week] = \local_dashboard\helper\pending_assessment::assessment_markingdue_trainer();?>
       <p style="color:#fff;font-weight: 600;">Marking Due (Trainers)</p>
-      <a href="#"
+      <a href="<?= $CFG->wwwroot.'/local/dashboard/assessment_markingdue.php'?>"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
   </div>
 
@@ -1342,7 +1342,7 @@ if ($ncsub_records) {
     <div style="width: 100%;display:flex;justify-content: space-between;">
       <?php [$dueover, $due1week, $due2week] = \local_dashboard\helper\pending_assessment::assessment_due_rtoadmin();?>
       <p style="color:#fff;font-weight: 600;">Assessments Due (Students)</p>
-      <a href="#"
+      <a href="<?= $CFG->wwwroot.'/local/dashboard/assessment_due.php'?>"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
   </div>
 
@@ -1365,7 +1365,7 @@ if ($ncsub_records) {
     <div style="width: 100%;display:flex;justify-content: space-between;">
       <?php [$dueover, $due1week, $due2week] = \local_dashboard\helper\pending_assessment::assessment_markingdue_rtoadmin();?>
       <p style="color:#fff;font-weight: 600;">Marking Due (Trainers)</p>
-      <a href="#"
+      <a href="<?= $CFG->wwwroot.'/local/dashboard/assessment_markingdue.php'?>"
       class="small-box-footer" style="color: rgb(215, 215, 215);">More info <i class="fas fa-arrow-circle-right"></i></a>
   </div>
 
