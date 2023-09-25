@@ -51,10 +51,7 @@ class assessment_due_rtoadmin extends \table_sql {
 
     $params = array_merge($quizinsqlparam, $courseinsqlparam);
 
-    $countsql = "Select  count(ue.id) from {user_enrolments} ue left join {enrol} e on e.id=ue.enrolid 
-                                 where ue.status=0 and e.status=0 and e.courseid $courseinsql
-                                    and ue.userid not in (Select qa.userid from {quiz_attempts} qa where qa.quiz $quizinsql);";
-    $fields = "ue.id, ue.userid, e.courseid, q.id";
+    $fields = "ue.id, ue.userid as userid, e.courseid, q.id as quiz";
     $from = " {user_enrolments} ue left join {enrol} e on e.id=ue.enrolid
               left join {quiz} q on q.course=e.courseid ";
     $where = " ue.status=0 and e.status=0 and e.courseid $courseinsql

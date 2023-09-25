@@ -49,10 +49,9 @@ class assessment_markingdue_rtoadmin extends \table_sql {
     list($courseinsql, $courseinsqlparam) = $DB->get_in_or_equal($courseids);
     list($quizinsql, $quizinsqlparam) = $DB->get_in_or_equal($quizids);
 
-    $params = array_merge($quizinsqlparam, $courseinsqlparam);
     $params = array_merge($courseinsqlparam, $quizinsqlparam, $quizinsqlparam);
 
-    $fields = "ue.id, ue.userid, e.courseid, q.id";
+    $fields = "ue.id, ue.userid as userid, e.courseid, q.id as quiz";
     $from = " {user_enrolments} ue left join {enrol} e on e.id=ue.enrolid
                 left join {quiz} q on q.course=e.courseid 
                 left join {quiz_attempts} qa on ue.userid=qa.userid";
